@@ -1,21 +1,38 @@
 ---
-- name: Machine setup
-  hosts: localhost
-  become: true
-  connection: local
-  gather_facts: true
-  vars:
-    flyctl_version: "0.1.130"
-    pulumi_version: "v3.94.2"
-
+- name: Example from an Ansible Playbook
+  hosts: all
   tasks:
-    - name: Get my user
+    - name: Ping all hosts
+      ansible.builtin.ping:
+        data: "Hello, World!"
+
+    - name: Ensure latest updates @ Debian-based systems
+      ansible.builtin.apt:
+        autoremove: "yes"
+        autoclean: "yes"
+        update_cache: "yes"
+        upgrade: full
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: Ensure latest updates @ RedHat-based systems
+      ansible.builtin.dnf:
+        name: dnf
+        update_cache: "yes"
+        update_only: "yes"
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: Get user
       ansible.builtin.set_fact:
         remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
 
-    - name: Install packages
-      ansible.builtin.dnf:
+    - name: Install  packages
+      ansible.builtin.package:
         name:
+          - nano
+          - htop
+          - git
+          - python3
+          - zsh
           - git
           - htop
           - vim
@@ -25,15 +42,23 @@
           - fzf
           - tmux
           - sqlite
-          - sqlite-devel
-          - openssl-devel
           - autoconf
+          - openssl
           - tar
           - unzip
           - xz
-          - dotnet-sdk-8.0
+          - nano
           - unar
+          - bat
+          - Jq
+          - yq
+          - node
+          - python3
+          - openvpn
+          - wget
+          - curl
         state: present
+      become: true
 
     - name: Change shell to zsh
       ansible.builtin.user:
@@ -45,49 +70,7 @@
         key: https://packages.microsoft.com/keys/microsoft.asc
         state: present
 
-    - name: Add Visual Studio Code Repo
-      ansible.builtin.yum_repository:
-        name: vscode
-        description: Visual Studio Code
-        baseurl: https://packages.microsoft.com/yumrepos/vscode
-        gpgkey: https://packages.microsoft.com/keys/microsoft.asc
-        gpgcheck: true
-        enabled: true
 
-    - name: Install VS Code
-      ansible.builtin.dnf:
-        name: code
-        state: present
-
-    - name: Add Docker repo
-      ansible.builtin.yum_repository:
-        name: docker
-        description: Docker repo
-        baseurl: "https://download.docker.com/linux/fedora/{{ ansible_distribution_major_version }}/{{ ansible_architecture }}/stable"
-        gpgkey: "https://download.docker.com/linux/fedora/gpg"
-        gpgcheck: true
-        enabled: true
-
-    - name: Install Docker
-      ansible.builtin.dnf:
-        name:
-          - docker-ce
-          - docker-ce-cli
-          - containerd.io
-          - docker-buildx-plugin
-          - docker-compose-plugin
-        state: present
-
-    - name: Add Docker group
-      ansible.builtin.group:
-        name: docker
-        state: present
-
-    - name: Add user to docker group
-      ansible.builtin.user:
-        name: "{{ remote_regular_user }}"
-        groups: docker
-        append: true
 
 
     - name: Add kubectl repo
@@ -99,13 +82,6 @@
         gpgcheck: true
         enabled: true
 
-    - name: Install kubectl
-      ansible.builtin.dnf:
-        name: kubectl
-        state: present
-
-
-
     - name: Ensure fonts directory
       ansible.builtin.file:
         path: "~{{ remote_regular_user }}/.fonts"
@@ -113,6 +89,14 @@
         mode: "0755"
         owner: "{{ remote_regular_user }}"
 
+    - name: Install  packages2 
+      ansible.builtin.package:
+        name:
+          - helm
+          - k9s
+          - kubectl
+        state: present
+      become: true
     # - name: Check if Jetbrains Mono exists
     #   ansible.builtin.shell: "ls ~{{ remote_regular_user }}/.fonts/JetBrainsMonoNerd*FontMono*"
     #   register: jetbrains_mono_exists
@@ -127,3 +111,8 @@
     #     remote_src: true
     #     mode: "0755"
     #     owner: "{{ remote_regular_user }}"
+    # - name: Machine setup
+    # hosts: localhost
+    # become: true
+    # connection: local
+    # gather_facts: true
