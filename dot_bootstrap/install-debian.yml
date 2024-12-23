@@ -1,115 +1,78 @@
 ---
-- name: Example from an Ansible Playbook
-  hosts: all
-  tasks:
-    - name: Ping all hosts
-      ansible.builtin.ping:
-        data: "Hello, World!"
+- name: Ping all hosts
+  ansible.builtin.ping:
+    data: "Hello, World! @install-debian.yml"
 
-    - name: Ensure latest updates @ Debian-based systems
-      ansible.builtin.apt:
-        autoremove: "yes"
-        autoclean: "yes"
-        update_cache: "yes"
-        upgrade: full
-      when: ansible_facts['os_family'] == "Debian"
+- name: Ensure latest updates @ Debian-based systems
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    upgrade: full
+    autoremove: true
+    autoclean: true
+  become: true
+#TODO add keys to apt repositories ! # check on other :) 
+# - name: Download and add the Helm signing key
+#   ansible.builtin.shell: |
+#     curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
+#   args:
+#     creates: /usr/share/keyrings/helm.gpg
 
-    - name: Ensure latest updates @ RedHat-based systems
-      ansible.builtin.dnf:
-        name: dnf
-        update_cache: "yes"
-        update_only: "yes"
-      when: ansible_facts['os_family'] == "RedHat"
+- name: Install http things
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - curl
+      - gpg
+      - gnupg2
+      - apt-utils
+    state: present
 
-    - name: Get user
-      ansible.builtin.set_fact:
-        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+- name: Add Helm signing key
+  ansible.builtin.apt_key:
+    url: https://baltocdn.com/helm/signing.asc
+    state: present
+  become: true
 
-    - name: Install  packages
-      ansible.builtin.package:
-        name:
-          - nano
-          - htop
-          - git
-          - python3
-          - zsh
-          - git
-          - htop
-          - vim
-          - gh
-          - helm
-          - zsh
-          - fzf
-          - tmux
-          - sqlite
-          - autoconf
-          - openssl
-          - tar
-          - unzip
-          - xz
-          - nano
-          - unar
-          - bat
-          - Jq
-          - yq
-          - node
-          - python3
-          - openvpn
-          - wget
-          - curl
-        state: present
-      become: true
+- name: Add Helm repository to APT sources list
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=arm64] https://baltocdn.com/helm/stable/debian/ all main"
+    state: present
+    filename: helm-stable
+    update_cache: true
+  become: true
 
-    - name: Change shell to zsh
-      ansible.builtin.user:
-        name: "{{ remote_regular_user }}"
-        shell: /usr/bin/zsh
+- name: Check if helm is installed
+  ansible.builtin.command:
+    cmd: helm version --short
+  register: helm_check
+  ignore_errors: true
 
-    - name: Import Microsoft GPG Key
-      ansible.builtin.rpm_key:
-        key: https://packages.microsoft.com/keys/microsoft.asc
-        state: present
+- name: Download k9s .deb package
+  ansible.builtin.get_url:
+    url: https://github.com/derailed/k9s/releases/latest/download/k9s_linux_arm64.deb
+    dest: /tmp/k9s_linux_arm64.deb
+  when: helm_check.rc != 0
 
-    - name: Add kubectl repo
-      ansible.builtin.yum_repository:
-        name: Kubernetes
-        description: Kubernetes repo
-        baseurl: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
-        gpgkey: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
-        gpgcheck: true
-        enabled: true
+- name: Install k9s package
+  ansible.builtin.apt:
+    deb: /tmp/k9s_linux_arm64.deb
+    state: present
+  when: helm_check.rc != 0
+- name: Remove the k9s .deb file after installation
+  ansible.builtin.file:
+    path: /tmp/k9s_linux_arm64.deb
+    state: absent
+  when: helm_check.rc != 0
 
-    - name: Ensure fonts directory
-      ansible.builtin.file:
-        path: "~{{ remote_regular_user }}/.fonts"
-        state: directory
-        mode: "0755"
-        owner: "{{ remote_regular_user }}"
+- name: Add Kubernetes keyring key to apt
+  ansible.builtin.apt_key:
+    url: https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key
+    state: present
 
-    - name: Install  packages2 
-      ansible.builtin.package:
-        name:
-          - helm
-          - k9s
-          - kubectl
-        state: present
-      become: true
-    # - name: Check if Jetbrains Mono exists
-    #   ansible.builtin.shell: "ls ~{{ remote_regular_user }}/.fonts/JetBrainsMonoNerd*FontMono*"
-    #   register: jetbrains_mono_exists
-    #   ignore_errors: true
-    #   changed_when: false
-
-    # - name: Download Jetbrains mono
-    #   when: jetbrains_mono_exists is failed
-    #   ansible.builtin.unarchive:
-    #     src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip
-    #     dest: "~{{ remote_regular_user }}/.fonts/"
-    #     remote_src: true
-    #     mode: "0755"
-    #     owner: "{{ remote_regular_user }}"
-    # - name: Machine setup
-    # hosts: localhost
-    # become: true
-    # connection: local
-    # gather_facts: true
+- name: Add Kubernetes repository to apt
+  ansible.builtin.apt_repository:
+    repo: 'deb https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /'
+    filename: kubernetes
+    update_cache: true
+    state: present

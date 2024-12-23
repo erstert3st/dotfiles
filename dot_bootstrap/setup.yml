@@ -1,29 +1,21 @@
 ---
 - name: Example from an Ansible Playbook
   hosts: all
+  gather_facts: true
+  vars:
+    remote_regular_user: "root"
   tasks:
     - name: Ping all hosts
       ansible.builtin.ping:
         data: "Hello, World!"
 
-    - name: Ensure latest updates @ Debian-based systems
-      ansible.builtin.apt:
-        autoremove: "yes"
-        autoclean: "yes"
-        update_cache: "yes"
-        upgrade: full
-      when: ansible_facts['os_family'] == "Debian"
-
-    - name: Ensure latest updates @ RedHat-based systems
-      ansible.builtin.dnf:
-        name: dnf
-        update_cache: "yes"
-        update_only: "yes"
+    - name: RHEL install
+      ansible.builtin.include_tasks: install-rhel.yml
       when: ansible_facts['os_family'] == "RedHat"
 
-    - name: Get user
-      ansible.builtin.set_fact:
-        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+    - name: Debian install
+      ansible.builtin.include_tasks: install-debian.yml
+      when: ansible_facts['os_family'] == "Debian"
 
     - name: Install  packages
       ansible.builtin.package:
@@ -35,28 +27,28 @@
           - zsh
           - git
           - htop
-          - vim
           - gh
           - helm
           - zsh
           - fzf
           - tmux
-          - sqlite
           - autoconf
           - openssl
           - tar
           - unzip
-          - xz
           - nano
           - unar
           - bat
-          - Jq
+          - jq
           - yq
-          - node
+          - nodejs
           - python3
           - openvpn
           - wget
           - curl
+          - nmap
+          - k9s
+          - kubectl
         state: present
       become: true
 
@@ -65,20 +57,6 @@
         name: "{{ remote_regular_user }}"
         shell: /usr/bin/zsh
 
-    - name: Import Microsoft GPG Key
-      ansible.builtin.rpm_key:
-        key: https://packages.microsoft.com/keys/microsoft.asc
-        state: present
-
-    - name: Add kubectl repo
-      ansible.builtin.yum_repository:
-        name: Kubernetes
-        description: Kubernetes repo
-        baseurl: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
-        gpgkey: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
-        gpgcheck: true
-        enabled: true
-
     - name: Ensure fonts directory
       ansible.builtin.file:
         path: "~{{ remote_regular_user }}/.fonts"
@@ -86,14 +64,7 @@
         mode: "0755"
         owner: "{{ remote_regular_user }}"
 
-    - name: Install  packages2 
-      ansible.builtin.package:
-        name:
-          - helm
-          - k9s
-          - kubectl
-        state: present
-      become: true
+
     # - name: Check if Jetbrains Mono exists
     #   ansible.builtin.shell: "ls ~{{ remote_regular_user }}/.fonts/JetBrainsMonoNerd*FontMono*"
     #   register: jetbrains_mono_exists

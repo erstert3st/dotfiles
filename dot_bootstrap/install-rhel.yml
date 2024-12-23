@@ -1,115 +1,56 @@
 ---
-- name: Example from an Ansible Playbook
-  hosts: all
-  tasks:
-    - name: Ping all hosts
-      ansible.builtin.ping:
-        data: "Hello, World!"
+- name: Ping all hosts
+  ansible.builtin.ping:
+    data: "Hello, World!"
 
-    - name: Ensure latest updates @ Debian-based systems
-      ansible.builtin.apt:
-        autoremove: "yes"
-        autoclean: "yes"
-        update_cache: "yes"
-        upgrade: full
-      when: ansible_facts['os_family'] == "Debian"
+- name: Ensure latest updates @ RedHat-based systems
+  ansible.builtin.dnf:
+    name: dnf
+    update_cache: "yes"
+    update_only: "yes"
+  when: ansible_facts['os_family'] == "RedHat"
 
-    - name: Ensure latest updates @ RedHat-based systems
-      ansible.builtin.dnf:
-        name: dnf
-        update_cache: "yes"
-        update_only: "yes"
-      when: ansible_facts['os_family'] == "RedHat"
+- name: Import Microsoft GPG Key
+  ansible.builtin.rpm_key:
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
 
-    - name: Get user
-      ansible.builtin.set_fact:
-        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+- name: Add kubectl repo
+  ansible.builtin.yum_repository:
+    name: Kubernetes
+    description: Kubernetes repo
+    baseurl: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
+    gpgkey: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
+    gpgcheck: true
+    enabled: true
+    
+- name: Import EPEL GPG key
+  ansible.builtin.rpm_key:
+    key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
+    state: present
+  become: true
 
-    - name: Install  packages
-      ansible.builtin.package:
-        name:
-          - nano
-          - htop
-          - git
-          - python3
-          - zsh
-          - git
-          - htop
-          - vim
-          - gh
-          - helm
-          - zsh
-          - fzf
-          - tmux
-          - sqlite
-          - autoconf
-          - openssl
-          - tar
-          - unzip
-          - xz
-          - nano
-          - unar
-          - bat
-          - Jq
-          - yq
-          - node
-          - python3
-          - openvpn
-          - wget
-          - curl
-        state: present
-      become: true
+- name: Install EPEL repository
+  ansible.builtin.dnf: 
+    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm"
+    state: present
 
-    - name: Change shell to zsh
-      ansible.builtin.user:
-        name: "{{ remote_regular_user }}"
-        shell: /usr/bin/zsh
+- name: Upgrade all packages
+  ansible.builtin.yum:
+    name: "*"
+    state: latest
 
-    - name: Import Microsoft GPG Key
-      ansible.builtin.rpm_key:
-        key: https://packages.microsoft.com/keys/microsoft.asc
-        state: present
+- name: Upgrade all packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+  become: true
 
-    - name: Add kubectl repo
-      ansible.builtin.yum_repository:
-        name: Kubernetes
-        description: Kubernetes repo
-        baseurl: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
-        gpgkey: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
-        gpgcheck: true
-        enabled: true
-
-    - name: Ensure fonts directory
-      ansible.builtin.file:
-        path: "~{{ remote_regular_user }}/.fonts"
-        state: directory
-        mode: "0755"
-        owner: "{{ remote_regular_user }}"
-
-    - name: Install  packages2 
-      ansible.builtin.package:
-        name:
-          - helm
-          - k9s
-          - kubectl
-        state: present
-      become: true
-    # - name: Check if Jetbrains Mono exists
-    #   ansible.builtin.shell: "ls ~{{ remote_regular_user }}/.fonts/JetBrainsMonoNerd*FontMono*"
-    #   register: jetbrains_mono_exists
-    #   ignore_errors: true
-    #   changed_when: false
-
-    # - name: Download Jetbrains mono
-    #   when: jetbrains_mono_exists is failed
-    #   ansible.builtin.unarchive:
-    #     src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/JetBrainsMono.zip
-    #     dest: "~{{ remote_regular_user }}/.fonts/"
-    #     remote_src: true
-    #     mode: "0755"
-    #     owner: "{{ remote_regular_user }}"
-    # - name: Machine setup
-    # hosts: localhost
-    # become: true
-    # connection: local
-    # gather_facts: true
+- name: Install  packages2 
+  ansible.builtin.package:
+    name:
+      - helm
+      - k9s
+      - kubectl
+    state: present
+  become: true
