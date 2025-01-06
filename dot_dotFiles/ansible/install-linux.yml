@@ -1,0 +1,30 @@
+---
+- name: Check if lazydocker is installed
+  ansible.builtin.command: which lazydocker
+  register: lazydocker_check
+  ignore_errors: true
+  changed_when: false
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+
+- name: Download the LazyDocker install script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh
+    dest: /tmp/install_update_linux.sh
+    mode: '0755'
+
+- name: Run the LazyDocker install script
+  ansible.builtin.shell: /tmp/install_update_linux.sh
+  args:
+    removes: /usr/local/bin/lazydocker
+
+- name: install lazygit
+  ansible.builtin.shell: 
+  
+
+- name: Check if lazydocker is installed
+  ansible.builtin.command: which lazydocker
+  register: lazydocker_check
+  ignore_errors: false
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"

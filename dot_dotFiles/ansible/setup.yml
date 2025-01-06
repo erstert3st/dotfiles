@@ -17,6 +17,9 @@
       ansible.builtin.include_tasks: install-debian.yml
       when: ansible_facts['os_family'] == "Debian"
 
+    - name: Universal install
+      ansible.builtin.include_tasks: install-linux.yml
+
     - name: Install  packages
       ansible.builtin.package:
         name:
@@ -34,6 +37,7 @@
           - tmux
           - autoconf
           - openssl
+          - openssh-server
           - tar
           - unzip
           - nano
@@ -63,7 +67,6 @@
         state: directory
         mode: "0755"
         owner: "{{ remote_regular_user }}"
-
 
     # - name: Check if Jetbrains Mono exists
     #   ansible.builtin.shell: "ls ~{{ remote_regular_user }}/.fonts/JetBrainsMonoNerd*FontMono*"

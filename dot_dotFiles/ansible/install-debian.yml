@@ -11,7 +11,8 @@
     autoremove: true
     autoclean: true
   become: true
-#TODO add keys to apt repositories ! # check on other :) 
+
+# TODO add keys to apt repositories ! # check on other :)
 # - name: Download and add the Helm signing key
 #   ansible.builtin.shell: |
 #     curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
@@ -21,10 +22,9 @@
 - name: Install http things
   ansible.builtin.apt:
     name:
-      - apt-transport-https
+      # - apt-transport-https
       - curl
       - gpg
-      - gnupg2
       - apt-utils
     state: present
 
