@@ -1,0 +1,25 @@
+textboxes:
+  - title: UTC time2
+    rate-ms: 5000
+    sample: neofetch 
+    border: false
+  # - title: Local weather
+  #   position: [[40, 8], [40, 24]]
+  #   rate-ms: 10000
+  #   color: 178
+  #   sample: curl "wttr.in/bruck+an+der+mur?lang=de&m&v0"
+  #   border: false
+  # - title: Moon
+  #   position: [[0, 0], [80, 12]]
+  #   rate-ms: 1000000
+  #   sample: curl "wttr.in/Moon"
+  #   border: false
+asciiboxes:
+
+  # - title: UTC time
+  #   position: [[0, 0], [40, 24]]
+  #   rate-ms: 500
+  #   color: 43
+  #   sample: env TZ=UTC date +%r
+  #   border: false
+  #   font: 3d
