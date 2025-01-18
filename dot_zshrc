@@ -1,0 +1,11 @@
+# (1) Change directory given just path.
+# unsetopt autocd                                                                                                                                                  (no value set)
+# (2) Use additional pattern matching features.
+ unsetopt extendedglob                                                                                                                                            (no value set)
+# (3) Unmatched patterns cause an error.
+# setopt nomatch                                                                                                                                                   (no value set)
+# (4) Beep on errors.
+# setopt beep                                                                                                                                                      (no value set)
+# (5) Immediately report changes in background job status.
+# unsetopt notify  
+SAVEHIST=10000 
