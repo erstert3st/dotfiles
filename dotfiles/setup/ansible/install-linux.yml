@@ -32,11 +32,5 @@
 # # - name: Download extract 
 # #   ansible.buildtin.
 
-# #   tasks:
-# #     - name: Clone tpm repository
-# #       ansible.builtin.git:
-# #         repo: 'https://github.com/tmux-plugins/tpm'
-# #         dest: '~/.tmux/plugins/tpm'
-# #         clone: yes
-# #         update: yes  
+
 
