@@ -1,0 +1,31 @@
+- name: Bootstrap development environment
+  hosts: localhost
+
+- name: dotfiles - add directories to PATH if they do not exist already
+  ansible.windows.win_path:
+    name: PATH
+    elements:
+      - C:\Users\{{ target_user }}\usr\bin
+      - C:\ProgramData\chocolatey\bin
+      - C:\Program Files\Git\bin
+    scope: user
+    state: present
+
+
+# Windows environment configuration
+- name: "Set target_user environment variables"
+  ansible.windows.win_environment:
+    name: "{{ item.name }}"
+    value: "{{ item.value }}"
+    state: present
+    #  Set for current Ansible user
+    level: user
+  loop: "{{ environment_variables }}"
+  tags: ["dotfiles", "emacs"]
+
+##pip 
+- name: Install pip
+  ansible.windows.:
+    name: python3
+    state: present
+  tags: ["dotfiles", "pip"]

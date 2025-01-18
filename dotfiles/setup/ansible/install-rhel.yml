@@ -1,0 +1,56 @@
+---
+- name: Ping all hosts
+  ansible.builtin.ping:
+    data: "Hello, World!"
+
+- name: Ensure latest updates @ RedHat-based systems
+  ansible.builtin.dnf:
+    name: dnf
+    update_cache: "yes"
+    update_only: "yes"
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Import Microsoft GPG Key
+  ansible.builtin.rpm_key:
+    key: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
+
+- name: Add kubectl repo
+  ansible.builtin.yum_repository:
+    name: Kubernetes
+    description: Kubernetes repo
+    baseurl: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/
+    gpgkey: https://pkgs.k8s.io/core:/stable:/v1.28/rpm/repodata/repomd.xml.key
+    gpgcheck: true
+    enabled: true
+    
+- name: Import EPEL GPG key
+  ansible.builtin.rpm_key:
+    key: https://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-9
+    state: present
+  become: true
+
+- name: Install EPEL repository
+  ansible.builtin.dnf: 
+    name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm"
+    state: present
+
+- name: Upgrade all packages
+  ansible.builtin.yum:
+    name: "*"
+    state: latest
+
+- name: Upgrade all packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+  become: true
+
+- name: Install  packages2 
+  ansible.builtin.package:
+    name:
+      - helm
+      - k9s
+      - kubectl
+    state: present
+  become: true

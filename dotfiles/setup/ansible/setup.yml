@@ -1,0 +1,100 @@
+---
+- name: Machine setup
+  hosts: localhost
+  become: true
+  connection: local
+  gather_facts: true
+  vars:
+    package_arch: "{{  'amd64' if ansible_architecture == 'x86_64' else 'arm64' }}"
+    #pulumi_version: "v3.94.2"
+    # remote_regular_user: "root"
+  tasks:
+    - name: Get my user
+      ansible.builtin.set_fact:
+        remote_regular_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+        arch: "{{ package_arch }}"
+
+    - name: Display remote_regular_user
+      ansible.builtin.debug:
+        msg: "remote_regular_user: {{ remote_regular_user }}"
+
+    - name: Display arch
+      ansible.builtin.debug:
+        msg: "arch: {{ arch }}"
+
+    - name: Add ~/.local/bin to PATH for all users (system-wide)
+      lineinfile:
+        path: /etc/profile
+        line: 'export PATH="$HOME/.local/bin:$PATH"'
+        state: present
+        # create: yes
+
+    - name: RHEL install
+      ansible.builtin.include_tasks: install-rhel.yml
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: Debian install
+      ansible.builtin.include_tasks: install-debian.yml
+      when: ansible_facts['os_family'] == "Debian"
+
+    - name: Universal install
+      ansible.builtin.include_tasks: install-linux.yml
+
+    - name: Install  packages
+      ansible.builtin.package:
+        name:
+          - ffmpeg
+          - python3 
+          - python3-pip
+          - python3-venv
+          - nano
+          - htop
+          - git
+          - zsh
+          - git
+          - htop
+          - gh
+          - helm
+          - zsh
+          - fzf
+          - tmux
+          - autoconf
+          - openssl
+          - openssh-server
+          - tar
+          - unzip
+          - unar
+          - bat
+          - jq
+          - yq
+          - nodejs
+          - openvpn
+          - wget
+          - curl
+          - nmap
+          - k9s
+          - kubectl
+        state: present
+      become: true
+
+    - name: Change shell to zsh
+      ansible.builtin.user:
+        name: "{{ remote_regular_user }}"
+        shell: /usr/bin/zsh
+
+    # - name: install python packages
+    #   ansible.builtin.pip:
+    #     name: 
+    #     - yt-dlp[default]
+    #     - ansible
+    #     - ansible-lint
+
+
+    - name: Ensure fonts directory
+      ansible.builtin.file:
+        path: "~{{ remote_regular_user }}/.fonts"
+        state: directory
+        mode: "0755"
+        owner: "{{ remote_regular_user }}"
+
+

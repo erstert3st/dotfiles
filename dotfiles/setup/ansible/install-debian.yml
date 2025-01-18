@@ -1,0 +1,84 @@
+---
+- name: Ping all hosts
+  ansible.builtin.ping:
+    data: "Hello, World! @install-debian.yml"
+
+- name: Ensure latest updates @ Debian-based systems
+  ansible.builtin.apt:
+    state: present
+    update_cache: true
+    upgrade: full
+    autoremove: true
+    autoclean: true
+  become: true
+
+# TODO add keys to apt repositories ! # check on other :)
+# - name: Download and add the Helm signing key
+#   ansible.builtin.shell: |
+#     curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
+#   args:
+#     creates: /usr/share/keyrings/helm.gpg
+
+- name: Install http things
+  ansible.builtin.apt:
+    name:
+      # - apt-transport-https
+      - curl
+      - gpg
+      - apt-utils
+    state: present
+
+- name: Add Helm signing key
+  ansible.builtin.apt_key:
+    url: https://baltocdn.com/helm/signing.asc
+    state: present
+  become: true
+
+- name: Add Helm repository to APT sources list
+  ansible.builtin.apt_repository:
+    repo: "deb [arch={{ arch }}] https://baltocdn.com/helm/stable/debian/ all main"
+    state: present
+    filename: helm-stable
+    update_cache: true
+  become: true
+
+# - name: Check if helm is installed
+#   ansible.builtin.command:
+#     cmd: helm version --short
+#   register: helm_check
+#   ignore_errors: true
+
+- name: Check if k9s binary exists
+  ansible.builtin.stat:
+    path: /usr/bin/k9s 
+  register: k9s_check
+
+- name: Download k9s .deb package_
+  ansible.builtin.get_url:
+    url: https://github.com/derailed/k9s/releases/latest/download/k9s_linux_{{ arch }}.deb
+    dest: /tmp/k9s_linux_{{ arch }}.deb
+  when: not  k9s_check.stat.exists
+
+- name: Install k9s package
+  ansible.builtin.apt:
+    deb: /tmp/k9s_linux_{{ arch }}.deb
+    state: present
+  when: not  k9s_check.stat.exists
+
+- name: Remove the k9s .deb file after installation
+  ansible.builtin.file:
+    path: /tmp/k9s_linux_{{ arch }}.deb
+    state: absent
+  when: not  k9s_check.stat.exists
+
+- name: Add Kubernetes keyring key to apt
+  ansible.builtin.apt_key:
+    url: https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key
+    state: present
+
+- name: Add Kubernetes repository to apt
+  ansible.builtin.apt_repository:
+    repo: 'deb https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /'
+    filename: kubernetes
+    update_cache: true
+    state: present

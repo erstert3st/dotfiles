@@ -1,0 +1,42 @@
+---
+- name: Check if lazydocker is installed
+  ansible.builtin.command: which lazydocker
+  register: lazydocker_check
+  ignore_errors: true
+  changed_when: false
+  environment:
+    PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+
+- name: Download the LazyDocker install script
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh
+    dest: /tmp/install_lazyDocker_update_linux.sh
+    mode: '0755'
+
+- name: Run the LazyDocker install script
+  ansible.builtin.shell: /tmp/install_lazyDocker_update_linux.sh
+  args:
+    creates: /usr/local/bin/lazydocker
+
+
+# - name: Download, extract, and install LazyGit
+#   ansible.builtin.shell: |
+#     LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | \grep -Po '"tag_name": *"v\K[^"]*') && \
+#     sudo curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"    
+#     sudo tar xf lazygit.tar.gz lazygit && \
+#     sudo install lazygit -D -t /usr/local/bin/
+#   args:
+#     chdir: /tmp/
+#     creates: /usr/local/bin/lazygit
+
+# # - name: Download extract 
+# #   ansible.buildtin.
+
+# #   tasks:
+# #     - name: Clone tpm repository
+# #       ansible.builtin.git:
+# #         repo: 'https://github.com/tmux-plugins/tpm'
+# #         dest: '~/.tmux/plugins/tpm'
+# #         clone: yes
+# #         update: yes  
+

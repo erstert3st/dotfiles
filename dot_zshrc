@@ -8,4 +8,5 @@
 # setopt beep                                                                                                                                                      (no value set)
 # (5) Immediately report changes in background job status.
 # unsetopt notify  
-SAVEHIST=10000 
+# SAVEHIST=10000 
+source /Users/user/.Dotfiles/zsh/config.sh
