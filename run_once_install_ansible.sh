@@ -18,7 +18,7 @@ case "${OS}" in
     Linux*)
         if [ -f /etc/fedora-release ]; then
             install_on_fedora
-        elif [ -f /etc/lsb-release ]; then
+        elif [ -f /etc/debian_version ]; then
             install_on_ubuntu
         else
             echo "Unsupported Linux distribution"
