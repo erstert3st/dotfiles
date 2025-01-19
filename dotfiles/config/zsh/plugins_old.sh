@@ -1,4 +1,5 @@
-source /opt/homebrew/opt/zplug/init.zsh
+ZPLUG_HOME=~/.zplug
+source ~/.zplug/init.zsh
 # source  ~/.local/bin/gh-source/gh-source.zsh
 fpath+=~/.zplug/repos/zsh-users/zsh-completions/src
 
