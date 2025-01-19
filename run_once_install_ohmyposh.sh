@@ -1,4 +1,4 @@
-# #!/bin/bash
+#!/bin/bash
 # if [[ "$OSTYPE" == "darwin"* ]]; then
 # 	if [ ! -d "$HOME/.local/bin/" ]; then
 
