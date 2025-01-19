@@ -11,8 +11,8 @@ export BAT_PAGER="cat"
 source $ZPLUG_HOME/init.zsh
 
 #load All
-source ./style.sh
-source ./plugins_old.sh
+source ~/dotfiles/config/zsh/style.sh
+source ~/dotfiles/config/zsh/plugins_old.sh
 eval $(thefuck --alias)
 eval $(thefuck --alias fuck)
 eval $(thefuck --alias f)
