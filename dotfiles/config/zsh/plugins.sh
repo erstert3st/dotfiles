@@ -1,8 +1,5 @@
 source $ZSH/oh-my-zsh.sh
-# source  ~/.local/bin/gh-source/gh-source.zsh
 source $HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh
-
-
 
 zsh_plugins="~.Dotfiles/zsh/plugins"
 

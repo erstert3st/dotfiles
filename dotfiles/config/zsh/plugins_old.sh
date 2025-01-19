@@ -3,30 +3,32 @@ source /opt/homebrew/opt/zplug/init.zsh
 fpath+=~/.zplug/repos/zsh-users/zsh-completions/src
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-# zplug "zsh-users/zsh-completions", defer:1  # General completions
-# zplug "zsh-users/zsh-autosuggestions", defer:1
+zplug "zsh-users/zsh-autosuggestions", defer:2
+zplug "zsh-users/zsh-syntax-highlighting", defer:1
+zplug "zshzoo/cd-ls", defer:2
+zplug "MichaelAquilina/zsh-you-should-use", defer:1
+#fzf complet -> configure it https://github.com/Aloxaf/fzf-tab?tab=readme-ov-file#configure
+zplug Aloxaf/fzf-tab, defer:2
+zplug "Freed-Wu/zsh-command-not-found", defer:2
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+zstyle ':fzf-tab:*' switch-group '<' '>'
+# zstyle ':completion:*' menu no
+zplug "zsh-users/zsh-completions", defer:1  # General completions
+zplug "zsh-users/zsh-history-substring-search", defer:2
 # zplug "hlissner/zsh-autopair", defer:1
-# zplug "zsh-users/zsh-syntax-highlighting", defer:1
-# zplug "MichaelAquilina/zsh-you-should-use", defer:1
-# zplug "spaceship-prompt/spaceship-prompt", use:spaceship.zsh, from:github, as:theme
-# zplug "zshzoo/cd-ls", defer:2
-# zplug "Freed-Wu/zsh-command-not-found", defer:2
-# zplug "zshzoo/cd-ls", defer:2
-
-# source "$HOMEBREW_PREFIX/opt/spaceship/spaceship.zsh"
 # zplug "agkozak/zsh-z", defer:2
+# zplug "zsh-users/zsh-history-substring-search", defer:2  # History substring search
+
 #you should use add all found shortcut not only best
 export YSU_MODE=ALL
 export YSU_MESSAGE_FORMAT="$(tput setaf 1)$(printf '%*s' $((($(tput cols) )  / 2 - 20 )) '')🤬🤬🤬  %alias_type '%command' nutze sofort: %alias  🤬🤬🤬 $(tput sgr0)"
-##
-# echo "source /opt/homebrew/opt/spaceship/spaceship.zsh"
-# zplug "zsh-users/zsh-history-substring-search", defer:2  # History substring search
-# zplug "fdellwing/zsh-bat", defer:2
-# plugins=(zsh-completions git brew vscode dotnet python docker podman ansible  )
+
 
 
 # Other system-specific plugins (for tools like Docker, Brew, etc.)
-plugins=( git brew vscode dotnet python docker podman ansible macos tmux pipenv )
+plugins=( thefuck git brew vscode dotnet python docker podman ansible macos tmux pipenv )
 #  zplug "plugins/git", from:oh-my-zsh, defer:2
 #  zplug "plugins/brew", from:oh-my-zsh, defer:2
 #  zplug "plugins/macos", from:oh-my-zsh, defer:2

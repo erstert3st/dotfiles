@@ -9,6 +9,7 @@ export ZPLUG_HOME=/opt/homebrew/opt/zplug
 #export TERM="xterm-256color"
 export BAT_PAGER="cat"
 source $ZPLUG_HOME/init.zsh
+autoload -U compinit && compinit
 
 #load All
 source ~/dotfiles/config/zsh/style.sh
@@ -17,3 +18,7 @@ eval $(thefuck --alias)
 eval $(thefuck --alias fuck)
 eval $(thefuck --alias f)
 
+ zstyle ':completion:*' menu select
+ zstyle ':completion:*' verbose yes
+ zstyle ':completion:*' use-cache on
+ zstyle ':completion:*' cache-path ~/.zsh/cache
