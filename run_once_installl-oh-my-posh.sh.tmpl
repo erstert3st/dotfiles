@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Check if the OS is Darwin (macOS)
+{{ if eq .chezmoi.os "darwin" }}
+    # Check if oh-my-posh is installed via Homebrew
+    if [ ! -f "$(brew --prefix)/bin/oh-my-posh" ]; then
+        echo "Installing oh-my-posh via Homebrew..."
+        brew install jandedobbeleer/oh-my-posh/oh-my-posh
+    else
+        echo "oh-my-posh already installed via Homebrew, skipping."
+    fi
+{{ else if eq .chezmoi.os "linux" }}
+    # If the OS is not macOS (fallback logic)
+    if [ ! -d "$HOME/.local/bin/" ]; then
+        curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
+    fi
+{{ end }}
