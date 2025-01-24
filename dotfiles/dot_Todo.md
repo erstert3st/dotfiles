@@ -1,5 +1,7 @@
 [ ] Pipeline Test all on all OS 
-[ ] zsh
-[ ] ansible script
-[ ] tmux
-[ ]
+[x] zsh
+[x] ansible script
+[x] tmux
+[ ] Linux KDE config Gui
+[ ] Windows handling <- just start it.... id-10-t
+[ ] Vscode setup
