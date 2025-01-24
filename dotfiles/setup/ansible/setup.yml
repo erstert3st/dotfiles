@@ -44,6 +44,7 @@
       ansible.builtin.package:
         name:
           - ffmpeg
+          - software-properties-common
           - python3 
           - python3-pip
           - python3-venv
