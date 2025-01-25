@@ -5,7 +5,7 @@ export ENABLE_CORRECTION="true"
 export HIST_STAMPS="dd.mm.yyyy"
 export EDITOR="nano"
 #export STARSHIP_CONFIG=$HOME/.Dotfiles/starship/starship.toml
-export ZPLUG_HOME=/opt/homebrew/opt/zplug
+#export ZPLUG_HOME=/opt/homebrew/opt/zplug
 #export TERM="xterm-256color"
 export BAT_PAGER="cat"
 source $ZPLUG_HOME/init.zsh
