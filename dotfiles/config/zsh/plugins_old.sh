@@ -8,6 +8,7 @@ zplug "zsh-users/zsh-autosuggestions", defer:2
 zplug "zsh-users/zsh-syntax-highlighting", defer:1
 zplug "zshzoo/cd-ls", defer:2
 zplug "MichaelAquilina/zsh-you-should-use", defer:1
+zplug "MichaelAquilina/zsh-autoswitch-virtualenv", defer:2
 #fzf complet -> configure it https://github.com/Aloxaf/fzf-tab?tab=readme-ov-file#configure
 zplug Aloxaf/fzf-tab, defer:2
 zplug "Freed-Wu/zsh-command-not-found", defer:2

@@ -12,11 +12,19 @@ source $ZPLUG_HOME/init.zsh
 autoload -U compinit && compinit
 
 #load All
-source ~/dotfiles/config/zsh/style.sh
-source ~/dotfiles/config/zsh/plugins_old.sh
+
+alias python='python3'
+alias ca='chezmoi apply'
+alias caa='chezmoi apply && source ~/.zshrc && echo dotfiles updates applied'
 eval $(thefuck --alias)
 eval $(thefuck --alias fuck)
 eval $(thefuck --alias f)
+
+source ~/dotfiles/config/zsh/style.sh
+source ~/dotfiles/config/zsh/plugins_old.sh
+
+# eval $(chezmoi apply && source ~/.zshrc --alias  caa)
+# eval $(chezmoi apply --alias  ca)
 
  zstyle ':completion:*' menu select
  zstyle ':completion:*' verbose yes
