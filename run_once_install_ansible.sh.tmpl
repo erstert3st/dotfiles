@@ -1,0 +1,44 @@
+#!/bin/bash
+
+# install_on_fedora() {
+#     sudo dnf install -y ansible
+# }
+
+
+# OS="$(uname -s)"
+# case "${OS}" in
+#     Linux*)
+#         if [ -f /etc/fedora-release ]; then
+#             install_on_fedora
+#         elif [ -f /etc/debian_version ]; then
+#             install_on_ubuntu
+#         else
+#             echo "Unsupported Linux distribution"
+#             exit 1
+#         fi
+#         ;;
+#     Darwin*)
+#         install_on_mac
+#         ;;
+#     *)
+#         echo "Unsupported operating system: ${OS}"
+#         exit 1
+#         ;;
+# esac
+
+
+
+# Check if the OS is Darwin (macOS)
+{{ if eq .chezmoi.os "darwin" }}
+    brew install ansible
+{{ else if eq .chezmoi.os "linux" }}
+    # If the OS is not macOS (fallback logic)
+    sudo apt-get update
+    sudo apt-get install -y ansible 
+{{ end }}
+
+
+ansible-playbook ~/dotfiles/setup/ansible/setup.yml --ask-become-pass
+
+echo "Ansible installation complete."
+
