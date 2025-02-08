@@ -14,14 +14,22 @@ autoload -U compinit && compinit
 #load All
 
 alias python='python3'
+alias ls='eza'
 alias ca='chezmoi apply'
 alias caa='chezmoi apply && source ~/.zshrc && echo dotfiles updates applied'
+alias codew="'/mnt/c/Users/user-win/AppData/Local/Programs/Microsoft VS Code/bin/code'"
+alias ccode="chezmoi cd && codew" 
 eval $(thefuck --alias)
 eval $(thefuck --alias fuck)
 eval $(thefuck --alias f)
 
 source ~/dotfiles/config/zsh/style.sh
 source ~/dotfiles/config/zsh/plugins_old.sh
+
+if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
+  tmux
+fi
+
 
 # eval $(chezmoi apply && source ~/.zshrc --alias  caa)
 # eval $(chezmoi apply --alias  ca)
