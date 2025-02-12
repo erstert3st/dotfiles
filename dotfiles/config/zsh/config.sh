@@ -10,9 +10,9 @@ export EDITOR="nano"
 export BAT_PAGER="cat"
 source $ZPLUG_HOME/init.zsh
 autoload -U compinit && compinit
-
+set enable-bracketed-paste off # rm weird paste in linux
 #load All
-
+alias upgrade="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt clean"
 alias python='python3'
 alias ls='eza'
 alias ca='chezmoi apply'
