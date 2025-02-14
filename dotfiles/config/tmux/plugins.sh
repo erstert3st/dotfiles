@@ -14,22 +14,22 @@ if-shell "test ! -d ~/.tmux/plugins/tpm" \
 
 # tpm plugin manager
 set -g @plugin 'tmux-plugins/tpm'
-set -g @plugin 'tmux-plugins/tmux-sensible' # add configs
+# set -g @plugin 'tmux-plugins/tmux-sensible' # add configs
 
-# set -g @plugin 'tmux-plugins/tmux-resurrect'    # Persist tmux sessions after computer restart
-# set -g @plugin 'tmux-plugins/tmux-continuum'    # Automatically saves sessions every 15 minutes
-# # Resurrect
-# set -g @resurrect-capture-pane-contents 'on'
-# set -g @continuum-restore 'on'
+# # set -g @plugin 'tmux-plugins/tmux-resurrect'    # Persist tmux sessions after computer restart
+# # set -g @plugin 'tmux-plugins/tmux-continuum'    # Automatically saves sessions every 15 minutes
+# # # Resurrect
+# # set -g @resurrect-capture-pane-contents 'on'
+# # set -g @continuum-restore 'on'
 
 
 set -g @plugin 'thewtex/tmux-mem-cpu-load'
-# set -g @plugin 'hendrikmi/tmux-cpu-mem-monitor' # CPU and memory info
+# # set -g @plugin 'hendrikmi/tmux-cpu-mem-monitor' # CPU and memory info
 
-
-#set-environment -g TMUX_PLUGIN_MANAGER_PATH ~/.tmux/plugins
-# 3Plugin to yank (copy) text from tmux to the system clipboard
-set -g @plugin 'tmux-plugins/tmux-yank'
+# set -g @plugin '27medkamal/tmux-session-wizard'
+# #set-environment -g TMUX_PLUGIN_MANAGER_PATH ~/.tmux/plugins
+# # 3Plugin to yank (copy) text from tmux to the system clipboard
+# set -g @plugin 'tmux-plugins/tmux-yank'
 #set -g @yank_with_mouse off # or 'on'
 # run ~/.config/tmux/plugins/catppuccin/tmux/catppuccin.tmux
 
