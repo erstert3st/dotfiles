@@ -77,7 +77,14 @@
           - nmap
           - k9s
           - kubectl
-          - eza
+          - ffmpeg 
+          - 7zip 
+          - jq
+          - poppler-utils 
+          - fd-find 
+          - ripgrep 
+          - zoxide 
+          - imagemagick
         state: present
       become: true
 
