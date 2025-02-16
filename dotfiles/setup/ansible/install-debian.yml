@@ -3,14 +3,7 @@
   ansible.builtin.ping:
     data: "Hello, World! @install-debian.yml"
 
-- name: Ensure latest updates @ Debian-based systems
-  ansible.builtin.apt:
-    state: present
-    update_cache: true
-    upgrade: full
-    autoremove: true
-    autoclean: true
-  become: true
+
 
 # TODO add keys to apt repositories ! # check on other :)
 # - name: Download and add the Helm signing key
