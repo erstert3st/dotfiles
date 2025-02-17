@@ -10,7 +10,7 @@ export EDITOR="nano"
 export BAT_PAGER="cat"
 alias upgrade="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt clean"
 alias python='python3'
-alias ls='eza'
+alias ls='eza --icons=auto'
 alias ca='chezmoi apply'
 alias caa='chezmoi apply && source ~/.zshrc && echo dotfiles updates applied'
 alias codew="'/mnt/c/Users/user-win/AppData/Local/Programs/Microsoft VS Code/bin/code'"
