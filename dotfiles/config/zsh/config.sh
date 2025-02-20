@@ -14,5 +14,5 @@ source ~/dotfiles/config/zsh/plugins_old.sh
  zstyle ':completion:*' cache-path ~/.zsh/cache
 
  if command -v tmux &>/dev/null && [ -z "$TMUX" ]; then
-  tmux
+ # tmux
 fi
