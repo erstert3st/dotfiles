@@ -3,12 +3,25 @@
   "blocks": [
     {
       "alignment": "left",
+      "segments": [
+        {
+          "type": "text",
+          "style": "plain",
+          "template": "\uFEFF "
+        },
+        3
+
+        
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
       "newline": true,
       "segments": [
         {
           "foreground": "#6176ef",
           "style": "plain",
-
           "template": "\u256d\u2500{{.Icon}} ",
           "type": "os"
         },
@@ -52,7 +65,7 @@
             "fetch_upstream_icon": true
           },
           "style": "plain",
-          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }} ",
+          "template": " {{ .UpstreamIcon }}{{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} \uf044 {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} \uf046 {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} \ueb4b {{ .StashCount }}{{ end }}",
           "type": "git"
         },
         {
