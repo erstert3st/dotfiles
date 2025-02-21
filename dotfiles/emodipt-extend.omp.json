@@ -134,14 +134,14 @@
         {
           "foreground": "#E06C75",
           "style": "plain",
-          "template": "\u2570\u2500\u0021",
-          "type": "root"
+          "template": "\u2570\u2500\u276f",
+          "type": "text"
         },
         {
           "foreground": "#E06C75",
           "style": "plain",
-          "template": "\u2570\u2500\u276f",
-          "type": "text"
+          "template": "\u0021",
+          "type": "root"
         }
       ],
       "type": "prompt"
