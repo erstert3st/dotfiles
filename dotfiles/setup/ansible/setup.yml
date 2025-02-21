@@ -85,6 +85,10 @@
           - ripgrep 
           - zoxide 
           - imagemagick
+          - podman-docker
+          - podman
+          - podman-compose
+          - minikube 
         state: present
       become: true
 

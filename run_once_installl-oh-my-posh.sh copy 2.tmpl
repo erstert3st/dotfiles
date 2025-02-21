@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Check if the OS is Darwin (macOS)
+{{ if eq .chezmoi.os "darwin" }}
+    # Check if oh-my-posh is installed via Homebrew
+{{ else }}
+    if [ -x "$(command -v eza)" ]; then
+        echo "eza is available "
+    else    
+        curl -Lo ~/.local/bin/minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+         chmod +x ~/.local/bin/minikube 
+
+    fi 
+{{ end }}
