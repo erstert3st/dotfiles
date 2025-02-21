@@ -8,10 +8,7 @@
           "type": "text",
           "style": "plain",
           "template": "\uFEFF "
-        },
-        3
-
-        
+        }
       ],
       "type": "prompt"
     },
