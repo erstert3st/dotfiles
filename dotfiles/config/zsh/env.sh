@@ -27,4 +27,13 @@ alias ccode="chezmoi cd && codew"
 # eval $(thefuck --alias f)
 alias kubectl="export SHOW_KUBE_CONTEXT=true; kubectl"
 alias helm="export SHOW_KUBE_CONTEXT=true; helm"
-alias k9s="export SHOW_KUBE_CONTEXT=true; k9s"
+alias k9s="export SHOW_KUBE_CONTEXT=true; k9s"0
+
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+		builtin cd -- "$cwd"
+	fi
+	rm -f -- "$tmp"
+}

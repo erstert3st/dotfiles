@@ -14,5 +14,6 @@ eval "$(zoxide init zsh)"
 #  zstyle ':completion:*' cache-path ~/.zsh/cache
 # Check if running in VS Code terminal or already in tmux session
 if [[ -z "$VSCODE_PID" && "$TERM_PROGRAM" != "vscode" && -z "$TMUX" ]]; then
-  #tmux new-session -A -s startup
+  tmux new-session -A -s startup
 fi
+export SHOW_KUBE_CONTEXT=false
