@@ -13,7 +13,7 @@ export BAT_THEME="Visual Studio Dark+"
 
 alias upgrade="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt clean"
 alias python='python3'
-alias cd='z'
+#alias cd='z'
 alias tree='eza --icons=auto --tree'
 alias cat='bat'
 alias ca='chezmoi apply'
