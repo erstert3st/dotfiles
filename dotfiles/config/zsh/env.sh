@@ -12,7 +12,9 @@ alias upgrade="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -
 alias python='python3'
 alias ls='eza --icons=auto'
 alias ca='chezmoi apply'
+alias cu='chezmoi update'
 alias caa='chezmoi apply && source ~/.zshrc && echo dotfiles updates applied'
+alias caat='chezmoi apply && source ~/.zshrc && tmux source-file ~/.tmux.conf && echo dotfiles updates applied'
 alias codew="'/mnt/c/Users/user-win/AppData/Local/Programs/Microsoft VS Code/bin/code'"
 alias ccode="chezmoi cd && codew" 
 # eval $(thefuck --alias)
