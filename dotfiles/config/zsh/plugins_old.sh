@@ -30,7 +30,7 @@ export YSU_MESSAGE_FORMAT="$(tput setaf 1)$(printf '%*s' $((($(tput cols) )  / 2
 
 
 # Other system-specific plugins (for tools like Docker, Brew, etc.)
-plugins=( thefuck git brew vscode dotnet python docker podman ansible macos tmux pipenv )
+plugins=(  git brew vscode dotnet python docker podman ansible macos tmux pipenv )
 #  zplug "plugins/git", from:oh-my-zsh, defer:2
 #  zplug "plugins/brew", from:oh-my-zsh, defer:2
 #  zplug "plugins/macos", from:oh-my-zsh, defer:2
