@@ -3,8 +3,11 @@
 # Check if the OS is Darwin (macOS)
 {{ if eq .chezmoi.os "darwin" }}
     # Check if oh-my-posh is installed via Homebrew
-        brew install yazi ffmpeg sevenzip jq poppler fd ripgrep fzf zoxide imagemagick font-symbols-only-nerd-font
+    if [ -x "$(command -v eza)" ]; then
         brew install eza
+    else
+        echo "eza is available "
+    fi
 {{ else }}
     # If the OS is not macOS (fallback logic)
     if [ -x "$(command -v eza)" ]; then
