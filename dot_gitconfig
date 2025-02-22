@@ -3,5 +3,6 @@
 	email = 67842643+erstert3st@users.noreply.github.com
 [core]
 	editor = nano
+	autocrlf = false
 [color]
 	ui = auto
