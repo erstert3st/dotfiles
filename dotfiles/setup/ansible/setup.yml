@@ -60,6 +60,7 @@
           - helm
           - zsh
           - fzf
+          - yq
           - tmux
           - autoconf
           - openssl

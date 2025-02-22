@@ -10,12 +10,12 @@ export EDITOR="nano"
 export LESS='-M'
 export BAT_PAGER="cat"
 export BAT_THEME="Visual Studio Dark+"
-
 alias upgrade="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt clean"
 alias python='python3'
 #alias cd='z'
 alias tree='eza --icons=auto --tree'
-alias cat='bat'
+alias cat='batcat --style=plain'
+alias cats='batcat'
 alias ca='chezmoi apply'
 alias cu='chezmoi update'
 alias caa='chezmoi apply && source ~/.zshrc && echo dotfiles updates applied'
