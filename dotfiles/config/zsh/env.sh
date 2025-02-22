@@ -7,10 +7,15 @@ export EDITOR="nano"
 #export STARSHIP_CONFIG=$HOME/.Dotfiles/starship/starship.toml
 #export ZPLUG_HOME=/opt/homebrew/opt/zplug
 #export TERM="xterm-256color"
+export LESS='-M'
 export BAT_PAGER="cat"
+export BAT_THEME="Visual Studio Dark+"
+
 alias upgrade="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt clean"
 alias python='python3'
-alias ls='eza --icons=auto'
+alias cd='z'
+alias tree='eza --icons=auto --tree'
+alias cat='bat'
 alias ca='chezmoi apply'
 alias cu='chezmoi update'
 alias caa='chezmoi apply && source ~/.zshrc && echo dotfiles updates applied'

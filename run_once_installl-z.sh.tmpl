@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Check if the OS is Darwin (macOS)
+{{ if eq .chezmoi.os "darwin" }}
+    # Check if oh-my-posh is installed via Homebrew
+        brew install zoxide
+{{ else }}
+    # If the OS is not macOS (fallback logic)
+    if [ -x "$(command -v z)" ]; then
+        echo "z is available "
+    else
+        curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+    fi
+
+
+{{ end }}
