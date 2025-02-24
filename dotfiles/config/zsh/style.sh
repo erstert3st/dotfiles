@@ -1,2 +1,3 @@
-#ZSH_THEME="bira"
-eval "$(oh-my-posh init zsh --config 'https://github.com/JanDeDobbeleer/oh-my-posh/blob/main/themes/emodipt-extend.omp.json')"
+ZSH_THEME=""
+#eval "$(oh-my-posh init zsh --config '$HOME/.cache/oh-my-posh/themes/emodipt-extend.omp.json')"
+eval "$(oh-my-posh init zsh --config ~/.cache/oh-my-posh/themes/emodipt-extend.omp.json)"

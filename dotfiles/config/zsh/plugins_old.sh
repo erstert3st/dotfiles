@@ -1,5 +1,3 @@
-ZPLUG_HOME=~/.zplug
-source ~/.zplug/init.zsh
 # source  ~/.local/bin/gh-source/gh-source.zsh
 fpath+=~/.zplug/repos/zsh-users/zsh-completions/src
 
@@ -12,6 +10,8 @@ zplug "MichaelAquilina/zsh-autoswitch-virtualenv", defer:2
 #fzf complet -> configure it https://github.com/Aloxaf/fzf-tab?tab=readme-ov-file#configure
 zplug Aloxaf/fzf-tab, defer:2
 zplug "Freed-Wu/zsh-command-not-found", defer:2
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+
 zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
@@ -23,9 +23,6 @@ zplug "zsh-users/zsh-history-substring-search", defer:2
 # zplug "agkozak/zsh-z", defer:2
 # zplug "zsh-users/zsh-history-substring-search", defer:2  # History substring search
 
-#you should use add all found shortcut not only best
-export YSU_MODE=ALL
-export YSU_MESSAGE_FORMAT="$(tput setaf 1)$(printf '%*s' $((($(tput cols) )  / 2 - 20 )) '')🤬🤬🤬  %alias_type '%command' nutze sofort: %alias  🤬🤬🤬 $(tput sgr0)"
 
 
 
