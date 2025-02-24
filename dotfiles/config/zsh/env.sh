@@ -15,8 +15,18 @@ alias python='python3'
 alias k9ss='/usr/bin/k9s'
 #alias cd='z'
 alias tree='eza --icons=auto --tree'
-alias cat='batcat --style=plain'
-alias cats='batcat'
+if [[ -f /etc/os-release ]]; then
+    source /etc/os-release
+    if [[ "$ID" == "debian" ]]; then
+        alias cats='batcat'
+    # elif [[ "$ID" == "ubuntu" ]]; then
+    #     echo "This is Ubuntu"
+    fi
+else
+    alias cats='bat'
+fi
+
+alias cat='cats --style=plain'
 alias ca='chezmoi apply'
 alias cu='chezmoi update'
 alias caa='chezmoi apply && source ~/.zshrc && echo dotfiles updates applied'

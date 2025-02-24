@@ -50,6 +50,7 @@
           - python3-venv
           - python3-dev 
           - python3-setuptools
+          - fastfetch
           - nano
           - htop
           - git
@@ -119,5 +120,3 @@
         state: directory
         mode: "0755"
         owner: "{{ remote_regular_user }}"
-
-
