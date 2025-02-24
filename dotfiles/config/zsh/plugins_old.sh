@@ -10,7 +10,7 @@ plugins=(  chezmoi zoxide helm kubectl oc ssh sudo z git brew vscode dotnet pyth
 source $ZSH/oh-my-zsh.sh
 zplug Aloxaf/fzf-tab, defer:1
 
-#zplug "zsh-users/zsh-autosuggestions", defer:1
+zplug "zsh-users/zsh-autosuggestions", defer:1
 zplug "zsh-users/zsh-syntax-highlighting", defer:1
 zplug "zshzoo/cd-ls", defer:2
 zplug "MichaelAquilina/zsh-you-should-use", defer:1
