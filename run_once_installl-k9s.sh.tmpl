@@ -4,7 +4,7 @@
 {{ if eq .chezmoi.os "darwin" }}
     # Check if oh-my-posh is installed via Homebrew
     if [ -x "$(command -v eza)" ]; then
-        brew install k9s
+        brew install k9s yq
     else
         echo "k9s is available "
     fi
