@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Check if the OS is Darwin (macOS)
+{{ if eq .chezmoi.os "darwin" }}
+    # Check if oh-my-posh is installed via Homebrew
+    if [ -x "$(command -v eza)" ]; then
+        brew install k9s
+    else
+        echo "k9s is available "
+    fi
+{{ else }}
+    # If the OS is not macOS (fallback logic)
+    if [ -x "$(command -v k9s)" ]; then
+       wget https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb && sudo  apt install ./k9s_linux_amd64.deb && rm k9s_linux_amd64.deb
+    else
+        echo "k9s is available "
+    fi
+
+
+{{ end }}
