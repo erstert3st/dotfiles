@@ -11,7 +11,7 @@
 {{ else }}
     # If the OS is not macOS (fallback logic)
     if [ -x "$(command -v k9s)" ]; then
-       wget https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb && sudo  apt install ./k9s_linux_amd64.deb && rm k9s_linux_amd64.deb
+       wget https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb && sudo  apt install ./k9s_linux_amd64.deb 2>/dev/null && rm k9s_linux_amd64.deb
     else
         echo "k9s is available "
     fi
