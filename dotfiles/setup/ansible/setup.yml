@@ -52,7 +52,6 @@
           - python3-venv
           - python3-dev 
           - python3-setuptools
-          - fastfetch
           - tmux
           - nano
           - htop
@@ -80,7 +79,6 @@
           - wget
           - curl
           - nmap
-          - k9s
           - kubectl
           - ffmpeg 
           - 7zip 
@@ -90,10 +88,11 @@
           - ripgrep 
           - zoxide 
           - imagemagick
-          - podman-docker
-          - podman
-          - podman-compose
-          - minikube 
+          # - k9s
+          # - fastfetch
+          # - podman
+          # - podman-compose
+          # - minikube 
         state: present
       become: true
 
