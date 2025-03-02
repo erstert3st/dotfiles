@@ -6,7 +6,9 @@ export HIST_STAMPS="dd.mm.yyyy"
 export EDITOR="nano"
 #export STARSHIP_CONFIG=$HOME/.Dotfiles/starship/starship.toml
 #export ZPLUG_HOME=/opt/homebrew/opt/zplug
-export TERM="xterm-256color"
+if [[ "$TERM" != "xterm-ghostty" && "$TERM" != "tmux-256color" ]]; then
+    export TERM="xterm-256color"
+fi
 export LESS='-M'
 export BAT_PAGER="cat"
 export BAT_THEME="Visual Studio Dark+"
@@ -33,19 +35,19 @@ alias cu='chezmoi update'
 alias caa='chezmoi apply && source ~/.zshrc && echo dotfiles updates applied'
 alias caat='chezmoi apply && source ~/.zshrc && tmux source-file ~/.tmux.conf && echo dotfiles updates applied'
 alias codew="'/mnt/c/Users/user-win/AppData/Local/Programs/Microsoft VS Code/bin/code'"
-alias ccode="chezmoi cd && codew" 
+alias ccode="chezmoi cd && codew"
 # eval $(thefuck --alias)
 # eval $(thefuck --alias fuck)
 # eval $(thefuck --alias f)
 alias kubectl="export SHOW_KUBE_CONTEXT=true; kubectl"
 alias helm="export SHOW_KUBE_CONTEXT=true; helm"
-alias k9s="export SHOW_KUBE_CONTEXT=true; k9s"0
-
+alias k9s="export SHOW_KUBE_CONTEXT=true; k9s"
+alias ping="gping"
 function y() {
-	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-	yazi "$@" --cwd-file="$tmp"
-	if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-		builtin cd -- "$cwd"
-	fi
-	rm -f -- "$tmp"
+    local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+    yazi "$@" --cwd-file="$tmp"
+    if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+        builtin cd -- "$cwd"
+    fi
+    rm -f -- "$tmp"
 }

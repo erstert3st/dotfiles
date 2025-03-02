@@ -23,6 +23,12 @@
           "type": "os"
         },
         {
+          "type": "session",
+          "style": "plain",
+          "foreground": "#b8ff75",
+          "template": "{{ if .SSHSession }} {{ end }}"
+        },
+        {
           "type": "text",
           "style": "plain",
           "template": "{{.UserName}}@{{.HostName}}",
@@ -32,6 +38,12 @@
           "properties": {
             "font_size": "smaller"
           }
+        },
+        {
+          "type": "session",
+          "style": "plain",
+          "foreground": "#b8ff75",
+          "template": "{{ if .SSHSession }}  {{ end }}"
         },
         {
           "type": "shell",
