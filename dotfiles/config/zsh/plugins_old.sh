@@ -5,7 +5,7 @@ source ~/.zplug/init.zsh
 fpath+=~/.zplug/repos/zsh-users/zsh-completions/src
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-plugins=(  chezmoi zoxide helm kubectl oc ssh sudo z git brew vscode dotnet python docker podman ansible macos tmux pipenv )
+plugins=(  chezmoi zoxide helm kubectl oc ssh sudo z git brew vscode dotnet python docker podman ansible macos tmux pipenv  )
 
 source $ZSH/oh-my-zsh.sh
 zplug Aloxaf/fzf-tab, defer:1
