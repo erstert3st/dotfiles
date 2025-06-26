@@ -39,7 +39,7 @@ alias ccode="chezmoi cd && codew"
 # eval $(thefuck --alias f)
 alias kubectl="export SHOW_KUBE_CONTEXT=true; kubectl"
 alias helm="export SHOW_KUBE_CONTEXT=true; helm"
-alias k9s="export SHOW_KUBE_CONTEXT=true; k9s"0
+alias k9s="export SHOW_KUBE_CONTEXT=true; k9s"
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
