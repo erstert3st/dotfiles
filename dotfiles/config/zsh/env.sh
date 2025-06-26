@@ -12,7 +12,7 @@ export BAT_PAGER="cat"
 export BAT_THEME="Visual Studio Dark+"
 alias upgrade="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt clean"
 alias python='python3'
-alias k9ss='/usr/bin/k9s'
+#alias k9ss='/usr/bin/k9s'
 #  TERM=xterm-256color
 #alias cd='z'
 alias tree='eza --icons=auto --tree'
@@ -24,10 +24,10 @@ if [[ -f /etc/os-release ]]; then
     #     echo "This is Ubuntu"
     fi
 else
-    alias cats='bat'
+    alias cat='bat'
 fi
 
-alias cat='cats --style=plain'
+alias cats='cats --style=plain'
 alias ca='chezmoi apply'
 alias cu='chezmoi update'
 alias caa='chezmoi apply && source ~/.zshrc && echo dotfiles updates applied'
