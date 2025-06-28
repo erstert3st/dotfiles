@@ -11,4 +11,4 @@
 # SAVEHIST=10000 
 #source /Users/user/.Dotfiles/zsh/config.sh
 source ~/dotfiles/config/zsh/config.sh
-
+eval "$(logcli --completion-script-zsh)"
