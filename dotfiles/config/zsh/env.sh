@@ -12,7 +12,7 @@ export BAT_PAGER="cat"
 export BAT_THEME="Visual Studio Dark+"
 alias upgrade="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt clean"
 alias python='python3'
-#alias k9ss='/usr/bin/k9s'
+alias k9ss='/usr/bin/k9s'
 #  TERM=xterm-256color
 #alias cd='z'
 alias tree='eza --icons=auto --tree'
@@ -25,7 +25,14 @@ if [[ -f /etc/os-release ]]; then
     fi
 else
     alias cat='bat'
+
 fi
+ export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+# if [[ "$OSTYPE" == "darwin"* ]]; then
+#     echo "You are on a Mac"
+# else
+#     echo "You are not on a Mac"
+# fi
 
 alias cats='cats --style=plain'
 alias ca='chezmoi apply'
