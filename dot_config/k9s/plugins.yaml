@@ -1,0 +1,174 @@
+# watch events on selected resources
+# requires linux "watch" command
+# change '-n' to adjust refresh time in seconds
+#https://github.com/derailed/k9s/blob/master/plugins/watch-events.yaml
+plugins:
+  watch-events:
+    shortCut: Shift-E
+    confirm: false
+    description: Get Events
+    scopes:
+    - all
+    command: sh
+    background: false
+    args:
+    - -c
+    - "kubectl events --context $CONTEXT --namespace $NAMESPACE --for $RESOURCE_NAME.$RESOURCE_GROUP/$NAME --watch"
+
+  #https://github.com/derailed/k9s/blob/master/plugins/debug-container.yaml
+  #--- Create debug container for selected pod in current namespace
+  # See https://kubernetes.io/docs/tasks/debug/debug-application/debug-running-pod/#ephemeral-container
+  debug:
+    shortCut: Shift-D
+    description: Add debug container
+    dangerous: true
+    scopes:
+    - containers
+    command: bash
+    background: false
+    confirm: true
+    args:
+    - -c
+    - "kubectl --kubeconfig=$KUBECONFIG debug -it --context $CONTEXT -n=$NAMESPACE $POD --target=$NAME --image=nicolaka/netshoot:v0.13 --share-processes -- bash"
+  # https://grafana.com/docs/loki/latest/query/logcli/
+  # you must set the LOKI_ADDR environment variable ("export LOKI_ADDR=https://loki.internal" in bash) before starting k9s to use logcli
+  # loki-container:
+  #   shortCut: Shift-L
+  #   description: "loki fmt"
+  #   scopes:
+  #   - containers
+  #   command: logcli
+  #   background: false
+  #   args:
+  #   - query
+  #   - "{ namespace = \"$NAMESPACE\", pod = \"$POD\", container = \"$NAME\" }"
+  #   - -f
+  # loki-container-raw:
+  #   shortCut: Ctrl-E
+  #   description: "loki raw"
+  #   scopes:
+  #   - containers
+  #   command: logcli
+  #   background: false
+  #   args:
+  #   - query
+  #   - "{ namespace = \"$NAMESPACE\", pod = \"$POD\", container = \"$NAME\" }"
+  #   - -f
+  #   - -oraw
+  # loki-pods:
+  #   shortCut: Shift-L
+  #   description: "loki fmt"
+  #   scopes:
+  #   - po
+  #   command: logcli
+  #   background: false
+  #   args:
+  #   - query
+  #   - "{ namespace = \"$NAMESPACE\", pod = \"$NAME\" }"
+  #   - -f
+  # loki-pods-raw:
+  #   shortCut: Ctrl-L
+  #   description: "loki raw"
+  #   scopes:
+  #   - po
+  #   command: logcli
+  #   background: false
+  #   args:
+  #   - query
+  #   - "{ namespace = \"$NAMESPACE\", pod = \"$NAME\" }"
+  #   - -f
+  #   - -oraw
+  # loki-node:
+  #   shortCut: Shift-L
+  #   description: "loki fmt"
+  #   scopes:
+  #   - node
+  #   command: logcli
+  #   background: false
+  #   args:
+  #   - query
+  #   - "{ node_name = \"$NAME\" }"
+  #   - -f
+  # loki-node-raw:
+  #   shortCut: Ctrl-L
+  #   description: "loki raw"
+  #   scopes:
+  #   - node
+  #   command: logcli
+  #   background: false
+  #   args:
+  #   - query
+  #   - "{ node_name = \"$NAME\" }"
+  #   - -f
+  #   - -oraw
+  # loki-ns:
+  #   shortCut: Shift-L
+  #   description: "loki fmt"
+  #   scopes:
+  #   - namespace
+  #   command: logcli
+  #   background: false
+  #   args:
+  #   - query
+  #   - "{ namespace = \"$NAME\" }"
+  #   - -f
+  # loki-ns-raw:
+  #   shortCut: Ctrl-L
+  #   description: "loki raw"
+  #   scopes:
+  #   - namespace
+  #   command: logcli
+  #   background: false
+  #   args:
+  #   - query
+  #   - "{ namespace = \"$NAME\" }"
+  #   - -f
+  #   - -oraw
+
+  # # Author: Daniel Rubin
+  # # Get recommendations for CPU/Memory requests and limits using Robusta KRR
+  # # Requires Prometheus in the Cluster and Robusta KRR (https://github.com/robusta-dev/krr) on your system
+  # # Open K9s in deployments/daemonsets/statefulsets view, then:
+  # # Shift-K to get recommendations
+  # krr:
+  #   shortCut: Shift-K
+  #   description: Get krr
+  #   scopes:
+  #   - deployments
+  #   - daemonsets
+  #   - statefulsets
+  #   - cronjobs
+  #   command: bash
+  #   background: false
+  #   confirm: false
+  #   args:
+  #   - -c
+  #   - |
+  #     LABELS=$(kubectl get $RESOURCE_NAME $NAME -n $NAMESPACE  --context $CONTEXT  --show-labels | awk '{print $NF}' | awk '{if(NR>1)print}')
+  #     krr simple --cluster $CONTEXT --selector $LABELS 
+  #     echo "Press 'q' to exit"
+  #     while : ; do
+  #     read -n 1 k <&1
+  #     if [[ $k = q ]] ; then
+  #     break
+  #     fi
+  #     done
+  # krr-ns:
+  #   shortCut: Shift-K
+  #   description: Get krr
+  #   scopes:
+  #   - namespaces
+  #   command: bash
+  #   background: false
+  #   confirm: false
+  #   args:
+  #   - -c
+  #   - |
+  #     krr simple --cluster $CONTEXT -n $RESOURCE_NAME
+  #     echo "Press 'q' to exit"
+  #     while : ; do
+  #     read -n 1 k <&1
+  #     if [[ $k = q ]] ; then
+  #     break
+  #     fi
+  #     done
