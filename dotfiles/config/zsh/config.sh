@@ -17,3 +17,5 @@ if [[ -z "$VSCODE_PID" && "$TERM_PROGRAM" != "vscode" && -z "$TMUX" && -z "$SSH_
   tmux new-session -A -s startup
 fi
 export SHOW_KUBE_CONTEXT=false
+alias kubectl=kubecolor
+compdef kubecolor=kubectl
