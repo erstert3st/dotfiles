@@ -30,6 +30,51 @@ plugins:
     args:
     - -c
     - "kubectl --kubeconfig=$KUBECONFIG debug -it --context $CONTEXT -n=$NAMESPACE $POD --target=$NAME --image=nicolaka/netshoot:v0.13 --share-processes -- bash"
+  #https://github.com/derailed/k9s/blob/master/plugins/resource-recommendations.yaml
+
+  krr:
+    shortCut: Shift-K
+    description: Get krr
+    scopes:
+      - deployments
+      - daemonsets
+      - statefulsets
+      - cronjobs
+    command: bash
+    background: false
+    confirm: false
+    args:
+      - -c
+      - |
+        LABELS=$(kubectl get $RESOURCE_NAME $NAME -n $NAMESPACE  --context $CONTEXT  --show-labels | awk '{print $NF}' | awk '{if(NR>1)print}')
+        krr simple --cluster $CONTEXT --selector $LABELS 
+        echo "Press 'q' to exit"
+        while : ; do
+        read -n 1 k <&1
+        if [[ $k = q ]] ; then
+        break
+        fi
+        done
+  krr-ns:
+    shortCut: Shift-K
+    description: Get krr
+    scopes:
+      - namespaces
+    command: bash
+    background: false
+    confirm: false
+    args:
+      - -c
+      - |
+        krr simple --cluster $CONTEXT -n $RESOURCE_NAME
+        echo "Press 'q' to exit"
+        while : ; do
+        read -n 1 k <&1
+        if [[ $k = q ]] ; then
+        break
+        fi
+        done
+  
   # https://grafana.com/docs/loki/latest/query/logcli/
   # you must set the LOKI_ADDR environment variable ("export LOKI_ADDR=https://loki.internal" in bash) before starting k9s to use logcli
   # loki-container:
