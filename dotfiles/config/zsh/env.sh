@@ -8,11 +8,15 @@ export EDITOR="nano"
 #export ZPLUG_HOME=/opt/homebrew/opt/zplug
 export TERM="xterm-256color"
 export LESS='-RM'
-export BAT_PAGER="cat"
+export BAT_PAGER="bat"
 export BAT_THEME="Visual Studio Dark+"
 alias upgrade="sudo apt update && sudo apt upgrade -y && sudo apt dist-upgrade -y && sudo apt autoremove -y && sudo apt clean"
 alias python='python3'
 alias k9ss='/usr/bin/k9s'
+alias l='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
 #  TERM=xterm-256color
 #alias cd='z'
 alias tree='eza --icons=auto --tree'
