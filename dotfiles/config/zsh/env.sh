@@ -16,6 +16,7 @@ alias k9ss='/usr/bin/k9s'
 alias l='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
+alias lll='ls -la'
 alias lt='ls --tree'
 #  TERM=xterm-256color
 #alias cd='z'
