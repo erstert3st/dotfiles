@@ -1,14 +1,14 @@
-# (1) Change directory given just path.
-# unsetopt autocd                                                                                                                                                  (no value set)
-# (2) Use additional pattern matching features.
- #unsetopt extendedglob                                                                                                                                            (no value set)
-# (3) Unmatched patterns cause an error.
-# setopt nomatch                                                                                                                                                   (no value set)
-# (4) Beep on errors.
-# setopt beep                                                                                                                                                      (no value set)
-# (5) Immediately report changes in background job status.
-# unsetopt notify  
-# SAVEHIST=10000 
+SAVEHIST=10000 
 #source /Users/user/.Dotfiles/zsh/config.sh
 source ~/dotfiles/config/zsh/config.sh
 eval "$(logcli --completion-script-zsh)"
+
+#RANDOM=$(date +%N)
+#choice=$(( RANDOM % 2 ))
+#if (( choice == 0 )); then
+#  pokemon-colorscripts --no-title -s -r 1-4 \
+#    | fastfetch --logo-type file-raw --logo-height 20 --logo-width 5 --logo -
+#else
+#  pokemon-colorscripts --no-title -r 1-4 \
+#    | fastfetch --logo-type file-raw --logo-height 20 --logo-width 5 --logo -
+#fi
