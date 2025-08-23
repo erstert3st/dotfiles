@@ -1,7 +1,4 @@
 #!/bin/bash
-if [[ -f /usr/bin/k9s ]]; then
-  source /usr/share/doc/find-the-command/ftc.bash
-fi
 # Check if the OS is Darwin (macOS)
 {{ if eq .chezmoi.os "darwin" }}
     # Check if oh-my-posh is installed via Homebrew
