@@ -18,6 +18,8 @@ alias lla='ls -la'
 alias lll='ls -la'
 alias lt='ls --tree'
 
+##arch
+
 #alias cd='z'
 alias tree='eza --icons=auto --tree'
 alias cats='cats --style=plain'
@@ -52,16 +54,35 @@ if [[ -x /usr/bin/bat ]]; then
 fi
 
 [ ! -x /usr/bin/yay ] && [ -x /usr/bin/paru ] && alias yay='paru'
+if [[ -f /etc/arch-release ]] || grep -q "Arch Linux" /etc/os-release 2>/dev/null; then
+    is_arch=true
 
-# Common use
-alias fixpacman="sudo rm /var/lib/pacman/db.lck"
+    # export NO_TMUX=1
+    # Common use
+    alias fixpacman="sudo rm /var/lib/pacman/db.lck"
+    alias rmpkg="sudo pacman -Rdd"
+    alias upd='/usr/bin/garuda-update'
+    alias gitpkg='pacman -Q | grep -i "\-git" | wc -l' # List amount of -git packages
+    # Get fastest mirrors
+    alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
+    alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
+    alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
+    alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
+    # Help people new to Arch
+    alias apt='man pacman'
+    alias apt-get='man pacman'
+    alias pacdiff='sudo -H DIFFPROG=meld pacdiff'
+    alias tb='nc termbin.com 9999'
+    alias helpme='cht.sh --shell'
+    # Cleanup orphaned packages
+    alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
+fi
+
 alias tarnow='tar -acf '
 alias untar='tar -zxvf '
 alias wget='wget -c '
-alias rmpkg="sudo pacman -Rdd"
 alias psmem='ps auxf | sort -nr -k 4'
 alias psmem10='ps auxf | sort -nr -k 4 | head -10'
-alias upd='/usr/bin/garuda-update'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -74,24 +95,10 @@ alias fgrep='ugrep -F --color=auto'
 alias egrep='ugrep -E --color=auto'
 alias hw='hwinfo --short'                          # Hardware Info
 alias big="expac -H M '%m\t%n' | sort -h | nl"     # Sort installed packages according to size in MB (expac must be installed)
-alias gitpkg='pacman -Q | grep -i "\-git" | wc -l' # List amount of -git packages
 
-# Get fastest mirrors
-alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
-alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/pacman.d/mirrorlist"
-alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
-alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 
-# Help people new to Arch
-alias apt='man pacman'
-alias apt-get='man pacman'
+
 alias please='sudo'
-alias tb='nc termbin.com 9999'
-alias helpme='cht.sh --shell'
-alias pacdiff='sudo -H DIFFPROG=meld pacdiff'
-
-# Cleanup orphaned packages
-alias cleanup='sudo pacman -Rns $(pacman -Qtdq)'
 
 # Get the error messages from journalctl
 alias jctl="journalctl -p 3 -xb"
