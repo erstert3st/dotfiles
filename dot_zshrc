@@ -8,17 +8,9 @@ else
     | fastfetch --logo-type file-raw --logo-height 20 --logo-width 5 --logo -
 fi
 
-# (1) Change directory given just path.
-# unsetopt autocd                                                                                                                                                  (no value set)
-# (2) Use additional pattern matching features.
- #unsetopt extendedglob                                                                                                                                            (no value set)
-# (3) Unmatched patterns cause an error.
-# setopt nomatch                                                                                                                                                   (no value set)
-# (4) Beep on errors.
-# setopt beep                                                                                                                                                      (no value set)
-# (5) Immediately report changes in background job status.
-# unsetopt notify
-# SAVEHIST=10000
+
+
+SAVEHIST=10000
 #source /Users/user/.Dotfiles/zsh/config.sh
 unset zle_bracketed_paste
 
