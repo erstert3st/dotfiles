@@ -5,7 +5,7 @@ IN_DOCKER=false
 if [ -f /.dockerenv ] || grep -q docker /proc/1/cgroup 2>/dev/null; then
     IN_DOCKER=true
     echo "Running inside Docker container nothing todo"
-    return
+    exit 0
 fi
 
 # install_on_fedora() {
