@@ -1,5 +1,5 @@
 #source $ZPLUG_HOME/init.zsh
-set enable-bracketed-paste off # rm weird paste in linux
+# set enable-bracketed-paste off # rm weird paste in linux
 #load All
 source ~/dotfiles/config/zsh/path.sh
 source ~/dotfiles/config/zsh/env.sh
