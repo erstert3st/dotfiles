@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Check if running inside Docker
+IN_DOCKER=false
+if [ -f /.dockerenv ] || grep -q docker /proc/1/cgroup 2>/dev/null; then
+    IN_DOCKER=true
+    echo "Running inside Docker container - adjusting installation process"
+fi
+
 # install_on_fedora() {
 #     sudo dnf install -y ansible
 # }
@@ -25,8 +32,10 @@
 #         exit 1
 #         ;;
 # esac
-
-
+if [ "$IN_DOCKER" = true ]; then
+    echo "Running inside Docker - skipping OS check"
+    exit 0
+fi
 
 # Check if the OS is Darwin (macOS)
 {{ if eq .chezmoi.os "darwin" }}
