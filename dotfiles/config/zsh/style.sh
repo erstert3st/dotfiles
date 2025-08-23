@@ -4,7 +4,7 @@
 # if [[ "$SHELL" == *"bash"* ]]; then
 #   eval "$(oh-my-posh init bash --config "$HOME/dotfiles/emodipt-extend.omp.json")"
 # else
-  eval "$(oh-my-posh init  --config "$HOME/dotfiles/emodipt-extend.omp.json")"
+  eval "$(oh-my-posh init zsh --config "$HOME/dotfiles/emodipt-extend.omp.json")"
 # fi
 # Check if both pokemon-colorscripts and fastfetch are installed
 if hash pokemon-colorscripts 2>/dev/null && hash fastfetch 2>/dev/null; then
