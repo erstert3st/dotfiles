@@ -1,12 +1,3 @@
-RANDOM=$(date +%N)
-choice=$(( RANDOM % 2 ))
-if (( choice == 0 )); then
-  pokemon-colorscripts --no-title -s -r 1-4 \
-    | fastfetch --logo-type file-raw --logo-height 20 --logo-width 5 --logo -
-else
-  pokemon-colorscripts --no-title -r 1-4 \
-    | fastfetch --logo-type file-raw --logo-height 20 --logo-width 5 --logo -
-fi
 
 
 

@@ -6,16 +6,16 @@
         brew install yazi ffmpeg sevenzip jq poppler fd ripgrep fzf zoxide imagemagick font-symbols-only-nerd-font
         brew install eza
 {{ else }}
-    if [ -x "$(command -v yazi)" ]; then
-        echo "eza is available"
-    else
+    if [ ! -x "$(command -v yazi)" ] && [ ! -f /usr/bin/yazi ] && [ ! -f ~/.local/bin/yazi ]; then
         wget -c https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-musl.zip -O yazi.zip 
         unzip yazi.zip
         # mv yazi-x86_64-unknown-linux-musl/completions/* ~/.zsh/completions/ https://github.com/sxyazi/yazi/releases/download/v25.2.7/yazi-x86_64-unknown-linux-musl.zip
         mv ./yazi-x86_64-unknown-linux-musl/yazi  ~/.local/bin/yazi
         mv ./yazi-x86_64-unknown-linux-musl/ya  ~/.local/bin/ya
         rm -rf yaz*
-    fi    
+    else
+        echo "yazi is available "
+    fi
 
 
 {{ end }}

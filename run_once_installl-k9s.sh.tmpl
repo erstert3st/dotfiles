@@ -1,5 +1,7 @@
 #!/bin/bash
-
+if [[ -f /usr/bin/k9s ]]; then
+  source /usr/share/doc/find-the-command/ftc.bash
+fi
 # Check if the OS is Darwin (macOS)
 {{ if eq .chezmoi.os "darwin" }}
     # Check if oh-my-posh is installed via Homebrew
@@ -10,7 +12,7 @@
     fi
 {{ else }}
     # If the OS is not macOS (fallback logic)
-    if [ -x "$(command -v k9s)" ]; then
+    if [ ! -x "$(command -v k9s)" ] && [ ! -f /usr/bin/k9s ] && [ ! -f ~/.local/bin/k9s ]; then
        wget https://github.com/derailed/k9s/releases/latest/download/k9s_linux_amd64.deb && sudo  apt install ./k9s_linux_amd64.deb 2>/dev/null && rm k9s_linux_amd64.deb
     else
         echo "k9s is available "

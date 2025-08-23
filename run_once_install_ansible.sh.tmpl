@@ -4,7 +4,8 @@
 IN_DOCKER=false
 if [ -f /.dockerenv ] || grep -q docker /proc/1/cgroup 2>/dev/null; then
     IN_DOCKER=true
-    echo "Running inside Docker container - adjusting installation process"
+    echo "Running inside Docker container nothing todo"
+    return
 fi
 
 # install_on_fedora() {
@@ -32,22 +33,25 @@ fi
 #         exit 1
 #         ;;
 # esac
-if [ "$IN_DOCKER" = true ]; then
-    echo "Running inside Docker - skipping OS check"
-    exit 0
-fi
 
 # Check if the OS is Darwin (macOS)
 {{ if eq .chezmoi.os "darwin" }}
     brew install ansible
+    ansible-playbook ~/dotfiles/setup/ansible/setup.yml --ask-become-pass
 {{ else if eq .chezmoi.os "linux" }}
     # If the OS is not macOS (fallback logic)
+    {{ if (or (eq .chezmoi.osRelease.id "debian") (eq .chezmoi.osRelease.id "ubuntu")) }}
     sudo apt-get update
     sudo apt-get install -y ansible 
+    ansible-playbook ~/dotfiles/setup/ansible/setup.yml --ask-become-pass
+    {{ else if (or (eq .chezmoi.osRelease.id "rhel") (eq .chezmoi.osRelease.id "fedora") (eq .chezmoi.osRelease.id "centos")) }}
+    sudo dnf install -y ansible
+    ansible-playbook ~/dotfiles/setup/ansible/setup.yml --ask-become-pass
+    {{ else }}
+    echo "Unsupported Linux distribution: {{ .chezmoi.osRelease.id }}"
+    exit 0
+    {{ end }}
+{{ else }}
+    echo "Unsupported operating system: {{ .chezmoi.os }}"
+    exit 0
 {{ end }}
-
-
-ansible-playbook ~/dotfiles/setup/ansible/setup.yml --ask-become-pass
-
-echo "Ansible installation complete."
-

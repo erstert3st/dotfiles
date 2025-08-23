@@ -6,5 +6,9 @@
      brew install jandedobbeleer/oh-my-posh/oh-my-posh
 {{ else }}
     # If the OS is not macOS (fallback logic)
-    curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
+    if [ ! -x "$(command -v oh-my-posh)" ] && [ ! -f /usr/bin/oh-my-posh ] && [ ! -f ~/.local/bin/oh-my-posh ]; then
+        curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
+    else
+        echo "oh-my-posh is available "
+    fi
 {{ end }}
