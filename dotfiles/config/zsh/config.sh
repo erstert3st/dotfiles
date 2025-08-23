@@ -1,11 +1,13 @@
 #source $ZPLUG_HOME/init.zsh
 set enable-bracketed-paste off # rm weird paste in linux
 #load All
+source ~/dotfiles/config/zsh/path.sh
 source ~/dotfiles/config/zsh/env.sh
 
-source ~/dotfiles/config/zsh/style.sh
+source ~/dotfiles/config/zsh/alias.sh
 source ~/dotfiles/config/zsh/plugins_old.sh
-alias ls='eza --icons=auto'
+
+
 eval "$(zoxide init zsh)"
 
 #  zstyle ':completion:*' menu select
@@ -17,5 +19,4 @@ if [[ -z "$VSCODE_PID" && "$TERM_PROGRAM" != "vscode" && -z "$TMUX" && -z "$SSH_
   tmux new-session -A -s startup
 fi
 export SHOW_KUBE_CONTEXT=false
-alias kubectl=kubecolor
 compdef kubecolor=kubectl

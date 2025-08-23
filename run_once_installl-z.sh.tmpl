@@ -6,10 +6,10 @@
         brew install zoxide
 {{ else }}
     # If the OS is not macOS (fallback logic)
-    if [ -x "$(command -v z)" ]; then
-        echo "z is available "
-    else
+    if [ ! -x "$(command -v zoxide)" ] && [ ! -f /usr/bin/zoxide ] && [ ! -f ~/.local/bin/zoxide ]; then
         curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
+    else
+            echo "zoxide is available "
     fi
 
 
