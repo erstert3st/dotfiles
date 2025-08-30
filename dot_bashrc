@@ -1,4 +1,4 @@
-source ~/dotfiles/config/zsh/path.sh
+current_shell="bash"
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
@@ -23,4 +23,4 @@ source ~/dotfiles/config/zsh/path.sh
 
 
 source ~/dotfiles/config/zsh/alias.sh
-source ~/dotfiles/config/zsh/env.sh
+ source ~/dotfiles/config/zsh/env.sh
