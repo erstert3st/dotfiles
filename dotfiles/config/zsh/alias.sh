@@ -35,11 +35,12 @@ alias k9s="export SHOW_KUBE_CONTEXT=true; k9s"
 
 # Replace ls with eza
 if [[ -x /usr/bin/eza ]]; then
-    alias ls='eza -al --color=always --group-directories-first --icons'     # preferred listing
-    alias la='eza -a --color=always --group-directories-first --icons'      # all files and dirs
-    alias ll='eza -l --color=always --group-directories-first --icons'      # long format
-    alias lt='eza -aT --color=always --group-directories-first --icons'     # tree listing
-    alias l.='eza -ald --color=always --group-directories-first --icons .*' # show only dotfiles
+    alias ls='eza  --color=always --group-directories-first --icons'     # preferred listing
+    alias la='eza -a --git --color=always --group-directories-first --icons'      # all files and dirs
+    alias ll='eza -l --git --color=always --group-directories-first --icons'      # long format
+    alias lll='eza -la --git --color=always --group-directories-first --icons'      # long format
+    alias lt='eza -aT --git --color=always --group-directories-first --icons'     # tree listing
+    alias l.='eza -ald --git --color=always --group-directories-first --icons .*' # show only dotfiles
 else
     alias l='ls -l'
     alias la='ls -a'
