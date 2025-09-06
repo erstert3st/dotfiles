@@ -20,10 +20,10 @@ alias tree='eza --icons=auto --tree'
 alias cats='cats --style=plain'
 alias ca='chezmoi apply'
 alias cu='chezmoi update'
-alias caa='chezmoi apply && source ~/.zshrc && echo dotfiles updates applied'
-alias caat='chezmoi apply && source ~/.zshrc && tmux source-file ~/.tmux.conf && echo dotfiles updates applied'
+alias caa='chezmoi update && source ~/.zshrc && echo dotfiles updates applied'
+alias caat='chezmoi update  && source ~/.zshrc && tmux source-file ~/.tmux.conf && echo dotfiles updates applied'
 alias codew="'/mnt/c/Users/user-win/AppData/Local/Programs/Microsoft VS Code/bin/code'"
-alias ccode="chezmoi cd && codew"
+alias ccode="chezmoi cd && code"
 # eval $(thefuck --alias)
 # eval $(thefuck --alias fuck)
 # eval $(thefuck --alias f)
@@ -107,3 +107,4 @@ alias jctl="journalctl -p 3 -xb"
 
 # Recent installed packages
 alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
+alias z='zshz 2>&1'

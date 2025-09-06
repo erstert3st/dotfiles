@@ -25,3 +25,4 @@ export XDG_SESSION_TYPE=wayland
 
 source ~/dotfiles/config/zsh/alias.sh
  source ~/dotfiles/config/zsh/env.sh
+eval "$(zoxide init bash)"
