@@ -4,9 +4,6 @@ include "/usr/share/nano/*.nanorc"
 ## Line numbers
 #set linenumbers
 
-## Smooth scrolling
-set smooth
-set modernbindings
 ## Soft wrap
 set softwrap
 set atblanks #→ Beim Umbruch wird an Leerzeichen gebrochen, nicht mitten im Wort.
@@ -25,5 +22,4 @@ set tabstospaces
 ## Tab size
 set tabsize 4
 
-## Mouse support
-#set mouse
+
