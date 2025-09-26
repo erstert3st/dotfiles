@@ -1,0 +1,29 @@
+## Enable syntax highlighting
+include "/usr/share/nano/*.nanorc"
+
+## Line numbers
+#set linenumbers
+
+## Smooth scrolling
+set smooth
+
+## Soft wrap
+set softwrap
+set atblanks #→ Beim Umbruch wird an Leerzeichen gebrochen, nicht mitten im Wort.
+set trimblanks
+## Show cursor position
+set constantshow
+set zap #→ paste marked text 
+set minibar
+set indicator # scrollbar on the right side
+set positionlog
+set stateflags
+set mouse
+## Use spaces instead of tabs
+set tabstospaces
+
+## Tab size
+set tabsize 4
+
+## Mouse support
+#set mouse
