@@ -6,7 +6,7 @@ include "/usr/share/nano/*.nanorc"
 
 ## Smooth scrolling
 set smooth
-
+set modernbindings
 ## Soft wrap
 set softwrap
 set atblanks #→ Beim Umbruch wird an Leerzeichen gebrochen, nicht mitten im Wort.
