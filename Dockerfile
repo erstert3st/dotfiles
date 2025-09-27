@@ -5,8 +5,9 @@ RUN pacman -Syu --noconfirm --needed base-devel git sudo
 
 # User anlegen für makepkg (root darf nicht)
 RUN useradd -m user && \
-    echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-
+    echo "user ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    mkdir -p /home/user/.local && \
+    chown -R user:user /home/user
 # Paru aus dem AUR holen, bauen und installieren
 USER user
 WORKDIR /home/user/.local
@@ -25,7 +26,7 @@ ENV APP_GID=1001
 
 RUN sed -i 's/^ParallelDownloads = .*/ParallelDownloads = 20/' /etc/pacman.conf && \
     pacman -Syu --noconfirm  && \
-    pacman -S --noconfirm  --needed sudo exa 7zip aspnet-runtime autoconf logcli  fish base-devel base-devel bash bash-completion bat bc bind btop bzip2 curl docker fastfetch yazi  fzf git glances glow grep gzip helm htop httpie imagemagick jq k9s  kubectl  make man-db man-pages md-tui micro nano nano-syntax-highlighting php composer npm net-tools nmap nodejs openssh openssl openvpn   python python-pip python-virtualenv ripgrep ripgrep rsync sed tar terminus-font tmux tmuxp traceroute ttf-fira-code ttf-fira-sans ttf-jetbrains-mono ttf-liberation ttf-opensans ugrep unarchiver unarj unrar unzip vi wget which whois xarchiver xz yq zip zoxide zoxide zsh  && \
+    pacman -S --noconfirm  --needed sudo  docker-buildx exa 7zip aspnet-runtime autoconf logcli  fish base-devel base-devel bash bash-completion bat bc bind btop bzip2 curl docker fastfetch yazi  fzf git glances glow grep gzip helm htop httpie imagemagick jq k9s  kubectl  make man-db man-pages md-tui micro nano nano-syntax-highlighting php composer npm net-tools nmap nodejs openssh openssl openvpn   python python-pip python-virtualenv ripgrep ripgrep rsync sed tar terminus-font tmux tmuxp traceroute ttf-fira-code ttf-fira-sans ttf-jetbrains-mono ttf-liberation ttf-opensans ugrep unarchiver unarj unrar unzip vi wget which whois xarchiver xz yq zip zoxide zoxide zsh  && \
     yes | sudo  pacman -Scc  && \
     sudo rm -rf /tmp/* && \
     useradd -m user && \
@@ -65,10 +66,10 @@ RUN sudo systemd-machine-id-setup && \
     rm -rf ~/.tmux/plugins/*  && \
     tmux new-session -d -s tmp "sleep 0.1; tmux kill-session -t tmp" && \
     ~/.tmux/plugins/tpm/bin/install_plugins  && \
-    ~/.local/bin/chezmoi apply --force  && \
+    chezmoi apply --force  && \
     go clean -modcache -cache -testcache && \
     sudo rm -rf ~/.cache/* || true && \
-    sudo pacman -Rns $(pacman -Qdtq)
+    sudo pacman -Rns $(pacman -Qdtq) --noconfirm || true 
 # ENTRYPOINT [ "/init.sh" ]
 
 # sudo chsh -s /bin/zsh user && \
