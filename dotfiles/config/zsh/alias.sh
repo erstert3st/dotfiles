@@ -98,7 +98,7 @@ alias egrep='ugrep -E --color=auto'
 alias hw='hwinfo --short'                          # Hardware Info
 alias big="expac -H M '%m\t%n' | sort -h | nl"     # Sort installed packages according to size in MB (expac must be installed)
 alias pic="chafa"                            # Display images in terminal (chafa must be installed)
-
+alias pica="chafa -f symbols --symbols ascii"
 
 alias please='sudo'
 
