@@ -3,9 +3,8 @@ autoload -U compinit && compinit
 source ~/.zplug/init.zsh
 # source  ~/.local/bin/gh-source/gh-source.zsh
 fpath+=~/.zplug/repos/zsh-users/zsh-completions/src
-
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-plugins=(  chezmoi zoxide helm kubectl oc ssh sudo z git brew vscode dotnet python docker podman ansible macos tmux pipenv  )
+plugins=(  chezmoi zoxide helm kubectl oc ssh sudo z git brew vscode dotnet python docker podman ansible macos tmux pipenv  minikube )
 
 source $ZSH/oh-my-zsh.sh
 zplug Aloxaf/fzf-tab, defer:1
@@ -30,6 +29,11 @@ zstyle ':fzf-tab:complete:(-command-|-parameter-|-brace-parameter-|export|unset|
 zstyle ':omz:update' frequency 14  # 14 day cycle
 #zstyle ':omz:update' mode auto      # update automatically without asking
 zplug "zsh-users/zsh-completions", defer:1  # General completions
+zplug "Junker/zsh-archlinux", defer:2
+zplug "MichaelAquilina/zsh-auto-notify", defer:2
+zplug "fdellwing/zsh-bat", defer:2
+zplug "GeoLMg/apt-zsh-plugin", defer:2
+zplug "dwaynebradley/k3d-oh-my-zsh-plugin", defer:2
 zplug "zsh-users/zsh-history-substring-search", defer:2
 zstyle ':fzf-tab:complete:systemctl-*:*' fzf-preview 'SYSTEMD_COLORS=1 systemctl status $word'
 # zplug "hlissner/zsh-autopair", defer:1
@@ -42,17 +46,14 @@ export YSU_MESSAGE_FORMAT="$(tput setaf 1)$(printf '%*s' $((($(tput cols) )  / 2
 
 
 
-# Other system-specific plugins (for tools like Docker, Brew, etc.)
-
-
 
 
 # 10% chance of updating zsh plugins 
 if [ $((RANDOM % 5)) -eq 0 ]; then
-    # printf "Install? [y/N]: "
-    # if read -q; then
-       #echo; zplug update
-    # fi
+    printf "Install? [y/N]: "
+    if read -q; then
+       echo; zplug update
+    fi
 fi
 
 # Install plugins if there are plugins that have not been installed
