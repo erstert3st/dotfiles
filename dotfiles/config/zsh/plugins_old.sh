@@ -3,6 +3,7 @@ autoload -U compinit && compinit
 source ~/.zplug/init.zsh
 # source  ~/.local/bin/gh-source/gh-source.zsh
 fpath+=~/.zplug/repos/zsh-users/zsh-completions/src
+fpath+=~/.local/completions
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 plugins=(  chezmoi zoxide helm kubectl oc ssh sudo z git brew vscode dotnet python docker podman ansible macos tmux pipenv  minikube )
 
