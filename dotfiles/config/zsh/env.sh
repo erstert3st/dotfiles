@@ -7,6 +7,9 @@ export EDITOR="nano"
 #export STARSHIP_CONFIG=$HOME/.Dotfiles/starship/starship.toml
 #export ZPLUG_HOME=/opt/homebrew/opt/zplug
 export TERM="xterm-256color"
+# Multiplexer that config.sh auto-starts; empty disables it.
+# herdr systems: export STARTUP_MUX="herdr"
+export STARTUP_MUX="${STARTUP_MUX:-tmux new-session -A -s startup}"
 export LESS='-RM'
 export BAT_PAGER="cat"
 export BAT_THEME="Visual Studio Dark+"
