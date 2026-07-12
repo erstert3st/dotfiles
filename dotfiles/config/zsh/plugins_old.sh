@@ -46,6 +46,7 @@ export YSU_MODE=ALL
 export YSU_MESSAGE_FORMAT="$(tput setaf 1)$(printf '%*s' $((($(tput cols) )  / 2 - 20 )) '')🤬🤬🤬  %alias_type '%command' nutze sofort: %alias  🤬🤬🤬 $(tput sgr0)"
 
 
+[ -s "/home/user1/.bun/_bun" ] && source "/home/user1/.bun/_bun"
 
 
 

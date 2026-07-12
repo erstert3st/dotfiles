@@ -108,3 +108,9 @@ alias jctl="journalctl -p 3 -xb"
 # Recent installed packages
 alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 alias z='zshz 2>&1'
+
+alldirs() {
+  for d in */; do
+    (cd "$d" && "$@")
+  done
+}
