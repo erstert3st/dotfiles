@@ -5,8 +5,8 @@ source ~/.zplug/init.zsh
 fpath+=~/.zplug/repos/zsh-users/zsh-completions/src
 fpath+=~/.local/completions
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-plugins=(  chezmoi zoxide helm kubectl oc ssh sudo z git brew vscode dotnet python docker podman ansible macos tmux pipenv  minikube )
-
+plugins=(  chezmoi zoxide helm  oc ssh sudo z git brew vscode dotnet python docker podman ansible macos tmux pipenv  minikube )
+#kubectl
 source $ZSH/oh-my-zsh.sh
 zplug Aloxaf/fzf-tab, defer:1
 
@@ -49,12 +49,19 @@ export YSU_MESSAGE_FORMAT="$(tput setaf 1)$(printf '%*s' $((($(tput cols) )  / 2
 
 
 
-# 10% chance of updating zsh plugins 
-if [ $((RANDOM % 5)) -eq 0 ]; then
-    printf "Install? [y/N]: "
+# plugin update: after a 14 day cooldown, ask on a random shell start (20% chance)
+PLUGIN_UPDATE_STAMP="${XDG_STATE_HOME:-$HOME/.local/state}/plugins-last-ask"
+if [[ ! -f "$PLUGIN_UPDATE_STAMP" || -n "$(find "$PLUGIN_UPDATE_STAMP" -mtime +14 2>/dev/null)" ]] \
+   && (( RANDOM % 5 == 0 )); then
+    mkdir -p "${PLUGIN_UPDATE_STAMP:h}"
+    touch "$PLUGIN_UPDATE_STAMP"   # cooldown starts on the question, not the answer
+    printf "update zsh + tmux plugins? [y/N]: "
     if read -q; then
-       echo; zplug update
+       echo
+       zplug update
+       [[ -x ~/.tmux/plugins/tpm/bin/update_plugins ]] && ~/.tmux/plugins/tpm/bin/update_plugins all
     fi
+    echo
 fi
 
 # Install plugins if there are plugins that have not been installed

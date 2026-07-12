@@ -1,5 +1,10 @@
-#!/bin/bash
-# /* ---- 💫 https://github.com/JaKooLit 💫 ---- */  #
+#!/usr/bin/env bash
+# ==================================================
+#  KoolDots (2026)
+#  Project URL: https://github.com/LinuxBeginnings
+#  License: GNU GPLv3
+#  SPDX-License-Identifier: GPL-3.0-or-later
+# ==================================================
 # Wallpaper Effects using ImageMagick (SUPER SHIFT W)
 
 # Variables
@@ -9,17 +14,26 @@ wallpaper_output="$HOME/.config/hypr/wallpaper_effects/.wallpaper_modified"
 SCRIPTSDIR="$HOME/.config/hypr/scripts"
 focused_monitor=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
 rofi_theme="$HOME/.config/rofi/config-wallpaper-effect.rasi"
+if command -v awww >/dev/null 2>&1; then
+    WWW="awww"
+else
+    WWW="swww"
+fi
 
 # Directory for swaync
 iDIR="$HOME/.config/swaync/images"
 iDIRi="$HOME/.config/swaync/icons"
 
-# swww transition config
+# swww/awww transition config
 FPS=60
 TYPE="wipe"
 DURATION=2
 BEZIER=".43,1.19,1,.4"
-SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
+if [[ "$WWW" == "swww" || "$WWW" == "awww" ]]; then
+    SWWW_PARAMS="--transition-fps $FPS --transition-type $TYPE --transition-duration $DURATION --transition-bezier $BEZIER"
+else
+    SWWW_PARAMS=""
+fi
 
 # Define ImageMagick effects
 declare -A effects=(
@@ -45,7 +59,7 @@ declare -A effects=(
 
 # Function to apply no effects
 no-effects() {
-    swww img -o "$focused_monitor" "$wallpaper_current" $SWWW_PARAMS &&
+    $WWW img -o "$focused_monitor" "$wallpaper_current" $SWWW_PARAMS &&
     wait $!
     wallust run "$wallpaper_current" -s &&
     wait $!
@@ -83,7 +97,7 @@ main() {
             done
 
             sleep 1
-            swww img -o "$focused_monitor" "$wallpaper_output" $SWWW_PARAMS &
+            $WWW img -o "$focused_monitor" "$wallpaper_output" $SWWW_PARAMS &
 
             sleep 2
   
@@ -106,33 +120,3 @@ fi
 main
 
 sleep 1
-
-if [[ -n "$choice" ]]; then
-  sddm_simple="/usr/share/sddm/themes/simple_sddm_2"
-  if [ -d "$sddm_simple" ]; then
-  
-	# Check if yad is running to avoid multiple yad notification
-	if pidof yad > /dev/null; then
-	  killall yad
-	fi
-	
-	if yad --info --text="Set current wallpaper as SDDM background?\n\nNOTE: This only applies to SIMPLE SDDM v2 Theme" \
-    --text-align=left \
-    --title="SDDM Background" \
-    --timeout=5 \
-    --timeout-indicator=right \
-    --button="yad-yes:0" \
-    --button="yad-no:1" \
-    ; then
-
-    # Check if terminal exists
-    if ! command -v "$terminal" &>/dev/null; then
-    notify-send -i "$iDIR/ja.png" "Missing $terminal" "Install $terminal to enable setting of wallpaper background"
-    exit 1
-    fi
-
-	exec $SCRIPTSDIR/sddm_wallpaper.sh --effects
-    
-    fi
-  fi
-fi
