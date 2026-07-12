@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Check if the OS is Darwin (macOS)
+{{ if eq .chezmoi.os "darwin" }}
+    brew install oven-sh/bun/bun
+{{ else }}
+    # If the OS is not macOS (fallback logic)
+    if [ -x "$(command -v bun)" ] || [ -f ~/.bun/bin/bun ]; then
+        echo "bun is available "
+    else
+        # try the distro package manager first, fall back to the upstream installer.
+        # note: bun is in arch extra, but debian/ubuntu ship no bun package,
+        # so apt will not find it and we end up on the curl path there.
+        if [ -r /etc/os-release ]; then
+            . /etc/os-release
+        fi
+
+        case "${ID:-}${ID_LIKE:-}" in
+            *arch*)
+                sudo pacman -S --needed --noconfirm bun
+                ;;
+            *debian*|*ubuntu*)
+                sudo apt-get update && sudo apt-get install -y bun
+                ;;
+        esac
+
+        if [ ! -x "$(command -v bun)" ]; then
+            echo "no bun package available, using the upstream installer"
+            curl -fsSL https://bun.sh/install | bash
+        fi
+    fi
+{{ end }}

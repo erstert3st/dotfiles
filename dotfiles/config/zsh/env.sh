@@ -8,8 +8,12 @@ export EDITOR="nano"
 #export ZPLUG_HOME=/opt/homebrew/opt/zplug
 export TERM="xterm-256color"
 # Multiplexer that config.sh auto-starts; empty disables it.
-# herdr systems: export STARTUP_MUX="herdr"
-export STARTUP_MUX="${STARTUP_MUX:-tmux new-session -A -s startup}"
+# Prefer herdr where it is installed, otherwise fall back to tmux.
+if command -v herdr >/dev/null 2>&1; then
+  export STARTUP_MUX="${STARTUP_MUX:-herdr}"
+else
+  export STARTUP_MUX="${STARTUP_MUX:-tmux new-session -A -s startup}"
+fi
 export LESS='-RM'
 export BAT_PAGER="cat"
 export BAT_THEME="Visual Studio Dark+"
