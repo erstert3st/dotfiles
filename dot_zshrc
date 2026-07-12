@@ -15,7 +15,10 @@ export DOCKER_BUILDKIT=1
 export DISABLE_BRACKETED_PASTE=true
 export UPDATE_AUR=1
 export PACMAN_NOCONFIRM=1
-export BUILDKIT=1
+#export BUILDKIT=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 #export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
 export DOCKER_HOST=unix:///var/run/docker.sock
+
+
+
