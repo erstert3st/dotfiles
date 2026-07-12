@@ -1,0 +1,57 @@
+{
+  "agentPushNotifEnabled": true,
+  "autoUpdatesChannel": "latest",
+  "editorMode": "normal",
+  "effortLevel": "xhigh",
+  "enabledPlugins": {},
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "repo": "JuliusBrussee/caveman",
+        "source": "github"
+      }
+    }
+  },
+{{- $herdrHook := joinPath .chezmoi.homeDir ".claude/hooks/herdr-agent-state.sh" }}
+{{- if stat $herdrHook }}
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "bash '{{ $herdrHook }}' session",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ]
+  },
+{{- end }}
+  "language": "German",
+  "model": "opus",
+  "permissions": {
+    "allow": [
+      "mcp__claude-in-chrome__navigate",
+      "mcp__claude-in-chrome__read_network_requests",
+      "mcp__claude-in-chrome__read_console_messages",
+      "mcp__claude-in-chrome__tabs_create_mcp",
+      "mcp__claude-in-chrome__tabs_context_mcp",
+      "mcp__claude-in-chrome__browser_batch"
+    ]
+  },
+  "preferredNotifChannel": "kitty",
+  "remoteControlAtStartup": false,
+  "statusLine": {
+    "command": "ccstatusline",
+    "padding": 0,
+    "refreshInterval": 10,
+    "type": "command"
+  },
+  "teammateMode": "auto",
+  "tui": "default"
+}

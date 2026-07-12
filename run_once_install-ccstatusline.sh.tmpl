@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# statusline for claude code; version is pinned to match
+# the "installation" block in dot_config/ccstatusline/settings.json
+CCSTATUSLINE_VERSION="2.2.22"
+
+# bun is installed by run_once_install-bun.sh, but its PATH export only
+# reaches interactive shells, so make it reachable here as well
+export PATH="$HOME/.bun/bin:$PATH"
+
+if [ ! -x "$(command -v bun)" ]; then
+    echo "bun is not available, skipping ccstatusline"
+    exit 0
+fi
+
+if [ ! -x "$(command -v ccstatusline)" ]; then
+    bun install -g "ccstatusline@${CCSTATUSLINE_VERSION}"
+else
+    echo "ccstatusline is available "
+fi

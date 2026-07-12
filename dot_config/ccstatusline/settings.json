@@ -1,0 +1,95 @@
+{
+  "version": 3,
+  "lines": [
+    [
+      {
+        "id": "03819849-4bd2-46fc-a1bd-93b76f746bd2",
+        "type": "git-branch"
+      },
+      {
+        "id": "3c1847e1-7ae1-4817-9c20-5674ce62f7bd",
+        "type": "separator"
+      },
+      {
+        "id": "1859a463-84b5-4808-99d8-04c8b5d14f4c",
+        "type": "git-ahead-behind",
+        "color": "green"
+      },
+      {
+        "id": "d5380685-7d11-4967-beeb-e5cb8ba1c2bd",
+        "type": "separator"
+      },
+      {
+        "id": "ef1cdc5e-d8a9-4dec-8750-e198d5085a8b",
+        "type": "git-changes"
+      }
+    ],
+    [
+      {
+        "id": "1",
+        "type": "model",
+        "color": "yellow"
+      },
+      {
+        "id": "4",
+        "type": "separator"
+      },
+      {
+        "id": "efc887de-619b-4cdc-98f0-c436368c73f0",
+        "type": "thinking-effort",
+        "color": "cyan"
+      },
+      {
+        "id": "fd37017a-f1ac-4edb-b023-cae4607d6f21",
+        "type": "separator"
+      },
+      {
+        "id": "59462033-49db-4b5c-b1dc-67e093f9fae5",
+        "type": "session-usage",
+        "color": "brightBlue"
+      },
+      {
+        "id": "eff9ca47-8375-47de-ba7a-4cdcce11c666",
+        "type": "separator"
+      },
+      {
+        "id": "c844d12d-5f8b-4ee0-966c-ec06c39d37e6",
+        "type": "reset-timer",
+        "color": "brightBlack"
+      },
+      {
+        "id": "6",
+        "type": "separator"
+      },
+      {
+        "id": "854e2c9f-5cf7-498a-a89d-1c5a181bbddc",
+        "type": "remote-control-status"
+      }
+    ],
+    []
+  ],
+  "flexMode": "full-minus-40",
+  "compactThreshold": 60,
+  "colorLevel": 3,
+  "inheritSeparatorColors": false,
+  "globalBold": false,
+  "gitCacheTtlSeconds": 5,
+  "minimalistMode": false,
+  "powerline": {
+    "enabled": false,
+    "separators": [
+      ""
+    ],
+    "separatorInvertBackground": [
+      false
+    ],
+    "startCaps": [],
+    "endCaps": [],
+    "autoAlign": false,
+    "continueThemeAcrossLines": false
+  },
+  "installation": {
+    "method": "pinned",
+    "installedVersion": "2.2.22"
+  }
+}

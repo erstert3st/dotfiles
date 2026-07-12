@@ -1,0 +1,20 @@
+# claude code writes runtime state next to its settings; never manage these.
+# .credentials.json holds an oauth token - it must not end up in the repo.
+.claude/.credentials.json
+.claude/history.jsonl
+.claude/stats-cache.json
+.claude/*.bak
+.claude/*.orig
+.claude/backups
+.claude/projects
+.claude/sessions
+.claude/session-env
+.claude/shell-snapshots
+.claude/tasks
+.claude/teams
+.claude/telemetry
+.claude/todos
+.claude/ide
+.claude/plugins
+.claude/statsig
+.claude/hooks
