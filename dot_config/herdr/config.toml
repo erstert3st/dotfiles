@@ -1,0 +1,58 @@
+onboarding = false
+
+[keys]
+prefix = "ctrl+a"
+
+# Panes mit Pfeiltasten fokussieren (statt vim h/j/k/l)
+focus_pane_left = "prefix+left"
+focus_pane_down = "prefix+down"
+focus_pane_up = "prefix+up"
+focus_pane_right = "prefix+right"
+
+# Splits: prefix++ und prefix+- als symmetrisches Paar (vorher v / -)
+split_vertical = "prefix+plus"
+split_horizontal = "prefix+minus"
+
+# Durch die Agent-Liste steppen (priority/Attention-Queue)
+previous_agent = "prefix+shift+up"
+next_agent = "prefix+shift+down"
+
+# Spaces (Workspaces) wechseln: prefix+shift+←/→
+previous_workspace = "prefix+shift+left"
+next_workspace = "prefix+shift+right"
+
+# Tabs wechseln: nur die Defaults prefix+p/n.
+# Blankes Tab bewusst NICHT belegt (schluckt sonst die Completion in Panes),
+# Shift+Tab ebenfalls frei (Claude Code braucht es für den Permission-Mode-Switch).
+previous_tab = "prefix+p"
+next_tab = "prefix+n"
+
+# https://github.com/smarzban/herdr-file-viewer
+[[keys.command]]              # open in a split beside your work
+key = "prefix+f"
+type = "shell"
+command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewer"
+
+[[keys.command]]              # …or in its own tab
+key = "prefix+shift+f"
+type = "shell"
+command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-viewer"
+
+[[keys.command]]              # zoxide-Picker (Verzeichnis-Sprung); überschreibt Default open_notification_target
+key = "prefix+o"
+type = "shell"
+command = "herdr plugin action invoke browse --plugin herdr-zoxide"
+
+[[keys.command]]              # herdr-mirror starten / fortsetzen
+key = "prefix+shift+m"
+type = "shell"
+command = "herdr plugin action invoke start --plugin mirror"
+
+[experimental]
+# Kitty-Graphics-Rendering im angehängten Client (braucht kompatibles Outer-Terminal)
+kitty_graphics = true
+# Pane-Screen-History über volle Server-Neustarts hinweg erhalten
+pane_history = true
+
+[ui]
+agent_panel_sort = "priority"

@@ -1,0 +1,14 @@
+# herdr-mirror Hosts.
+# Der Daemon autostartet, sobald du einen Workspace fokussierst; die Remote-Workspaces
+# erscheinen dann als "<prefix>: <name>" in der lokalen Sidebar.
+# Voraussetzung: ControlMaster-Socket zu 192.168.1.111 offen (einmal 'ssh 192.168.1.111',
+# Passphrase eingeben) — siehe ~/.ssh/config.
+
+# autostart = true          # Fokus auf Workspace startet den Daemon (Default)
+# poll_seconds = 60         # Reconcile-Intervall (Events treiben die meisten Syncs)
+# always_control = true     # Default: Mirror-Panes schreibbar + auf lokale Pane-Größe
+
+[hosts.homelab]
+target = "192.168.1.111"    # nutzt den Host-Block aus ~/.ssh/config (User=user + ControlMaster)
+remote_bin = "/usr/bin/herdr"  # auf cachyos liegt herdr hier, NICHT unter ~/.local/bin (Default)
+# prefix = "homelab"        # Sidebar-Prefix (Default: der Host-Key "homelab")

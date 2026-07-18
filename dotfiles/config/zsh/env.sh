@@ -14,6 +14,12 @@ if command -v herdr >/dev/null 2>&1; then
 else
   export STARTUP_MUX="${STARTUP_MUX:-tmux new-session -A -s startup}"
 fi
+# Persistenter ssh-agent (systemd user service ssh-agent.service): ssh & ssh-add
+# nutzen diesen Agent; herdr-mirror liest denselben Socket via IdentityAgent.
+[ -n "$XDG_RUNTIME_DIR" ] && export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+# Secrets and machine-local env (TrueNAS API key etc.). Never versioned.
+[[ -f ~/.config/claude/truenas.env ]] && source ~/.config/claude/truenas.env
+
 export LESS='-RM'
 export BAT_PAGER="cat"
 export BAT_THEME="Visual Studio Dark+"
