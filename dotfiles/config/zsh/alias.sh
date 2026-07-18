@@ -114,3 +114,7 @@ alldirs() {
     (cd "$d" && "$@")
   done
 }
+
+# herdr-mirror: nach jedem Reboot einmal den Key in den ssh-agent laden (Passphrase).
+# SSH_AUTH_SOCK wird in env.sh gesetzt, daher genügt hier plain ssh-add.
+alias mirror-key='ssh-add ~/.ssh/id_ed25519'

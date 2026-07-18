@@ -15,25 +15,63 @@
       }
     }
   },
-{{- $herdrHook := joinPath .chezmoi.homeDir ".claude/hooks/herdr-agent-state.sh" }}
-{{- if stat $herdrHook }}
+{{- $agentHook := joinPath .chezmoi.homeDir ".claude/hooks/herdr-agent-state.sh" }}
+{{- $titleHook := joinPath .chezmoi.homeDir ".claude/hooks/herdr-claude-session-title.sh" }}
+{{- $hasAgent := stat $agentHook }}
+{{- $hasTitle := stat $titleHook }}
+{{- if or $hasAgent $hasTitle }}
   "hooks": {
     "SessionStart": [
+{{- if $hasAgent }}
       {
         "hooks": [
           {
-            "command": "bash '{{ $herdrHook }}' session",
+            "command": "bash '{{ $agentHook }}' session",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }{{ if $hasTitle }},{{ end }}
+{{- end }}
+{{- if $hasTitle }}
+      {
+        "hooks": [
+          {
+            "command": "sh '{{ $titleHook }}'",
             "timeout": 10,
             "type": "command"
           }
         ],
         "matcher": "*"
       }
-    ]
+{{- end }}
+    ]{{ if $hasTitle }},
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "sh '{{ $titleHook }}'",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "sh '{{ $titleHook }}'",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ]{{ end }}
   },
 {{- end }}
   "language": "German",
-  "model": "opus",
   "permissions": {
     "allow": [
       "mcp__claude-in-chrome__navigate",
