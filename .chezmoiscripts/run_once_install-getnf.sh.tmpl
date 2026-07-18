@@ -1,0 +1,9 @@
+{{ if and (ne .chezmoi.os "darwin") (and (hasKey . "desktop") .desktop) -}}
+#!/bin/bash
+# fixed: the old version had the check inverted and never installed getnf
+set -euo pipefail
+
+if ! command -v getnf >/dev/null 2>&1; then
+    curl -fsSL https://raw.githubusercontent.com/getnf/getnf/main/install.sh | bash -s -- --silent
+fi
+{{ end -}}

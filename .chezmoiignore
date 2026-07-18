@@ -1,3 +1,9 @@
+# repo docs and tests are not dotfiles - never deploy them to ~.
+README.md
+CLAUDE.md
+tests
+tests/**
+
 # claude code writes runtime state next to its settings; never manage these.
 # .credentials.json holds an oauth token - it must not end up in the repo.
 .claude/.credentials.json
@@ -18,3 +24,11 @@
 .claude/plugins
 .claude/statsig
 .claude/hooks
+
+{{ if not (and (hasKey . "desktop") .desktop) }}
+# GUI configs only land on desktop machines (answer 'desktop' at chezmoi init)
+.config/hypr
+.config/hypr/**
+.config/ghostty
+.config/ghostty/**
+{{ end }}

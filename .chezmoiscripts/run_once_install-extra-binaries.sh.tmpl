@@ -1,0 +1,77 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/bash
+# Tools that Debian/Fedora do not package (see skip lists in packages.yaml):
+# installed from upstream releases into ~/.local/bin. No-op where the package
+# manager already provided them (Arch installs everything via pacman/paru).
+set -uo pipefail
+
+BIN="$HOME/.local/bin"
+mkdir -p "$BIN"
+
+have() { command -v "$1" >/dev/null 2>&1; }
+
+case "$(uname -m)" in
+    x86_64)  GOARCH=amd64 ;;
+    aarch64) GOARCH=arm64 ;;
+    *)       GOARCH="$(uname -m)" ;;
+esac
+
+latest_tag() { # $1 = owner/repo
+    curl -fsSL "https://api.github.com/repos/$1/releases/latest" | jq -r .tag_name
+}
+
+if ! have kubectl; then
+    echo "installing kubectl"
+    curl -fsSLo "$BIN/kubectl" "https://dl.k8s.io/release/$(curl -Ls https://dl.k8s.io/release/stable.txt)/bin/linux/${GOARCH}/kubectl" \
+        && chmod +x "$BIN/kubectl"
+fi
+
+if ! have helm; then
+    echo "installing helm"
+    curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 \
+        | HELM_INSTALL_DIR="$BIN" USE_SUDO=false bash
+fi
+
+if ! have k9s; then
+    echo "installing k9s"
+    curl -fsSL "https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_${GOARCH}.tar.gz" \
+        | tar -xz -C /tmp k9s && install -m 755 /tmp/k9s "$BIN/k9s" && rm -f /tmp/k9s
+fi
+
+if ! have minikube; then
+    echo "installing minikube"
+    curl -fsSLo "$BIN/minikube" "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-${GOARCH}" \
+        && chmod +x "$BIN/minikube"
+fi
+
+if ! have flux; then
+    echo "installing flux"
+    v="$(latest_tag fluxcd/flux2)"
+    curl -fsSL "https://github.com/fluxcd/flux2/releases/download/${v}/flux_${v#v}_linux_${GOARCH}.tar.gz" \
+        | tar -xz -C /tmp flux && install -m 755 /tmp/flux "$BIN/flux" && rm -f /tmp/flux
+fi
+
+if ! have lazygit; then
+    echo "installing lazygit"
+    v="$(latest_tag jesseduffield/lazygit)"
+    curl -fsSL "https://github.com/jesseduffield/lazygit/releases/download/${v}/lazygit_${v#v}_Linux_$(uname -m).tar.gz" \
+        | tar -xz -C /tmp lazygit && install -m 755 /tmp/lazygit "$BIN/lazygit" && rm -f /tmp/lazygit
+fi
+
+if ! have lazydocker; then
+    echo "installing lazydocker"
+    v="$(latest_tag jesseduffield/lazydocker)"
+    curl -fsSL "https://github.com/jesseduffield/lazydocker/releases/download/${v}/lazydocker_${v#v}_Linux_$(uname -m).tar.gz" \
+        | tar -xz -C /tmp lazydocker && install -m 755 /tmp/lazydocker "$BIN/lazydocker" && rm -f /tmp/lazydocker
+fi
+
+if ! have yazi; then
+    echo "installing yazi"
+    curl -fsSLo /tmp/yazi.zip "https://github.com/sxyazi/yazi/releases/latest/download/yazi-$(uname -m)-unknown-linux-musl.zip" \
+        && unzip -oq /tmp/yazi.zip -d /tmp/yazi-extract \
+        && install -m 755 /tmp/yazi-extract/*/yazi /tmp/yazi-extract/*/ya "$BIN/" \
+        && rm -rf /tmp/yazi.zip /tmp/yazi-extract
+fi
+
+exit 0
+{{ end -}}
