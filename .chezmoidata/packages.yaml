@@ -1,6 +1,255 @@
+# THE program list - single source of truth for every machine.
+# Edit here, then 'chezmoi apply': the matching run_onchange script re-runs.
+#
+# common/desktop use canonical names; per-distro differences go into
+# <distro>.rename (other package name), .skip (not available there,
+# most gaps are covered by run_once_install-extra-binaries) or .extra/.aur.
+# Every key must exist (even empty) - the templates index them unconditionally.
+#
+# verified 2026-07-18 against: Arch repos+AUR, Debian 13 (trixie),
+# Fedora 44, Homebrew API.
 packages:
+  common:
+    # shell & terminal basics
+    - git
+    - gh
+    - zsh
+    - bash-completion
+    - tmux
+    - tmuxp
+    - curl
+    - wget
+    - openssh-server
+    - openssl
+    - rsync
+    - man-db
+    # archives
+    - tar
+    - gzip
+    - bzip2
+    - xz
+    - zip
+    - unzip
+    - unrar
+    - unar
+    - p7zip
+    # modern CLI tools
+    - fzf
+    - ripgrep
+    - ugrep
+    - fd
+    - bat
+    - eza
+    - zoxide
+    - jq
+    - yq
+    - htop
+    - btop
+    - fastfetch
+    - nano
+    - micro
+    - glow
+    - httpie
+    - gdu
+    - chafa
+    - yazi
+    # build & runtimes
+    - make
+    - autoconf
+    - nodejs
+    - npm
+    - python3
+    - python3-pip
+    # network & system
+    - nmap
+    - net-tools
+    - whois
+    - traceroute
+    - dnsutils
+    - bc
+    - hwinfo
+    - openvpn
+    # media & documents
+    - ffmpeg
+    - imagemagick
+    - poppler-utils
+    # containers & kubernetes
+    - podman
+    - podman-compose
+    - docker
+    - docker-buildx
+    - kubectl
+    - helm
+    - k9s
+    - minikube
+    - kubecolor
+    - lazygit
+    - lazydocker
+
+  desktop:
+    - firefox
+    - ghostty
+    - xarchiver
+    - logiops
+    - pokemon-colorscripts
+    - ttf-fira-code
+    - ttf-jetbrains-mono
+    - ttf-liberation
+    - terminus-font
+    - ttf-victor-mono
+
+  arch:
+    rename:
+      gh: github-cli
+      openssh-server: openssh
+      unar: unarchiver
+      p7zip: 7zip
+      dnsutils: bind
+      python3: python
+      python3-pip: python-pip
+      poppler-utils: poppler
+    skip:
+      # AUR-only on vanilla Arch -> installed via aur/aurDesktop below
+      - kubecolor
+      - logiops
+      - pokemon-colorscripts
+      - ttf-victor-mono
+    extra:
+      - base-devel
+      - expac      # alias.sh: big / rip
+      - reflector  # alias.sh: mirror*
+      - logcli
+      - bun
+    desktopExtra: []
+    aur:
+      - kubecolor
+      - oh-my-posh
+      - flux-bin
+      - go-jsonnet
+      - jsonnet-bundler
+      - find-the-command  # alias.sh sources ftc.bash
+    aurDesktop:
+      - logiops
+      - pokemon-colorscripts-git
+      - ttf-victor-mono
+
+  debian:
+    rename:
+      xz: xz-utils
+      p7zip: 7zip
+      fd: fd-find          # binary is fdfind (env.sh aliases cats=batcat)
+      dnsutils: bind9-dnsutils
+      docker: docker.io
+      firefox: firefox-esr
+      ttf-fira-code: fonts-firacode
+      ttf-jetbrains-mono: fonts-jetbrains-mono
+      ttf-liberation: fonts-liberation
+      terminus-font: xfonts-terminus
+    skip:
+      - unrar             # non-free component; unar covers it
+      - helm              # -> extra-binaries
+      - k9s               # -> extra-binaries
+      - minikube          # -> extra-binaries
+      - lazydocker        # -> extra-binaries
+      - yazi              # -> extra-binaries
+      - ghostty           # not packaged
+      - ttf-victor-mono   # not packaged
+      - pokemon-colorscripts
+    extra:
+      - build-essential
+      - python3-venv
+    desktopExtra: []
+    aur: []
+    aurDesktop: []
+
+  fedora:
+    rename:
+      tmuxp: python3-tmuxp
+      p7zip: 7zip
+      fd: fd-find
+      dnsutils: bind-utils
+      imagemagick: ImageMagick
+      ffmpeg: ffmpeg-free   # full ffmpeg would need RPM Fusion
+      docker: moby-engine
+      kubectl: kubernetes-client
+      ttf-fira-code: fira-code-fonts
+      ttf-jetbrains-mono: jetbrains-mono-fonts
+      ttf-liberation: liberation-fonts-all
+      terminus-font: terminus-fonts
+    skip:
+      - minikube          # -> extra-binaries
+      - kubecolor         # COPR only
+      - lazygit           # -> extra-binaries
+      - lazydocker        # -> extra-binaries
+      - yazi              # -> extra-binaries
+      - ghostty           # COPR only
+      - ttf-victor-mono   # not packaged
+      - pokemon-colorscripts
+    extra: []
+    desktopExtra: []
+    aur: []
+    aurDesktop: []
+
   darwin:
     brews:
-    - 'git'
+      - git
+      - gh
+      - zsh
+      - bash-completion
+      - tmux
+      - tmuxp
+      - curl
+      - wget
+      - openssl
+      - rsync
+      - xz
+      - zip
+      - unar
+      - p7zip
+      - fzf
+      - ripgrep
+      - ugrep
+      - fd
+      - bat
+      - eza
+      - zoxide
+      - jq
+      - yq
+      - htop
+      - btop
+      - fastfetch
+      - nano
+      - micro
+      - glow
+      - httpie
+      - gdu
+      - chafa
+      - yazi
+      - make
+      - autoconf
+      - node
+      - python3
+      - nmap
+      - whois
+      - bc
+      - openvpn
+      - ffmpeg
+      - imagemagick
+      - poppler
+      - podman
+      - podman-compose
+      - kubernetes-cli
+      - helm
+      - k9s
+      - minikube
+      - kubecolor
+      - lazygit
+      - lazydocker
     casks:
-    - 'firefox'
+      - firefox
+      - ghostty
+      - font-fira-code
+      - font-jetbrains-mono
+      - font-liberation
+      - font-terminus
+      - font-victor-mono

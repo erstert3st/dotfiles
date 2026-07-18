@@ -1,3 +1,7 @@
+# these used to be deployed to ~ by accident (no dot_ prefix, not ignored)
+Dockerfile
+README
+
 dotfiles/setup
 dotfiles/config/zsh/plugins_old.sh
 dotfiles/config/tmux/style_new.conf

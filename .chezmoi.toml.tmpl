@@ -1,0 +1,6 @@
+{{/* asked once at 'chezmoi init' ("desktop" = GUI packages + configs).
+     Non-interactive (CI/containers): chezmoi init --promptBool desktop=false */}}
+{{- $desktop := promptBoolOnce . "desktop" "desktop" true -}}
+
+[data]
+    desktop = {{ $desktop }}
