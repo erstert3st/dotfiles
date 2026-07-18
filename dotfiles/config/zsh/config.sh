@@ -4,7 +4,7 @@
 source ~/dotfiles/config/zsh/path.sh
 source ~/dotfiles/config/zsh/env.sh
 
-source ~/dotfiles/config/zsh/plugins_old.sh
+source ~/dotfiles/config/zsh/plugins.sh
 source ~/dotfiles/config/zsh/alias.sh
 
 

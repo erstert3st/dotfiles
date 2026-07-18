@@ -1,0 +1,3 @@
+dotfiles/setup
+dotfiles/config/zsh/plugins_old.sh
+dotfiles/config/tmux/style_new.conf
