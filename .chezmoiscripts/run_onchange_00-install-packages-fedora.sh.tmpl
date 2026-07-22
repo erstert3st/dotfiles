@@ -1,5 +1,5 @@
 {{ if eq .chezmoi.os "linux" -}}
-{{ if or (eq .chezmoi.osRelease.id "fedora") (eq .chezmoi.osRelease.id "rhel") (eq .chezmoi.osRelease.id "centos") (contains "rhel" (.chezmoi.osRelease.idLike | default "")) (contains "fedora" (.chezmoi.osRelease.idLike | default "")) -}}
+{{ if or (eq .chezmoi.osRelease.id "fedora") (eq .chezmoi.osRelease.id "rhel") (eq .chezmoi.osRelease.id "centos") (contains "rhel" (get .chezmoi.osRelease "idLike" | default "")) (contains "fedora" (get .chezmoi.osRelease "idLike" | default "")) -}}
 #!/bin/bash
 # Rendered from .chezmoidata/packages.yaml - editing that file re-runs this script.
 set -euo pipefail

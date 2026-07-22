@@ -1,0 +1,23 @@
+# End-to-end bootstrap test: fresh Fedora + chezmoi init --apply from this repo.
+# Build from the repo root: docker build -f tests/docker/Dockerfile.fedora .
+FROM fedora:latest
+
+RUN dnf install -y sudo git curl && dnf clean all
+RUN useradd -m test && echo "test ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/test
+
+COPY --chown=test:test . /home/test/.local/share/chezmoi
+USER test
+WORKDIR /home/test
+ENV PATH="/home/test/.local/bin:/home/test/.bun/bin:${PATH}"
+
+RUN sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /home/test/.local/bin
+RUN chezmoi init --apply --promptBool desktop=false
+
+# core tools from packages.yaml actually landed
+RUN command -v zsh && command -v fzf && command -v rg && command -v eza \
+    && command -v zoxide && command -v kubectl && command -v k9s && echo TOOLS-OK
+
+# interactive zsh starts cleanly (plugins install on first run)
+# trailing && keeps /bin/sh resident — as sole RUN command sh would exec zsh
+# into PID 1, which dies instantly with exit 125 (seen on fedora)
+RUN NO_TMUX=1 timeout 600 zsh -ic 'echo SMOKE-OK' && echo SMOKE-PASSED

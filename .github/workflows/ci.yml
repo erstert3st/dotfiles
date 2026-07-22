@@ -1,0 +1,42 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck + chezmoi
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck
+          sh -c "$(curl -fsLS get.chezmoi.io)" -- -b "$HOME/.local/bin"
+      - name: Run lint + render tests
+        run: PATH="$HOME/.local/bin:$PATH" tests/test.sh
+
+  bootstrap:
+    strategy:
+      fail-fast: false
+      matrix:
+        distro: [arch, debian, fedora]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Full bootstrap in ${{ matrix.distro }} container
+        run: docker build -f tests/docker/Dockerfile.${{ matrix.distro }} .
+
+  macos:
+    runs-on: macos-latest
+    continue-on-error: true
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install chezmoi
+        run: brew install chezmoi
+      - name: Bootstrap from checkout
+        run: chezmoi init --apply --promptBool desktop=false --source "$PWD"
+      - name: Smoke test zsh
+        run: NO_TMUX=1 zsh -ic 'echo SMOKE-OK'
