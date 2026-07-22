@@ -1,16 +1,14 @@
 #!/bin/bash
-#Todo get rid off oh my zsh -> 
+# Todo: get rid of oh-my-zsh eventually (zplug covers most of it)
+set -euo pipefail
 
-if [ ! -d "$ZPLUG_HOME" ] || [ -z "$(ls -A "$ZPLUG_HOME" 2>/dev/null)" ]; then
-	export ZPLUG_HOME=/$HOME/.zplug
-	ZPLUG_HOME=$HOME/.zplug
-	rm -rf "$ZPLUG_HOME"
-	curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
-	echo "Zplug is now installed."
+if [ ! -f "$HOME/.zplug/init.zsh" ]; then
+	echo "Installing zplug..."
+	rm -rf "$HOME/.zplug"
+	git clone --depth 1 https://github.com/zplug/zplug "$HOME/.zplug"
 else
-	echo "Zplug is available."
+	echo "zplug already installed, skipping."
 fi
-
 
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
 	echo "Getting ohmyz.sh"
