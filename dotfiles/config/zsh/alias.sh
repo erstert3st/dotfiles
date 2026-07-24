@@ -14,10 +14,9 @@ alias python='python3'
 alias k9ss='/usr/bin/k9s'
 
 ##arch
-
+alias cats='cat --style=plain'
 #alias cd='z'
 alias tree='eza --icons=auto --tree'
-alias cats='cats --style=plain'
 alias ca='chezmoi apply'
 alias cu='chezmoi update'
 alias caa='chezmoi update && source ~/.zshrc && echo dotfiles updates applied'
@@ -49,11 +48,6 @@ else
     alias lt='ls --tree'
 fi
 
-
-# Replace some more things with better alternatives
-if [[ -x /usr/bin/bat ]]; then
-    alias cat='bat --style header --style snip --style changes --style header'
-fi
 
 [ ! -x /usr/bin/yay ] && [ -x /usr/bin/paru ] && alias yay='paru'
 if [[ -f /etc/arch-release ]] || grep -q "Arch Linux" /etc/os-release 2>/dev/null; then
@@ -107,7 +101,6 @@ alias jctl="journalctl -p 3 -xb"
 
 # Recent installed packages
 alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
-alias z='zshz 2>&1'
 
 alldirs() {
   for d in */; do

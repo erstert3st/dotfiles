@@ -1,0 +1,2 @@
+- verify all executables are in .local/bin
+- verify that nothing got missed 
