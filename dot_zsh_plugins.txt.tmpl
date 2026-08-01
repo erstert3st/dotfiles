@@ -6,6 +6,9 @@
 {{-   $arch = or (eq .chezmoi.osRelease.id "arch") (contains "arch" (get .chezmoi.osRelease "idLike" | default "")) -}}
 {{-   $debian = or (eq .chezmoi.osRelease.id "debian") (eq .chezmoi.osRelease.id "ubuntu") (contains "debian" (get .chezmoi.osRelease "idLike" | default "")) (contains "ubuntu" (get .chezmoi.osRelease "idLike" | default "")) -}}
 {{- end -}}
+# must be first: stubs compdef (queued), runs compinit once fpath is complete
+mattmc3/ez-compinit
+
 # oh-my-zsh libs, cherry-picked - the full oh-my-zsh is gone
 ohmyzsh/ohmyzsh path:lib/functions.zsh
 ohmyzsh/ohmyzsh path:lib/correction.zsh
