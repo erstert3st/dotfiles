@@ -56,3 +56,69 @@ pane_history = true
 
 [ui]
 agent_panel_sort = "priority"
+
+# Gemeldete Agent-/Session-Titel auch in den Split-Pane-Rändern anzeigen
+# (wenn kein manueller Pane-Name gesetzt ist).
+show_agent_labels_on_pane_borders = true
+
+# Agent-Zeilen: 2. Zeile zeigt den Claude-Session-Titel (via claude-session-title-Plugin
+# als terminal_title gemeldet) statt des generischen Agent-Namens "claude".
+[ui.sidebar.agents]
+rows = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"]]
+
+# https://github.com/natori-hrj/herdr-lazy
+[[keys.command]]
+key = "prefix+u"
+type = "plugin_action"
+command = "herdr-lazy.manage"
+description = "manage plugins"
+
+[[keys.command]]              # Maschine an plugins.list angleichen (fehlende nachinstallieren)
+key = "prefix+shift+u"
+type = "plugin_action"
+command = "herdr-lazy.sync"
+description = "sync plugins"
+
+# https://github.com/thanhdat77/herdr-navigator
+# prefix+t ist frei (Default cycle_pane_next liegt auf prefix+tab, nicht prefix+t);
+# j/l sind durch die Pfeiltasten-Umbelegung der focus_pane_*-Keys frei geworden.
+[[keys.command]]
+key = "prefix+t"
+type = "plugin_action"
+command = "herdr-navigator.open"
+description = "jump to anything"
+
+[[keys.command]]              # dieselbe Liste als bleibendes Seiten-Pane (l = rechts)
+key = "prefix+l"
+type = "plugin_action"
+command = "herdr-navigator.open-side"
+description = "navigator side pane"
+
+[[keys.command]]              # zurück zum zuvor besuchten Workspace
+key = "prefix+j"
+type = "plugin_action"
+command = "herdr-navigator.jump-back"
+description = "jump back to last workspace"
+
+# https://github.com/AVGVSTVS96/herdr-drovr
+# Das README empfiehlt prefix+m/prefix+M — shift+m ist hier schon mirror, darum das
+# v-Paar (v = „verschieben", frei geworden durch split_vertical → prefix+plus).
+[[keys.command]]
+key = "prefix+v"
+type = "plugin_action"
+command = "drovr.move-pane"
+description = "move pane to tab"
+
+[[keys.command]]
+key = "prefix+shift+v"
+type = "plugin_action"
+command = "drovr.move-tab"
+description = "move tab to workspace"
+
+# https://github.com/natori-hrj/herdr-triage
+# Bietet nur ein Pane und keine Action — deshalb type = "shell" statt plugin_action.
+[[keys.command]]              # i = Inbox: Agenten nach Aufmerksamkeitsbedarf sortiert
+key = "prefix+i"
+type = "shell"
+command = "herdr plugin pane open --plugin triage --entrypoint list --focus"
+description = "attention triage"

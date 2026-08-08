@@ -1,0 +1,12 @@
+# herdr-lazy lock — resolved plugin set at last sync.
+# Each `owner/repo@commit` reproduces exactly via `plugin install --ref`.
+# Commits come from herdr's own `source.resolved_commit`.
+
+smarzban/herdr-file-viewer@71d4c1c3706e7958c714789b035a99d949620a9e
+natori-hrj/herdr-triage@20e8f562656479b7ca70a6b95fa3f0bf6642de64
+bcihanc/herdr-claude-session-title@b718bb1daa7c575978faf29339bc7596ae103483
+AVGVSTVS96/herdr-drovr@03f38edba501f63d3f7044fc99cf3ae55438401e
+den-tanui/herdr-zoxide@7be842fe84d8d017c80e54f8d7eb7f0f6ef28c44
+nikok6/herdr-mirror@c67a47bb6f1ad30f18d783a095326333f34810a1
+rjyo/herdr-window-title-sync@b07f1140b7308d66487b2f4be546c0c7db065569
+thanhdat77/herdr-navigator@8e90917a1a635682e435aa4627c59b3e6f7942b6

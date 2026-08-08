@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# Bringt die herdr-Plugins auf den Stand, den die Dotfiles deklarieren.
+#
+# Die Liste steht nicht mehr in diesem Skript, sondern beim Plugin-Manager
+# herdr-lazy — beide Dateien sind chezmoi-verwaltet:
+#   .config/herdr/plugins/config/herdr-lazy/plugins.list  gewünschter Satz (owner/repo)
+#   .config/herdr/plugins/config/herdr-lazy/plugins.lock  Commits, auf die gepinnt wird
+# chezmoi schreibt beide vor diesem Skript (".config" sortiert vor dem Skriptnamen),
+# 'herdr-lazy sync' installiert danach, was fehlt — an genau diesen Commits.
+#
+# run_onchange + die Hashes: läuft erneut, sobald sich eine der Listen ändert.
+# plugins.list: {{ include "dot_config/herdr/plugins/config/herdr-lazy/plugins.list" | sha256sum }}
+# plugins.lock: {{ include "dot_config/herdr/plugins/config/herdr-lazy/plugins.lock" | sha256sum }}
+
+set -euo pipefail
+
+if ! command -v herdr >/dev/null 2>&1; then
+    echo "herdr not available, skipping plugin install"
+    exit 0
+fi
+
+# plugin_root liegt in einem hash-benannten Verzeichnis; die herdr-CLI kennt den Pfad.
+# Kein Treffer -> leere Ausgabe statt Fehler.
+plugin_root() {
+    herdr plugin list --json 2>/dev/null \
+        | grep -o "\"plugin_id\":\"$1\",\"plugin_root\":\"[^\"]*\"" \
+        | sed 's/.*"plugin_root":"//; s/"$//' || true
+}
+
+# herdr-lazy verwaltet die anderen Plugins und steht darum selbst nicht in plugins.list.
+lazy_root=$(plugin_root herdr-lazy)
+if [ -z "$lazy_root" ]; then
+    echo "installing plugin manager herdr-lazy"
+    herdr plugin install natori-hrj/herdr-lazy --yes
+    lazy_root=$(plugin_root herdr-lazy)
+fi
+
+# Direkt das Binary, nicht 'herdr plugin action invoke sync': die Action läuft
+# asynchron über den Server und liefert hier keinen Exit-Code.
+"$lazy_root/target/release/herdr-lazy" sync
+
+# Config nach den Installs neu laden, damit Actions und Keybindings greifen.
+herdr server reload-config >/dev/null 2>&1 || true
+
+# claude-session-title: legt seinen Claude-Code-Hook (~/.claude/hooks/...) via
+# 'install'-Action an. Das settings.json-Template rendert die Hooks nur, wenn die
+# .sh existiert — daher hier einmalig erzeugen.
+if [ ! -f "$HOME/.claude/hooks/herdr-claude-session-title.sh" ]; then
+    herdr plugin action invoke install --plugin bcihanc.claude-session-title >/dev/null 2>&1 || true
+fi
