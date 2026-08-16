@@ -6,7 +6,8 @@ export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 mkdir -p "$ZSH_CACHE_DIR/completions"
 fpath+=("$ZSH_CACHE_DIR/completions")
 
-# antidote loads everything listed in ~/.zsh_plugins.txt (chezmoi template)
+# antidote loads everything listed in ~/.zsh_plugins.txt (chezmoi template);
+# compinit is handled by ez-compinit (first entry there) - do not call it here
 source ~/.antidote/antidote.zsh
 antidote load
 

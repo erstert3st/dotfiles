@@ -9,15 +9,16 @@
 {{- /* Debian/Ubuntu selbst oder Derivat (Mint, Pop!_OS ... haben "debian"/"ubuntu" in ID_LIKE) */ -}}
 {{-   $debian = or (eq .chezmoi.osRelease.id "debian") (eq .chezmoi.osRelease.id "ubuntu") (contains "debian" (get .chezmoi.osRelease "idLike" | default "")) (contains "ubuntu" (get .chezmoi.osRelease "idLike" | default "")) -}}
 {{- end -}}
-# ~/.zsh_plugins.txt - plugin list for antidote (https://github.com/mattmc3/antidote)
-# managed by chezmoi: edit dot_zsh_plugins.txt.tmpl in the source repo, not this file
-# loaded by ~/dotfiles/config/zsh/plugins.sh; lines are github <owner>/<repo>
-# add/uncomment a line + open a new shell to install, `antidote update` to update all
-#
-# Zeilen-Syntax: <owner>/<repo> [path:<datei|ordner>] [kind:defer|fpath]
-#   path:...    lädt nur diese Datei/diesen Ordner aus dem Repo statt allem
-#   kind:defer  lädt das Plugin verzögert nach dem ersten Prompt (schnellerer Shell-Start)
-#   kind:fpath  nimmt das Repo nur in den fpath auf (für Completions), sourcet nichts
+# must be first: stubs compdef (queued), runs compinit once fpath is complete
+mattmc3/ez-compinit
+
+# oh-my-zsh libs, cherry-picked - the full oh-my-zsh is gone
+ohmyzsh/ohmyzsh path:lib/functions.zsh
+ohmyzsh/ohmyzsh path:lib/correction.zsh
+ohmyzsh/ohmyzsh path:lib/history.zsh
+ohmyzsh/ohmyzsh path:lib/key-bindings.zsh
+ohmyzsh/ohmyzsh path:lib/completion.zsh
+ohmyzsh/ohmyzsh path:lib/directories.zsh
 
 # must be first: compdef-stub + compinit vor dem ersten Prompt (omz-plugins rufen compdef beim Sourcen)
 mattmc3/ez-compinit # kümmert sich um compinit: sofortiger compdef-Stub, echtes compinit gecacht - https://github.com/mattmc3/ez-compinit
