@@ -22,6 +22,11 @@ alias caa='chezmoi update && source ~/.zshrc && echo dotfiles updates applied'
 alias caat='chezmoi update  && source ~/.zshrc && tmux source-file ~/.tmux.conf && echo dotfiles updates applied'
 alias codew="'/mnt/c/Users/user-win/AppData/Local/Programs/Microsoft VS Code/bin/code'"
 alias ccode="chezmoi cd && code"
+
+## headroom
+alias hclaude='headroom wrap claude'
+alias hclaudes='headroom wrap claude agents'
+
 # eval $(thefuck --alias)
 # eval $(thefuck --alias fuck)
 # eval $(thefuck --alias f)
