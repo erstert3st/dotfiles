@@ -1,63 +1,76 @@
 {{- /* antidote bundle list (mattmc3/antidote), loaded by dotfiles/config/zsh/plugins.sh */ -}}
+{{- /* Template-Kopf: erkennt OS/Distro, steuert die bedingten Blöcke weiter unten */ -}}
 {{- $linux := eq .chezmoi.os "linux" -}}
 {{- $arch := false -}}
 {{- $debian := false -}}
 {{- if $linux -}}
+{{- /* Arch selbst oder Derivat (Garuda, Manjaro ... haben "arch" in ID_LIKE) */ -}}
 {{-   $arch = or (eq .chezmoi.osRelease.id "arch") (contains "arch" (get .chezmoi.osRelease "idLike" | default "")) -}}
+{{- /* Debian/Ubuntu selbst oder Derivat (Mint, Pop!_OS ... haben "debian"/"ubuntu" in ID_LIKE) */ -}}
 {{-   $debian = or (eq .chezmoi.osRelease.id "debian") (eq .chezmoi.osRelease.id "ubuntu") (contains "debian" (get .chezmoi.osRelease "idLike" | default "")) (contains "ubuntu" (get .chezmoi.osRelease "idLike" | default "")) -}}
 {{- end -}}
-# oh-my-zsh libs, cherry-picked - the full oh-my-zsh is gone
-ohmyzsh/ohmyzsh path:lib/functions.zsh
-ohmyzsh/ohmyzsh path:lib/correction.zsh
-ohmyzsh/ohmyzsh path:lib/history.zsh
-ohmyzsh/ohmyzsh path:lib/key-bindings.zsh
-ohmyzsh/ohmyzsh path:lib/completion.zsh
-ohmyzsh/ohmyzsh path:lib/directories.zsh
+# ~/.zsh_plugins.txt - plugin list for antidote (https://github.com/mattmc3/antidote)
+# managed by chezmoi: edit dot_zsh_plugins.txt.tmpl in the source repo, not this file
+# loaded by ~/dotfiles/config/zsh/plugins.sh; lines are github <owner>/<repo>
+# add/uncomment a line + open a new shell to install, `antidote update` to update all
+#
+# Zeilen-Syntax: <owner>/<repo> [path:<datei|ordner>] [kind:defer|fpath]
+#   path:...    lädt nur diese Datei/diesen Ordner aus dem Repo statt allem
+#   kind:defer  lädt das Plugin verzögert nach dem ersten Prompt (schnellerer Shell-Start)
+#   kind:fpath  nimmt das Repo nur in den fpath auf (für Completions), sourcet nichts
 
-# oh-my-zsh plugins
-ohmyzsh/ohmyzsh path:plugins/chezmoi
-ohmyzsh/ohmyzsh path:plugins/helm
-ohmyzsh/ohmyzsh path:plugins/ssh
-ohmyzsh/ohmyzsh path:plugins/sudo
-ohmyzsh/ohmyzsh path:plugins/git
-ohmyzsh/ohmyzsh path:plugins/vscode
-ohmyzsh/ohmyzsh path:plugins/python
-ohmyzsh/ohmyzsh path:plugins/docker
-ohmyzsh/ohmyzsh path:plugins/podman
-ohmyzsh/ohmyzsh path:plugins/tmux
+# must be first: compdef-stub + compinit vor dem ersten Prompt (omz-plugins rufen compdef beim Sourcen)
+mattmc3/ez-compinit # kümmert sich um compinit: sofortiger compdef-Stub, echtes compinit gecacht - https://github.com/mattmc3/ez-compinit
+
+# oh-my-zsh libs, cherry-picked - the full oh-my-zsh is gone
+# (alle aus https://github.com/ohmyzsh/ohmyzsh/tree/master/lib)
+ohmyzsh/ohmyzsh path:lib/functions.zsh    # Basis-Helfer: take (mkdir+cd), open_command, zsh_stats - https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/functions.zsh
+ohmyzsh/ohmyzsh path:lib/correction.zsh   # Tippfehler-Korrektur für Befehle (setopt correct_all) - https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/correction.zsh
+ohmyzsh/ohmyzsh path:lib/history.zsh      # History-Defaults: groß, zwischen Sessions geteilt, ohne Duplikate - https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/history.zsh
+ohmyzsh/ohmyzsh path:lib/key-bindings.zsh # Tastenbelegung: Pfeil-hoch-Suche, Home/End/Entf, Ctrl-R - https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/key-bindings.zsh
+ohmyzsh/ohmyzsh path:lib/completion.zsh   # Completion-Verhalten: case-insensitive, Auswahl-Menü, Cache - https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/completion.zsh
+ohmyzsh/ohmyzsh path:lib/directories.zsh  # Verzeichnis-Navigation: .., ..., d + 1-9 für den dirs-Stack - https://github.com/ohmyzsh/ohmyzsh/blob/master/lib/directories.zsh
+
+# oh-my-zsh plugins (alle aus https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins)
+ohmyzsh/ohmyzsh path:plugins/chezmoi # Completion + Aliase für chezmoi - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/chezmoi
+ohmyzsh/ohmyzsh path:plugins/helm    # Completion für helm (Kubernetes-Paketmanager) - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/helm
+ohmyzsh/ohmyzsh path:plugins/sudo    # 2x ESC stellt sudo vor den aktuellen/letzten Befehl - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/sudo
+ohmyzsh/ohmyzsh path:plugins/git     # die bekannten git-Aliase: gst, gco, gp, glog ... - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/git
+ohmyzsh/ohmyzsh path:plugins/vscode  # öffnet Dateien/Ordner in VS Code: vsc, vscd ... - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/vscode
+ohmyzsh/ohmyzsh path:plugins/docker  # docker-Aliase (dps, dex, dl ...) + Completion - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/docker
+ohmyzsh/ohmyzsh path:plugins/tmux    # tmux-Aliase (ta, ts, tl ...) + Autostart-Optionen - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/tmux
 {{ if eq .chezmoi.os "darwin" -}}
-ohmyzsh/ohmyzsh path:plugins/brew
+ohmyzsh/ohmyzsh path:plugins/brew    # Homebrew-Aliase (bubu, bubo ...), nur macOS - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/brew
+ohmyzsh/ohmyzsh path:plugins/macos    # macOS-Helfer: ofd, pfd, cdf, quick-look ... - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/macos
 {{ end -}}
 # enable on demand:
-# ohmyzsh/ohmyzsh path:plugins/macos
-# ohmyzsh/ohmyzsh path:plugins/oc
-# ohmyzsh/ohmyzsh path:plugins/minikube
-# ohmyzsh/ohmyzsh path:plugins/pipenv
-# ohmyzsh/ohmyzsh path:plugins/dotnet
-# ohmyzsh/ohmyzsh path:plugins/ansible
+# ohmyzsh/ohmyzsh path:plugins/oc       # Completion für die OpenShift-CLI oc - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/oc
+# ohmyzsh/ohmyzsh path:plugins/minikube # Completion für minikube - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/minikube
+# ohmyzsh/ohmyzsh path:plugins/dotnet   # Completion + Aliase für die dotnet-CLI - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/dotnet
+# ohmyzsh/ohmyzsh path:plugins/ansible  # ansible-Aliase: a, aplay, ainv ... - https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ansible
+#dwaynebradley/k3d-oh-my-zsh-plugin kind:defer        # Aliase + Completion für k3d (k3s-Cluster in Docker) - https://github.com/dwaynebradley/k3d-oh-my-zsh-plugin
 
 # ex-zplug plugins
-Aloxaf/fzf-tab kind:defer
-zsh-users/zsh-autosuggestions kind:defer
-MichaelAquilina/zsh-you-should-use kind:defer
-MichaelAquilina/zsh-autoswitch-virtualenv kind:defer
-zshzoo/cd-ls kind:defer
-MichaelAquilina/zsh-auto-notify kind:defer
-fdellwing/zsh-bat kind:defer
-dwaynebradley/k3d-oh-my-zsh-plugin kind:defer
-hlissner/zsh-autopair kind:defer
-zsh-users/zsh-completions kind:fpath
+zsh-users/zsh-autosuggestions kind:defer             # graue Vorschläge aus der History beim Tippen, Pfeil-rechts übernimmt - https://github.com/zsh-users/zsh-autosuggestions
+MichaelAquilina/zsh-auto-notify kind:defer           # Desktop-Benachrichtigung, wenn ein langer Befehl fertig ist - https://github.com/MichaelAquilina/zsh-auto-notify
+
+Aloxaf/fzf-tab kind:defer                            # Tab-Completion als fzf-Fuzzy-Menü (Konfig in plugins.sh) - https://github.com/Aloxaf/fzf-tab
+MichaelAquilina/zsh-you-should-use kind:defer        # erinnert, wenn es für den getippten Befehl einen Alias gibt (YSU_* in plugins.sh) - https://github.com/MichaelAquilina/zsh-you-should-use
+zshzoo/cd-ls kind:defer                              # führt nach jedem cd automatisch ls aus - https://github.com/zshzoo/cd-ls
+fdellwing/zsh-bat kind:defer                         # ersetzt cat durch bat (Syntax-Highlighting) - https://github.com/fdellwing/zsh-bat
+zsh-users/zsh-completions path:src kind:fpath        # zusätzliche Completions für viele Tools (path:src = nur die Definitionen) - https://github.com/zsh-users/zsh-completions
 {{ if $arch -}}
-Junker/zsh-archlinux kind:defer
+Junker/zsh-archlinux kind:defer                      # pacman/AUR-Aliase und -Funktionen für Arch - https://github.com/Junker/zsh-archlinux
 {{ end -}}
 {{ if $debian -}}
-GeoLMg/apt-zsh-plugin kind:defer
+GeoLMg/apt-zsh-plugin kind:defer                     # apt-Aliase für Debian/Ubuntu - https://github.com/GeoLMg/apt-zsh-plugin
 {{ end -}}
 {{ if not $arch -}}
-# on Arch find-the-command (alias.sh) covers this
-Freed-Wu/zsh-command-not-found kind:defer
+# on Arch find-the-command (alias.sh) covers thisfff
+Freed-Wu/zsh-command-not-found kind:defer            # schlägt bei unbekanntem Befehl das passende Paket vor - https://github.com/Freed-Wu/zsh-command-not-found
 {{ end -}}
 
 # keep these two last, in this order
-zsh-users/zsh-syntax-highlighting kind:defer
-zsh-users/zsh-history-substring-search kind:defer
+#zsh-users/zsh-syntax-highlighting kind:defer         # färbt die Eingabezeile live (grün=gültig, rot=Fehler), muss spät laden - https://github.com/zsh-users/zsh-syntax-highlighting
+zsh-users/zsh-history-substring-search kind:defer    # Pfeil hoch/runter durchsucht die History nach dem Getippten, nach syntax-highlighting - https://github.com/zsh-users/zsh-history-substring-search
+zdharma-continuum/fast-syntax-highlighting kind:defer  # schnelleres Syntax-Highlighting als zsh-syntax-highlighting, muss ganz zuletzt laden -

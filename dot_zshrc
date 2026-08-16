@@ -1,24 +1,5 @@
 current_shell="zsh"
-
-
-SAVEHIST=10000
-#source /Users/user/.Dotfiles/zsh/config.sh
 unset zle_bracketed_paste
-
-
-
 
 source ~/dotfiles/config/zsh/config.sh
 # eval "$(logcli --completion-script-zsh)"
-alias fluxA='flux get helmreleases -A && echo -e "\n\n----------------- kustomizations ------------------------\n\n" && flux get kustomizations -A'
-export DOCKER_BUILDKIT=1
-export DISABLE_BRACKETED_PASTE=true
-export UPDATE_AUR=1
-export PACMAN_NOCONFIRM=1
-#export BUILDKIT=1
-export COMPOSE_DOCKER_CLI_BUILD=1
-#export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
-export DOCKER_HOST=unix:///var/run/docker.sock
-
-
-

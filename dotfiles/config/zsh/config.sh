@@ -19,7 +19,8 @@ eval "$(zoxide init zsh)"
 # this the spawned shell would start herdr again, forever.
 if [[ -o interactive && -n "$STARTUP_MUX" && -z "$STARTUP_MUX_ACTIVE" \
       && -z "$VSCODE_PID" && "$TERM_PROGRAM" != "vscode" \
-      && -z "$TMUX" && -z "$SSH_CONNECTION" && -z "$NO_TMUX" ]] \
+      && -z "$TMUX" && -z "$SSH_CONNECTION" && -z "$NO_TMUX" \
+      && ( -n "$DISPLAY" || -n "$WAYLAND_DISPLAY" ) ]] \
    && (( $+commands[${STARTUP_MUX%% *}] )); then
   export STARTUP_MUX_ACTIVE=1
   eval "$STARTUP_MUX"
