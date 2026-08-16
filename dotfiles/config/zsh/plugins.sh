@@ -9,7 +9,6 @@ fpath+=("$ZSH_CACHE_DIR/completions")
 # antidote loads everything listed in ~/.zsh_plugins.txt (chezmoi template)
 source ~/.antidote/antidote.zsh
 antidote load
-autoload -Uz compinit && compinit
 
 #fzf complet -> configure it https://github.com/Aloxaf/fzf-tab?tab=readme-ov-file#configure
 zstyle ':completion:*:descriptions' format '[%d]'

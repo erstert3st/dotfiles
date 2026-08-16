@@ -1,1 +1,1 @@
-export PATH="/usr/bin/:$HOME/.local/bin:/var/lib/snapd/snap/bin:/usr/local/bin:$HOME/.spicetify:$HOME/.bun/bin:$HOME/.lmstudio/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.bun/bin:$HOME/.spicetify:$HOME/.lmstudio/bin:${KREW_ROOT:-$HOME/.krew}/bin:/var/lib/snapd/snap/bin:$PATH"

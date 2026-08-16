@@ -4,7 +4,6 @@ export ENABLE_CORRECTION="true"
 export HIST_STAMPS="dd.mm.yyyy"
 export EDITOR="nano"
 #export STARSHIP_CONFIG=$HOME/.Dotfiles/starship/starship.toml
-export TERM="xterm-256color"
 # Multiplexer that config.sh auto-starts; empty disables it.
 # Prefer herdr where it is installed, otherwise fall back to tmux.
 if command -v herdr >/dev/null 2>&1; then
@@ -22,9 +21,10 @@ export LESS='-RM'
 export BAT_PAGER="cat"
 export BAT_THEME="Visual Studio Dark+"
 
-#  TERM=xterm-256color
-
- export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export DOCKER_BUILDKIT=1
+export COMPOSE_DOCKER_CLI_BUILD=1
+export UPDATE_AUR=1
+export PACMAN_NOCONFIRM=1
 # if [[ "$OSTYPE" == "darwin"* ]]; then
 #     echo "You are on a Mac"
 # else
