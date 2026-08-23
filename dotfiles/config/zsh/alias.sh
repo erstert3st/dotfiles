@@ -125,6 +125,9 @@ alldirs() {
 # SSH_AUTH_SOCK wird in env.sh gesetzt, daher genügt hier plain ssh-add.
 alias mirror-key='ssh-add ~/.ssh/id_ed25519'
 
+# Headless-Boot: GUI bei Bedarf starten (SDDM wechselt selbst aufs richtige VT).
+alias gui='sudo systemctl start sddm.service'
+
 # copy/clip: Dateiinhalt (oder stdin) in die Zwischenablage.
 #   copy datei.txt          # Datei kopieren
 #   cmd | clip              # Pipe kopieren
