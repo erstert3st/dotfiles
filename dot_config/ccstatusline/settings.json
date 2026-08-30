@@ -3,6 +3,89 @@
   "lines": [
     [
       {
+        "id": "1",
+        "type": "model",
+        "color": "magenta",
+        "rawValue": true
+      },
+      {
+        "id": "4",
+        "type": "separator"
+      },
+      {
+        "id": "efc887de-619b-4cdc-98f0-c436368c73f0",
+        "type": "thinking-effort",
+        "color": "cyan",
+        "rawValue": true
+      },
+      {
+        "id": "fd37017a-f1ac-4edb-b023-cae4607d6f21",
+        "type": "separator"
+      },
+      {
+        "id": "59462033-49db-4b5c-b1dc-67e093f9fae5",
+        "type": "session-usage",
+        "color": "brightBlue",
+        "rawValue": true,
+        "metadata": {
+          "display": "time"
+        }
+      },
+      {
+        "id": "e59e454e-b3dc-4fed-ac9a-53ad9b08e31d",
+        "type": "separator"
+      },
+      {
+        "id": "3c413326-8cd6-4ae6-a70b-fd562dd62aae",
+        "type": "reset-timer",
+        "color": "green",
+        "rawValue": true,
+        "metadata": {
+          "compact": "true",
+          "absolute": "false"
+        }
+      },
+      {
+        "id": "49d08773-6009-4a44-ba45-dafa9a3cf2cc",
+        "type": "separator"
+      },
+      {
+        "id": "57d2b90c-d0c5-423a-837d-3c8f565eebbe",
+        "type": "custom-text",
+        "customText": "W:",
+        "color": "brightBlue"
+      },
+      {
+        "id": "1acf68cc-eee5-4d39-8f27-eb10adbc4a88",
+        "type": "weekly-usage",
+        "metadata": {
+          "display": "time"
+        },
+        "rawValue": true
+      },
+      {
+        "id": "772332a0-3dd8-4ab2-ae3d-0f0e34bf602e",
+        "type": "separator"
+      },
+      {
+        "id": "854e2c9f-5cf7-498a-a89d-1c5a181bbddc",
+        "type": "remote-control-status"
+      }
+    ],
+    [
+      {
+        "id": "11d09b1e-19a5-4e1c-a265-d96a8dc868b3",
+        "type": "current-working-dir",
+        "rawValue": true,
+        "metadata": {
+          "fishStyle": "true"
+        }
+      },
+      {
+        "id": "24d47483-e056-4923-8a58-1eca0ddfc26b",
+        "type": "separator"
+      },
+      {
         "id": "03819849-4bd2-46fc-a1bd-93b76f746bd2",
         "type": "git-branch"
       },
@@ -22,51 +105,89 @@
       {
         "id": "ef1cdc5e-d8a9-4dec-8750-e198d5085a8b",
         "type": "git-changes"
+      },
+      {
+        "id": "9e64e8c6-f164-4923-a4da-44fe9750faec",
+        "type": "separator"
       }
     ],
     [
       {
-        "id": "1",
-        "type": "model",
-        "color": "yellow"
+        "id": "ed22929d-632c-4687-a7af-d4ff797be695",
+        "type": "context-percentage",
+        "rawValue": true,
+        "metadata": {
+          "inverse": "false",
+          "display": "slider-only"
+        }
       },
       {
-        "id": "4",
+        "id": "c60d2fac-0029-4bff-8558-69374f10e394",
         "type": "separator"
       },
       {
-        "id": "efc887de-619b-4cdc-98f0-c436368c73f0",
-        "type": "thinking-effort",
-        "color": "cyan"
+        "id": "539229fc-00f9-49f3-88ba-70aea2246829",
+        "type": "custom-text",
+        "color": "cyan",
+        "customText": "Ca:"
       },
       {
-        "id": "fd37017a-f1ac-4edb-b023-cae4607d6f21",
+        "id": "d0dc620d-36bc-4e0a-aaeb-04c57b38d102",
+        "type": "tokens-cached",
+        "rawValue": true
+      },
+      {
+        "id": "9708468a-78fd-44e1-9a14-9b4602f45f9c",
         "type": "separator"
       },
       {
-        "id": "59462033-49db-4b5c-b1dc-67e093f9fae5",
-        "type": "session-usage",
-        "color": "brightBlue"
+        "id": "b976fc9d-fdb6-42cd-87fe-a41fe18eb032",
+        "type": "tokens-input"
       },
       {
-        "id": "eff9ca47-8375-47de-ba7a-4cdcce11c666",
+        "id": "7300110b-89b2-442f-8035-be5bb0b80465",
         "type": "separator"
       },
       {
-        "id": "c844d12d-5f8b-4ee0-966c-ec06c39d37e6",
-        "type": "reset-timer",
-        "color": "brightBlack"
+        "id": "37a8fc02-5909-44f0-95e1-125a9e20ed20",
+        "type": "tokens-output",
+        "color": "magenta"
       },
       {
-        "id": "6",
+        "id": "4e02f112-d4bb-49ea-8cf1-37d2005d38da",
         "type": "separator"
       },
       {
-        "id": "854e2c9f-5cf7-498a-a89d-1c5a181bbddc",
-        "type": "remote-control-status"
+        "id": "024b67d9-01a5-48b2-b946-4fe46044b6c1",
+        "type": "tokens-total",
+        "rawValue": true
+      },
+      {
+        "id": "fcd432c3-0665-42ed-bf7f-f4b15f7a340f",
+        "type": "separator"
+      },
+      {
+        "id": "759415a9-2398-4592-aaee-44006bd7f4c0",
+        "type": "cache-hit-rate",
+        "rawValue": true,
+        "metadata": {
+          "cacheScopeSession": "true"
+        }
+      },
+      {
+        "id": "8c944535-ee86-4ae4-bf7a-377b49ea5acc",
+        "type": "separator"
+      },
+      {
+        "id": "35e7e4cf-80b9-481d-8aa7-0aabb7b0fbe4",
+        "type": "session-clock",
+        "rawValue": true
+      },
+      {
+        "id": "8678e707-4f64-44d1-8617-5a666329774e",
+        "type": "separator"
       }
-    ],
-    []
+    ]
   ],
   "flexMode": "full-minus-40",
   "compactThreshold": 60,
@@ -90,6 +211,6 @@
   },
   "installation": {
     "method": "pinned",
-    "installedVersion": "2.2.22"
+    "installedVersion": "2.2.27"
   }
 }
