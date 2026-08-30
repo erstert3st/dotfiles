@@ -52,7 +52,7 @@ command = "herdr plugin action invoke start --plugin mirror"
 # Kitty-Graphics-Rendering im angehängten Client (braucht kompatibles Outer-Terminal)
 kitty_graphics = true
 # Pane-Screen-History über volle Server-Neustarts hinweg erhalten
-pane_history = true
+pane_history = false
 
 [ui]
 agent_panel_sort = "priority"
@@ -63,6 +63,21 @@ show_agent_labels_on_pane_borders = true
 
 # Agent-Zeilen: 2. Zeile zeigt den Claude-Session-Titel (via claude-session-title-Plugin
 # als terminal_title gemeldet) statt des generischen Agent-Namens "claude".
+status_indicators = "symbols"
+
+# Statusleiste rechts in der Tab-Zeile — Adaption der tmux-Statusline
+# (~/dotfiles/config/tmux/style.conf: primary_ip · CPU · RAM · weather).
+# Die Segment-Skripte liegen in ~/.config/herdr/status/ und laufen auf dem
+# herdr-Server, also bei `--remote`/mirror mit den Werten der Gegenseite.
+tab_bar_right = [
+  { type = "zoom" },
+  { type = "command", command = "~/.config/herdr/status/ip.sh", interval_seconds = 60, timeout_seconds = 5 },
+  { type = "command", command = "~/.config/herdr/status/cpu.sh", interval_seconds = 5, timeout_seconds = 3 },
+  { type = "command", command = "~/.config/herdr/status/mem.sh", interval_seconds = 5, timeout_seconds = 3 },
+  { type = "command", command = "~/.config/herdr/status/weather.sh", interval_seconds = 900, timeout_seconds = 10 },
+  { type = "datetime", format = "%d.%m %H:%M" },
+]
+tab_bar_right_separator = " · "
 [ui.sidebar.agents]
 rows = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"]]
 
@@ -122,3 +137,13 @@ key = "prefix+i"
 type = "shell"
 command = "herdr plugin pane open --plugin triage --entrypoint list --focus"
 description = "attention triage"
+
+[ui.toast]
+delivery = "terminal"
+
+[theme]
+name = "catppuccin"
+auto_switch = false
+
+[session]
+resume_agents_on_restore = false
