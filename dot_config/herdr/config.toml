@@ -80,7 +80,7 @@ tab_bar_right = [
   { type = "command", command = "~/.config/herdr/status/weather.sh", interval_seconds = 900, timeout_seconds = 10 },
   { type = "datetime", format = "%d.%m %H:%M" },
 ]
-tab_bar_right_separator = " · "
+tab_bar_right_separator = " | "
 [ui.sidebar.agents]
 rows = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"]]
 
