@@ -1,5 +1,6 @@
 {
   "agentPushNotifEnabled": true,
+  "askUserQuestionTimeout": "never",
   "autoUpdatesChannel": "latest",
   "editorMode": "normal",
   "effortLevel": "xhigh",
@@ -7,20 +8,14 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
-  "extraKnownMarketplaces": {
-    "caveman": {
-      "source": {
-        "repo": "JuliusBrussee/caveman",
-        "source": "github"
-      }
-    }
-  },
 {{- $agentHook := joinPath .chezmoi.homeDir ".claude/hooks/herdr-agent-state.sh" }}
 {{- $titleHook := joinPath .chezmoi.homeDir ".claude/hooks/herdr-claude-session-title.sh" }}
 {{- $hasAgent := stat $agentHook }}
 {{- $hasTitle := stat $titleHook }}
-{{- if or $hasAgent $hasTitle }}
+{{- $hasRtk := lookPath "rtk" }}
+{{- if or $hasAgent $hasTitle $hasRtk }}
   "hooks": {
+{{- if or $hasAgent $hasTitle }}
     "SessionStart": [
 {{- if $hasAgent }}
       {
@@ -68,10 +63,25 @@
           }
         ]
       }
-    ]{{ end }}
+    ]{{ end }}{{ if $hasRtk }},{{ end }}
+{{- end }}
+{{- if $hasRtk }}
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "rtk hook claude",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
+      }
+    ]
+{{- end }}
   },
 {{- end }}
   "language": "German",
+  "model": "opus[1m]",
   "permissions": {
     "allow": [
       "mcp__claude-in-chrome__navigate",

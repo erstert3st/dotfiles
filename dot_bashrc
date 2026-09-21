@@ -20,7 +20,21 @@ current_shell="bash"
 
 
 
+export XDG_CURRENT_DESKTOP=sway
+export XDG_SESSION_TYPE=wayland
+
 source ~/dotfiles/config/zsh/path.sh
 source ~/dotfiles/config/zsh/alias.sh
-source ~/dotfiles/config/zsh/env.sh
+ source ~/dotfiles/config/zsh/env.sh
 eval "$(zoxide init bash)"
+
+# >>> headroom persistent env >>>
+export HEADROOM_PORT="8787"
+export HEADROOM_HOST="127.0.0.1"
+export HEADROOM_MODE="token"
+export HEADROOM_BACKEND="anthropic"
+export HEADROOM_TELEMETRY="off"
+export HEADROOM_MEMORY_ENABLED="1"
+export ANTHROPIC_BASE_URL="http://127.0.0.1:8787"
+export ENABLE_TOOL_SEARCH="true"
+# <<< headroom persistent env <<<

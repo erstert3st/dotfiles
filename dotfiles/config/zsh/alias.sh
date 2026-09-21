@@ -175,10 +175,3 @@ herdr-lazy() {
     }
     "$root/target/release/herdr-lazy" "$@"
 }
-
-## headroom autostart (systemd --user, Profil "default")
-alias hrstat='systemctl --user status headroom-default.service --no-pager'
-alias hrlog='journalctl --user -u headroom-default.service -f'
-alias hrup='systemctl --user restart headroom-default.service'
-alias hrdown='systemctl --user stop headroom-default.service'
-alias hrhealth='curl -s http://127.0.0.1:8787/readyz | jq .'
