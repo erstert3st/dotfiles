@@ -14,6 +14,14 @@
 {{- end }}
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "repo": "JuliusBrussee/caveman",
+        "source": "github"
+      }
+    }
+  },
 {{- $agentHook := joinPath .chezmoi.homeDir ".claude/hooks/herdr-agent-state.sh" }}
 {{- if stat $agentHook }}
   "hooks": {
@@ -26,13 +34,24 @@
             "type": "command"
           }
         ],
-        "matcher": "*"
+        "matcher": "^(startup|resume|clear|compact|fork)$"
       }
     ]
   },
 {{- end }}
   "language": "German",
-  "model": "opus[1m]",
+  "model": "opus",
+  "modelSettings": {
+    "claude-fable-5-1": {
+      "effortLevel": "xhigh"
+    },
+    "claude-opus-5": {
+      "effortLevel": "high"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    }
+  },
   "permissions": {
     "allow": [
       "mcp__claude-in-chrome__navigate",
