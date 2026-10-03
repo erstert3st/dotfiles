@@ -1,0 +1,11 @@
+# >>> herdr status bar >>>
+# Standort für ~/.config/herdr/status/weather.sh (Ortsname oder "lat,lon").
+# Ungesetzt = das Skript nimmt seinen Default "Wien".
+# Muss hier stehen, nicht in ~/.zshrc: herdr startet Statusleisten-Kommandos via
+# /bin/sh -lc — das liest /etc/profile und ~/.profile, aber keine zsh-Configs.
+# Wird bei jedem Tick neu gelesen, kein `herdr server reload-config` nötig.
+{{- /* value comes from the per-machine chezmoi.toml (.chezmoi.toml.tmpl), not this public repo */}}
+{{- if and (hasKey . "weatherLocation") .weatherLocation }}
+export HERDR_WEATHER_LOCATION={{ .weatherLocation | quote }}
+{{- end }}
+# <<< herdr status bar <<<

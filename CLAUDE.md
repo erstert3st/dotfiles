@@ -23,6 +23,10 @@ containers included.
   Non-interactive: `chezmoi init --promptBool desktop=false`. Templates must
   read it as `default false .desktop` (machines that never re-ran init have no
   value).
+- `weatherLocation` (`promptStringOnce`, feeds `HERDR_WEATHER_LOCATION` in
+  `dot_profile.tmpl`) stays in the per-machine `chezmoi.toml`: this repo is
+  public. Non-interactive: `chezmoi init --promptString
+  "herdr weather location (empty for default)=<place>"` (keyed by prompt text).
 - `.chezmoiignore` keeps Claude runtime state out of the repo and hides GUI
   configs (hypr, ghostty, kitty) on non-desktop machines. Ignored ≠ deleted: already
   applied files stay on the target.

@@ -51,4 +51,4 @@ if [[ -o interactive && -z "$WAYLAND_DISPLAY" && "$(tty)" == /dev/tty[0-9]* ]]; 
   print -P "%F{cyan}└──────────────────────────────────────────────┘%f"
 fi
 
-alias pong='echo ping | /home/user1/.local/bin/claude -p --model haiku --effort low'
+alias pong='echo ping | $HOME/.local/bin/claude -p --model haiku --effort low'

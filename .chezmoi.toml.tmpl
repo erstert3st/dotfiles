@@ -1,6 +1,14 @@
 {{/* asked once at 'chezmoi init' ("desktop" = GUI packages + configs).
      Non-interactive (CI/containers): chezmoi init --promptBool desktop=false */}}
 {{- $desktop := promptBoolOnce . "desktop" "desktop" true -}}
+{{/* weatherLocation feeds HERDR_WEATHER_LOCATION in ~/.profile. It stays in the
+     per-machine chezmoi.toml because this repo is public. Empty = weather.sh default.
+     Only prompted with a TTY, so CI/container bootstraps stay non-interactive. */}}
+{{- $weather := "" -}}
+{{- if or stdinIsATTY (hasKey . "weatherLocation") -}}
+{{-   $weather = promptStringOnce . "weatherLocation" "herdr weather location (empty for default)" "" -}}
+{{- end -}}
 
 [data]
     desktop = {{ $desktop }}
+    weatherLocation = {{ $weather | quote }}
