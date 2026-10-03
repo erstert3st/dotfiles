@@ -52,16 +52,16 @@
       {
         "id": "57d2b90c-d0c5-423a-837d-3c8f565eebbe",
         "type": "custom-text",
-        "customText": "W:",
-        "color": "brightBlue"
+        "color": "brightBlue",
+        "customText": "W:"
       },
       {
         "id": "1acf68cc-eee5-4d39-8f27-eb10adbc4a88",
         "type": "weekly-usage",
+        "rawValue": true,
         "metadata": {
           "display": "time"
-        },
-        "rawValue": true
+        }
       },
       {
         "id": "772332a0-3dd8-4ab2-ae3d-0f0e34bf602e",
@@ -74,12 +74,25 @@
     ],
     [
       {
+        "id": "f0d30941-0692-4388-84d6-8f6432a182f6",
+        "type": "custom-command",
+        "color": "blue",
+        "commandPath": "hostname"
+      },
+      {
+        "id": "1e5b3077-694b-4458-9d8c-6e24da21de9d",
+        "type": "custom-text",
+        "color": "magenta",
+        "customText": "\uf337"
+      },
+      {
         "id": "11d09b1e-19a5-4e1c-a265-d96a8dc868b3",
         "type": "current-working-dir",
         "rawValue": true,
         "metadata": {
           "fishStyle": "true"
-        }
+        },
+        "color": "brightBlue"
       },
       {
         "id": "24d47483-e056-4923-8a58-1eca0ddfc26b",
@@ -199,7 +212,7 @@
   "powerline": {
     "enabled": false,
     "separators": [
-      ""
+      "\ue0b0"
     ],
     "separatorInvertBackground": [
       false
@@ -211,6 +224,6 @@
   },
   "installation": {
     "method": "pinned",
-    "installedVersion": "2.2.27"
+    "installedVersion": "2.2.30"
   }
 }

@@ -1,0 +1,3 @@
+# ~/.zprofile — wird nur bei Login-Shells gelesen (z.B. tty-Login)
+
+export PATH="$HOME/.local/bin:$PATH"

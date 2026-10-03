@@ -48,7 +48,7 @@
     ]
   },
   "preferredNotifChannel": "kitty",
-  "remoteControlAtStartup": {{ if eq (output "uname" "-n" | trim) "machine" }}true{{ else }}false{{ end }},
+  "remoteControlAtStartup": {{ if eq (output "uname" "-n" | trim) "garuda" }}true{{ else }}false{{ end }},
   "skillOverrides": {
     "anthropic-skills:pdf": "off",
     "anthropic-skills:docx": "off",
