@@ -1,0 +1,24 @@
+---
+name: plan-review
+description: Open the current plan in Plannotator's review UI with an Approve button. Only on explicit /plan-review; plan mode no longer opens Plannotator by itself.
+argument-hint: "[plan.md]"
+allowed-tools: Bash({{ .chezmoi.homeDir }}/.claude/skills/plan-review/plan-review.sh:*)
+disable-model-invocation: true
+---
+
+# Plan Review
+
+Plan file: given as argument, otherwise the newest `*.md` in `~/.claude/plans/`.
+
+## Review result
+
+!`{{ .chezmoi.homeDir }}/.claude/skills/plan-review/plan-review.sh $ARGUMENTS`
+
+## Your task
+
+The output above is one JSON record from `plannotator annotate --gate --json`, or an error.
+
+1. `"decision": "approved"`: the user approved the plan. If it carries `"feedback"`, treat it as non-blocking guidance for the implementation. Say so in one sentence and wait for the user; do not start implementing on your own.
+2. `"decision": "dismissed"`: the user closed the session without a decision. Say so in one sentence and stop.
+3. `"decision": "annotated"`: revise the plan according to `"feedback"`, write it back to the same file, and tell the user to run `/plan-review` again.
+4. An error (no plan file found, unknown path): report it and stop. Do not guess another file.

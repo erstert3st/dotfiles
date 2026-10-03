@@ -7,6 +7,11 @@
   "effortLevel": "xhigh",
   "enabledPlugins": {},
   "env": {
+{{- if has (output "uname" "-n" | trim) (list "cachyos" "garuda") }}
+    "PLANNOTATOR_REMOTE": "1",
+    "PLANNOTATOR_PORT": "19432",
+    "PLANNOTATOR_AGENT_TERMINAL_REMOTE": "1",
+{{- end }}
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
 {{- $agentHook := joinPath .chezmoi.homeDir ".claude/hooks/herdr-agent-state.sh" }}
