@@ -36,6 +36,9 @@ function desclaude {
 # Claude in Chrome on demand (claudeInChromeDefaultEnabled is off to keep context small).
 # Plain claude, no headroom: its lossy compression would mangle DOM/console/network output.
 alias bclaude='claude --chrome'
+# Homelab session: TrueNAS + Home Assistant MCP (tools pre-approved) plus Claude in Chrome.
+# --chrome stays last: --mcp-config/--allowedTools are variadic and eat a prompt.
+alias trueclaude="claude --mcp-config ~/.claude/mcp/truenas.json ~/.claude/mcp/ha-mcp.json --allowedTools 'mcp__truenas__*' 'mcp__ha-mcp__*' --chrome"
 # --- GUI on demand (headless-boot box) ---
 # Start the graphical desktop manually from the text console.
 # Detaches any herdr client bound to a text console (ttyN) first, so the

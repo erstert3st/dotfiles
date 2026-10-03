@@ -1,0 +1,1 @@
+{ "mcpServers": { "truenas": { "type": "stdio", "command": "/home/user1/.local/bin/truenas-mcp-wrapper", "args": [] } } }
