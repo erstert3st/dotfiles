@@ -18,15 +18,15 @@ export DOCKER_HOST=unix:///var/run/docker.sock
 alias headHard="headroom proxy --memory  --learn  --code-aware"
 # headroom + serena only on demand; --no-mcp/--code-memory none stop wrap from
 # registering MCP servers in user scope, they come from --mcp-config instead.
-alias hclaude="HEADROOM_MODE=token HEADROOM_CODE_AWARE_ENABLED=1 HEADROOM_OUTPUT_SHAPER=1 headroom wrap claude --memory --learn --no-mcp --code-memory none --mcp-config ~/.claude/mcp/hclaude.json --settings ~/.claude/rtk-settings.json --append-system-prompt-file ~/.claude/RTK.md"
+alias claude-headroom="HEADROOM_MODE=token HEADROOM_CODE_AWARE_ENABLED=1 HEADROOM_OUTPUT_SHAPER=1 headroom wrap claude --memory --learn --no-mcp --code-memory none --mcp-config ~/.claude/mcp/hclaude.json --settings ~/.claude/rtk-settings.json --append-system-prompt-file ~/.claude/RTK.md"
 # Inkscape design session. The Inkscape GUI is the live D-Bus bridge for inkscape_mcp
 # (the MCP only auto-starts it on Windows). Optional first arg: .svg to open.
 # --append-system-prompt-file stays last: --mcp-config/--allowedTools are variadic and eat a prompt.
-function desclaude {
+function claude-design {
   local file=""
   if [[ $1 == *.svg ]]; then file=${1:A}; shift; fi
   if [[ -z $WAYLAND_DISPLAY && -z $DISPLAY ]]; then
-    print -u2 "desclaude: no GUI session, Inkscape not started (headless MCP only)"
+    print -u2 "claude-design: no GUI session, Inkscape not started (headless MCP only)"
   elif [[ -n $file ]] || ! pgrep -x inkscape >/dev/null; then
     setsid -f inkscape ${file:+"$file"} &>/dev/null
   fi
@@ -35,10 +35,23 @@ function desclaude {
 }
 # Claude in Chrome on demand (claudeInChromeDefaultEnabled is off to keep context small).
 # Plain claude, no headroom: its lossy compression would mangle DOM/console/network output.
-alias bclaude='claude --chrome'
+alias claude-browser='claude --chrome'
 # Homelab session: TrueNAS + Home Assistant MCP (tools pre-approved) plus Claude in Chrome.
 # --chrome stays last: --mcp-config/--allowedTools are variadic and eat a prompt.
-alias trueclaude="claude --mcp-config ~/.claude/mcp/truenas.json ~/.claude/mcp/ha-mcp.json --allowedTools 'mcp__truenas__*' 'mcp__ha-mcp__*' --chrome"
+alias claude-truenas="claude --mcp-config ~/.claude/mcp/truenas.json ~/.claude/mcp/ha-mcp.json --allowedTools 'mcp__truenas__*' 'mcp__ha-mcp__*' --chrome"
+alias claude-ping='echo ping | $HOME/.local/bin/claude -p --model haiku --effort low'
+# Vault session: jump into the brain-dump Obsidian vault and list open tasks.
+# Falls back to the fixed path when zoxide has no match; cd fails loudly if it is missing.
+alias claude-brain='{ z brain-dump 2>/dev/null || cd ~/Documents/gits/brain-dump; } && claude "offene Aufgaben los"'
+alias claude-work=claude-brain
+alias claude-swap=claude-brain
+alias brain=claude-brain
+# Old short names, kept as aliases of the claude-* commands.
+alias hclaude=claude-headroom
+alias desclaude=claude-design
+alias bclaude=claude-browser
+alias trueclaude=claude-truenas
+alias pong=claude-ping
 # --- GUI on demand (headless-boot box) ---
 # Start the graphical desktop manually from the text console.
 # Detaches any herdr client bound to a text console (ttyN) first, so the
@@ -53,5 +66,3 @@ if [[ -o interactive && -z "$WAYLAND_DISPLAY" && "$(tty)" == /dev/tty[0-9]* ]]; 
   print -P "%F{cyan}│%f    %F{green}gui%f   %F{240}(starts Hyprland)       %f            %F{cyan}│%f"
   print -P "%F{cyan}└──────────────────────────────────────────────┘%f"
 fi
-
-alias pong='echo ping | $HOME/.local/bin/claude -p --model haiku --effort low'
