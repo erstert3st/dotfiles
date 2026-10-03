@@ -42,10 +42,3 @@ fi
 
 # Config nach den Installs neu laden, damit Actions und Keybindings greifen.
 herdr server reload-config >/dev/null 2>&1 || true
-
-# claude-session-title: legt seinen Claude-Code-Hook (~/.claude/hooks/...) via
-# 'install'-Action an. Das settings.json-Template rendert die Hooks nur, wenn die
-# .sh existiert — daher hier einmalig erzeugen.
-if [ ! -f "$HOME/.claude/hooks/herdr-claude-session-title.sh" ]; then
-    herdr plugin action invoke install --plugin bcihanc.claude-session-title >/dev/null 2>&1 || true
-fi

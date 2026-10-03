@@ -27,26 +27,12 @@ next_workspace = "prefix+shift+right"
 previous_tab = "prefix+p"
 next_tab = "prefix+n"
 
-# https://github.com/smarzban/herdr-file-viewer
-[[keys.command]]              # open in a split beside your work
+# https://github.com/persiyanov/herdr-reviewr
+[[keys.command]]              # Review-Pane (Diff + Dateien) öffnen/schließen
 key = "prefix+f"
-type = "shell"
-command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewer"
-
-[[keys.command]]              # …or in its own tab
-key = "prefix+shift+f"
-type = "shell"
-command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-viewer"
-
-[[keys.command]]              # zoxide-Picker (Verzeichnis-Sprung); überschreibt Default open_notification_target
-key = "prefix+o"
-type = "shell"
-command = "herdr plugin action invoke browse --plugin herdr-zoxide"
-
-[[keys.command]]              # herdr-mirror starten / fortsetzen
-key = "prefix+shift+m"
-type = "shell"
-command = "herdr plugin action invoke start --plugin mirror"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+description = "reviewr toggle"
 
 [experimental]
 # Kitty-Graphics-Rendering im angehängten Client (braucht kompatibles Outer-Terminal)
@@ -64,14 +50,16 @@ tab_bar_position = "bottom"
 # (wenn kein manueller Pane-Name gesetzt ist).
 show_agent_labels_on_pane_borders = true
 
-# Agent-Zeilen: 2. Zeile zeigt den Claude-Session-Titel (via claude-session-title-Plugin
-# als terminal_title gemeldet) statt des generischen Agent-Namens "claude".
 status_indicators = "symbols"
+
+# Titel des äußeren Terminals (Ghostty/WM): Titel des fokussierten Panes plus Workspace.
+# Nativer Ersatz für das Plugin rjyo/herdr-window-title-sync.
+window_title = "{terminal_title} ({workspace})"
 
 # Statusleiste rechts in der Tab-Zeile — Adaption der tmux-Statusline
 # (~/dotfiles/config/tmux/style.conf: primary_ip · CPU · RAM · weather).
 # Die Segment-Skripte liegen in ~/.config/herdr/status/ und laufen auf dem
-# herdr-Server, also bei `--remote`/mirror mit den Werten der Gegenseite.
+# herdr-Server, also bei `--remote` mit den Werten der Gegenseite.
 tab_bar_right = [
   { type = "zoom" },
   { type = "command", command = "~/.config/herdr/status/ip.sh", interval_seconds = 60, timeout_seconds = 5 },
@@ -81,8 +69,7 @@ tab_bar_right = [
   { type = "datetime", format = "%d.%m %H:%M" },
 ]
 tab_bar_right_separator = " | "
-[ui.sidebar.agents]
-rows = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"]]
+# [ui.sidebar.*]: eigene zweizeilige Rows am Dateiende, radar-Sidebar-Block ist aus (notes/setup.md).
 
 # https://github.com/natori-hrj/herdr-lazy
 [[keys.command]]
@@ -119,7 +106,7 @@ command = "herdr-navigator.jump-back"
 description = "jump back to last workspace"
 
 # https://github.com/AVGVSTVS96/herdr-drovr
-# Das README empfiehlt prefix+m/prefix+M — shift+m ist hier schon mirror, darum das
+# Das README empfiehlt prefix+m/prefix+M — hier bleibt das
 # v-Paar (v = „verschieben", frei geworden durch split_vertical → prefix+plus).
 [[keys.command]]
 key = "prefix+v"
@@ -133,13 +120,23 @@ type = "plugin_action"
 command = "drovr.move-tab"
 description = "move tab to workspace"
 
-# https://github.com/natori-hrj/herdr-triage
-# Bietet nur ein Pane und keine Action — deshalb type = "shell" statt plugin_action.
-[[keys.command]]              # i = Inbox: Agenten nach Aufmerksamkeitsbedarf sortiert
-key = "prefix+i"
-type = "shell"
-command = "herdr plugin pane open --plugin triage --entrypoint list --focus"
-description = "attention triage"
+# https://github.com/nathan-poncet/herdr-fingers
+# Das README empfiehlt prefix+f — das ist hier reviewr, darum y („yank").
+[[keys.command]]
+key = "prefix+y"
+type = "plugin_action"
+command = "nathan-poncet.herdr-fingers.start"
+description = "copy with hints"
+
+# Cheatsheet der eigenen + Plugin-Binds, live aus dieser Datei gelesen
+# (~/.config/herdr/cheatsheet.py). Die herdr-Defaults zeigt prefix+?.
+[[keys.command]]
+key = "prefix+h"
+type = "popup"
+command = "~/.config/herdr/cheatsheet.py"
+description = "cheatsheet: custom + plugin keys"
+width = "80%"
+height = "70%"
 
 [ui.toast]
 delivery = "terminal"
@@ -150,3 +147,79 @@ auto_switch = false
 
 [session]
 resume_agents_on_restore = false
+
+# >>> herdr-radar theme block
+[theme.custom]
+active_row_bg = "#414868"
+# <<< herdr-radar theme block
+
+# >>> garuda: zweizeilige Agent-Zeilen ($badge_* und $line2_* schreibt plugins/config/hhdebb.herdr-radar/render-hook.js)
+[ui.sidebar.agents]
+rows = [
+  [
+    { token = "$group_parent", fg = "#8b8e9c", bold = true, dim = false },
+  ],
+  [
+    { token = "$group", fg = "#a8abbd", bold = true, dim = false },
+    { token = "$group_stale", fg = "#8b8e9c", bold = true, dim = false },
+  ],
+  [
+    { token = "$split_mark", fg = "#8b8e9c", bold = false, dim = false },
+    { token = "$logo", fg = "#e9e9f0", bold = false, dim = false, rules = [{ contains = "\uE1A0", fg = "#d97757" }, { contains = "\uE1AE", fg = "#4285f4" }, { contains = "\uE1A6", fg = "#1783ff" }, { contains = "\uE1AD", fg = "#4d6bfe" }, { contains = "\uE1B0", fg = "#615ced" }, { contains = "\uE1B3", fg = "#9046ff" }, { contains = "\uE1A4", fg = "#586876" }, { contains = "\uE1A7", fg = "#9a9808" }] },
+    { token = "$logo_working", fg = "#e9e9f0", bold = false, dim = false, rules = [{ contains = "\uE1A0", fg = "#d97757" }, { contains = "\uE1AE", fg = "#4285f4" }, { contains = "\uE1A6", fg = "#1783ff" }, { contains = "\uE1AD", fg = "#4d6bfe" }, { contains = "\uE1B0", fg = "#615ced" }, { contains = "\uE1B3", fg = "#9046ff" }, { contains = "\uE1A4", fg = "#586876" }, { contains = "\uE1A7", fg = "#9a9808" }] },
+    { token = "$logo_stale", fg = "#8b8e9c", bold = false, dim = false },
+    { token = "$badge_working", fg = "#d97757", bold = true, dim = false },
+    { token = "$badge_done", fg = "#4c9a5a", bold = false, dim = false },
+    { token = "$badge_blocked", fg = "#c04a4a", bold = false, dim = false },
+    { token = "$badge_idle_fresh", fg = "#95bba2", bold = false, dim = false },
+    { token = "$badge_idle", fg = "#a99e92", bold = false, dim = false },
+    { token = "$badge_idle_stale", fg = "#8b8e9c", bold = false, dim = false },
+    { token = "$badge_unknown", fg = "#907aa9", bold = false, dim = false },
+  ],
+  [
+    { token = "$line2_working", fg = "#d97757", bold = true, dim = false },
+    { token = "$line2_done", fg = "#4c9a5a", bold = false, dim = false },
+    { token = "$line2_blocked", fg = "#c04a4a", bold = false, dim = false },
+    { token = "$line2_idle_fresh", fg = "#95bba2", bold = false, dim = false },
+    { token = "$line2_idle", fg = "#a99e92", bold = false, dim = false },
+    { token = "$line2_idle_stale", fg = "#8b8e9c", bold = false, dim = false },
+    { token = "$line2_unknown", fg = "#907aa9", bold = false, dim = false },
+  ],
+  [
+    "$gap",
+  ],
+]
+
+[ui.sidebar.spaces]
+row_gap = 0
+rows = [
+  [
+    { token = "$space_blocked", fg = "#c04a4a", bold = true, dim = false },
+    { token = "$space_working_claude", fg = "#d97757", bold = true, dim = false },
+    { token = "$space_working_gemini", fg = "#4285f4", bold = true, dim = false },
+    { token = "$space_working_kimi", fg = "#1783ff", bold = true, dim = false },
+    { token = "$space_working_deepseek", fg = "#4d6bfe", bold = true, dim = false },
+    { token = "$space_working_qwen", fg = "#615ced", bold = true, dim = false },
+    { token = "$space_working_kiro", fg = "#9046ff", bold = true, dim = false },
+    { token = "$space_working_cline", fg = "#586876", bold = true, dim = false },
+    { token = "$space_working_kilo", fg = "#9a9808", bold = true, dim = false },
+    { token = "$space_working_other", fg = "#c78a1f", bold = true, dim = false },
+    { token = "$space_done", fg = "#4c9a5a", bold = true, dim = false },
+    { token = "$space_idle", fg = "#8f95ab", bold = false, dim = false },
+    { token = "$space_unknown", fg = "#907aa9", bold = false, dim = false },
+    { token = "$space_none", fg = "#9a9eb3", bold = false, dim = false },
+    { token = "$space_label", fg = "#9a9eb3", bold = false, dim = false },
+  ],
+  [
+    { token = "$space_logo_claude", fg = "#d97757", bold = false, dim = false },
+    { token = "$space_logo_gemini", fg = "#4285f4", bold = false, dim = false },
+    { token = "$space_logo_kimi", fg = "#1783ff", bold = false, dim = false },
+    { token = "$space_logo_deepseek", fg = "#4d6bfe", bold = false, dim = false },
+    { token = "$space_logo_qwen", fg = "#615ced", bold = false, dim = false },
+    { token = "$space_logo_kiro", fg = "#9046ff", bold = false, dim = false },
+    { token = "$space_logo_cline", fg = "#586876", bold = false, dim = false },
+    { token = "$space_logo_kilo", fg = "#9a9808", bold = false, dim = false },
+    { token = "$space_logo_other", fg = "#e9e9f0", bold = false, dim = false },
+  ],
+]
+# <<< garuda: zweizeilige Agent-Zeilen

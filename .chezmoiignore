@@ -31,4 +31,6 @@ tests/**
 .config/hypr/**
 .config/ghostty
 .config/ghostty/**
+.config/kitty
+.config/kitty/**
 {{ end }}

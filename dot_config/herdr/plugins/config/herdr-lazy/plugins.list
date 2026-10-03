@@ -2,12 +2,9 @@
 # One `owner/repo` per line. `#` starts a comment.
 # Curated defaults below; edit to taste, then run `herdr-lazy sync`.
 
-smarzban/herdr-file-viewer
-natori-hrj/herdr-triage
-bcihanc/herdr-claude-session-title
 AVGVSTVS96/herdr-drovr
-den-tanui/herdr-zoxide
-nikok6/herdr-mirror
-rjyo/herdr-window-title-sync
 thanhdat77/herdr-navigator
 natori-hrj/herdr-lazy
+hhdebb/herdr-radar
+nathan-poncet/herdr-fingers
+persiyanov/herdr-reviewr

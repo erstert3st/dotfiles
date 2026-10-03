@@ -1,12 +1,8 @@
 current_shell="zsh"
 
-
 SAVEHIST=10000
 #source /Users/user/.Dotfiles/zsh/config.sh
 unset zle_bracketed_paste
-
-
-
 
 source ~/dotfiles/config/zsh/config.sh
 # eval "$(logcli --completion-script-zsh)"
@@ -19,10 +15,27 @@ export PACMAN_NOCONFIRM=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 #export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
 export DOCKER_HOST=unix:///var/run/docker.sock
-export ANTHROPIC_BASE_URL=http://127.0.0.1:8787
-export HEADROOM_OUTPUT_SHAPER=1
 alias headHard="headroom proxy --memory  --learn  --code-aware"
-alias claude="headroom wrap claude  --memory --learn "
+# headroom + serena only on demand; --no-mcp/--code-memory none stop wrap from
+# registering MCP servers in user scope, they come from --mcp-config instead.
+alias hclaude="HEADROOM_MODE=token HEADROOM_CODE_AWARE_ENABLED=1 HEADROOM_OUTPUT_SHAPER=1 headroom wrap claude --memory --learn --no-mcp --code-memory none --mcp-config ~/.claude/mcp/hclaude.json --settings ~/.claude/rtk-settings.json --append-system-prompt-file ~/.claude/RTK.md"
+# Inkscape design session. The Inkscape GUI is the live D-Bus bridge for inkscape_mcp
+# (the MCP only auto-starts it on Windows). Optional first arg: .svg to open.
+# --append-system-prompt-file stays last: --mcp-config/--allowedTools are variadic and eat a prompt.
+function desclaude {
+  local file=""
+  if [[ $1 == *.svg ]]; then file=${1:A}; shift; fi
+  if [[ -z $WAYLAND_DISPLAY && -z $DISPLAY ]]; then
+    print -u2 "desclaude: no GUI session, Inkscape not started (headless MCP only)"
+  elif [[ -n $file ]] || ! pgrep -x inkscape >/dev/null; then
+    setsid -f inkscape ${file:+"$file"} &>/dev/null
+  fi
+  claude --mcp-config ~/.claude/mcp/inkscape.json --allowedTools 'mcp__inkscape_mcp__*' \
+    --append-system-prompt-file ~/.claude/designer.inkscape.md "$@"
+}
+# Claude in Chrome on demand (claudeInChromeDefaultEnabled is off to keep context small).
+# Plain claude, no headroom: its lossy compression would mangle DOM/console/network output.
+alias bclaude='claude --chrome'
 # --- GUI on demand (headless-boot box) ---
 # Start the graphical desktop manually from the text console.
 # Detaches any herdr client bound to a text console (ttyN) first, so the
@@ -38,14 +51,4 @@ if [[ -o interactive && -z "$WAYLAND_DISPLAY" && "$(tty)" == /dev/tty[0-9]* ]]; 
   print -P "%F{cyan}└──────────────────────────────────────────────┘%f"
 fi
 
-# >>> headroom persistent env >>>
-export HEADROOM_PORT="8787"
-export HEADROOM_HOST="127.0.0.1"
-export HEADROOM_MODE="token"
-export HEADROOM_BACKEND="anthropic"
-export HEADROOM_TELEMETRY="off"
-export HEADROOM_MEMORY_ENABLED="1"
-export ANTHROPIC_BASE_URL="http://127.0.0.1:8787"
-export ENABLE_TOOL_SEARCH="true"
-# <<< headroom persistent env <<<
 alias pong='echo ping | /home/user1/.local/bin/claude -p --model haiku --effort low'

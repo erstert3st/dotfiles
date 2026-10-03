@@ -24,7 +24,7 @@ containers included.
   read it as `default false .desktop` (machines that never re-ran init have no
   value).
 - `.chezmoiignore` keeps Claude runtime state out of the repo and hides GUI
-  configs (hypr, ghostty) on non-desktop machines. Ignored ≠ deleted: already
+  configs (hypr, ghostty, kitty) on non-desktop machines. Ignored ≠ deleted: already
   applied files stay on the target.
 - `dotfiles/` (target `~/dotfiles`) holds the modular zsh/tmux configs sourced
   by `dot_zshrc`/`dot_tmux.conf`. Long-term goal: migrate into `dot_config/`
