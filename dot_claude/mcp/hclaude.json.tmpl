@@ -1,5 +1,5 @@
 { "mcpServers": {
-    "headroom": { "type": "stdio", "command": "/home/user1/.local/bin/headroom", "args": ["mcp", "serve"] },
+    "headroom": { "type": "stdio", "command": "{{ .chezmoi.homeDir }}/.local/bin/headroom", "args": ["mcp", "serve"] },
     "serena": { "type": "stdio", "command": "uvx",
       "args": ["--from", "serena-agent", "serena", "start-mcp-server", "--project-from-cwd",
                "--context", "claude-code", "--open-web-dashboard", "False"] } } }
