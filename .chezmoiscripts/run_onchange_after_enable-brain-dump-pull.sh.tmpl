@@ -1,0 +1,13 @@
+{{- if has (output "uname" "-n" | trim) (list "cachyos" "garuda") -}}
+#!/bin/bash
+
+# Enables the vault auto-pull timer on the machines that hold the brain-dump vault.
+# run_onchange + hashes: re-runs when one of the units changes.
+# service: {{ include "dot_config/systemd/user/brain-dump-pull.service" | sha256sum }}
+# timer: {{ include "dot_config/systemd/user/brain-dump-pull.timer" | sha256sum }}
+
+set -euo pipefail
+
+systemctl --user daemon-reload
+systemctl --user enable --now brain-dump-pull.timer
+{{ end -}}

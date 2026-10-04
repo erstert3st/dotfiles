@@ -34,3 +34,9 @@ tests/**
 .config/kitty
 .config/kitty/**
 {{ end }}
+
+{{ if not (has (output "uname" "-n" | trim) (list "cachyos" "garuda")) }}
+# brain-dump vault auto-pull only on the machines that hold the vault
+.config/systemd/user/brain-dump-pull.service
+.config/systemd/user/brain-dump-pull.timer
+{{ end }}

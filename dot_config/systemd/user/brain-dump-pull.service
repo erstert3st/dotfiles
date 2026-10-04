@@ -1,0 +1,9 @@
+[Unit]
+Description=Pull the brain-dump vault from origin
+# No-op on machines without a vault clone at this path.
+ConditionPathIsDirectory=%h/Documents/gits/brain-dump/.git
+
+[Service]
+Type=oneshot
+# --ff-only: never merges; diverged history or conflicting local edits fail the run and show in the journal.
+ExecStart=/usr/bin/git -C %h/Documents/gits/brain-dump pull --ff-only --quiet
