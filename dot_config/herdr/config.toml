@@ -50,6 +50,10 @@ tab_bar_position = "bottom"
 # (wenn kein manueller Pane-Name gesetzt ist).
 show_agent_labels_on_pane_borders = true
 
+# Rahmen auch um eine einzelne Pane, damit die Pane-Beschriftung (Session-Titel)
+# nicht erst ab zwei Panes im Tab erscheint. Kostet je 1 Zeile/Spalte pro Rand.
+pane_borders = "always"
+
 status_indicators = "symbols"
 
 # Titel des äußeren Terminals (Ghostty/WM): Titel des fokussierten Panes plus Workspace.

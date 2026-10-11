@@ -1,0 +1,2 @@
+{{- /* Rendert den Skill aus dem installierten herdr, passend zu dessen Version. Ohne herdr leer: chezmoi legt dann keine Datei an. */ -}}
+{{- if lookPath "herdr" }}{{ output "herdr" "--skill" }}{{ end -}}

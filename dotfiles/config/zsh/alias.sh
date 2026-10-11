@@ -171,3 +171,20 @@ herdr-lazy() {
     }
     "$root/target/release/herdr-lazy" "$@"
 }
+
+# s: pick a named host from ~/.ssh/config via fzf and connect; extra args go to ssh.
+s() {
+    local host
+    host=$(awk '$1 == "Host" { for (i = 2; i <= NF; i++) if ($i !~ /[*?!]/ && $i !~ /^[0-9.]+$/) print $i }' ~/.ssh/config |
+        fzf --height=40% --reverse --prompt='ssh> ') || return
+    ssh "$host" "$@"
+}
+
+# herdr update: danach den Agent-Skill neu rendern (dot_claude/skills/herdr/SKILL.md.tmpl
+# gibt 'herdr --skill' aus), sonst nutzt Claude Befehle der alten Version.
+herdr() {
+    command herdr "$@" || return
+    if [[ ${1-} == update ]]; then
+        chezmoi apply ~/.claude/skills/herdr/SKILL.md
+    fi
+}

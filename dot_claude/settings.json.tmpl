@@ -1,11 +1,4 @@
 {
-  "agentPushNotifEnabled": true,
-  "askUserQuestionTimeout": "never",
-  "autoUpdatesChannel": "latest",
-  "disableClaudeAiConnectors": true,
-  "editorMode": "normal",
-  "effortLevel": "xhigh",
-  "enabledPlugins": {},
   "env": {
 {{- if has (output "uname" "-n" | trim) (list "cachyos" "garuda") }}
     "PLANNOTATOR_REMOTE": "1",
@@ -13,44 +6,6 @@
     "PLANNOTATOR_AGENT_TERMINAL_REMOTE": "1",
 {{- end }}
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-  },
-  "extraKnownMarketplaces": {
-    "caveman": {
-      "source": {
-        "repo": "JuliusBrussee/caveman",
-        "source": "github"
-      }
-    }
-  },
-{{- $agentHook := joinPath .chezmoi.homeDir ".claude/hooks/herdr-agent-state.sh" }}
-{{- if stat $agentHook }}
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "command": "bash '{{ $agentHook }}' session",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "^(startup|resume|clear|compact|fork)$"
-      }
-    ]
-  },
-{{- end }}
-  "language": "German",
-  "model": "opus",
-  "modelSettings": {
-    "claude-fable-5-1": {
-      "effortLevel": "xhigh"
-    },
-    "claude-opus-5": {
-      "effortLevel": "high"
-    },
-    "claude-opus-5-5": {
-      "effortLevel": "medium"
-    }
   },
   "permissions": {
     "allow": [
@@ -61,18 +16,18 @@
       "mcp__claude-in-chrome__tabs_context_mcp",
       "mcp__claude-in-chrome__browser_batch"
     ],
+    "deny": [
+      "Bash(sudo:*)"
+    ],
     "ask": [
       "Bash(ssh:*)",
       "Bash(scp:*)",
       "Bash(sftp:*)",
       "Bash(rsync:*)"
-    ],
-    "deny": [
-      "Bash(sudo:*)"
     ]
   },
-  "preferredNotifChannel": "kitty",
-  "remoteControlAtStartup": {{ if eq (output "uname" "-n" | trim) "garuda" }}true{{ else }}false{{ end }},
+  "model": "opus",
+  "disableClaudeAiConnectors": true,
   "skillOverrides": {
     "anthropic-skills:pdf": "off",
     "anthropic-skills:docx": "off",
@@ -84,12 +39,58 @@
     "anthropic-skills:docs": "off",
     "anthropic-skills:morning": "off"
   },
+{{- $agentHook := joinPath .chezmoi.homeDir ".claude/hooks/herdr-agent-state.sh" }}
+{{- if stat $agentHook }}
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '{{ $agentHook }}' session",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  },
+{{- end }}
   "statusLine": {
+    "type": "command",
     "command": "ccstatusline",
     "padding": 0,
-    "refreshInterval": 10,
-    "type": "command"
+    "refreshInterval": 10
   },
+  "enabledPlugins": {},
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    }
+  },
+  "language": "German",
+  "effortLevel": "xhigh",
+  "modelSettings": {
+    "claude-opus-5": {
+      "effortLevel": "high"
+    },
+    "claude-fable-5-1": {
+      "effortLevel": "xhigh"
+    },
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
+  },
+  "askUserQuestionTimeout": "never",
+  "autoUpdatesChannel": "latest",
+  "tui": "default",
+  "skipWorkflowUsageWarning": true,
+  "editorMode": "normal",
+  "preferredNotifChannel": "kitty",
   "teammateMode": "auto",
-  "tui": "default"
+  "remoteControlAtStartup": false,
+  "agentPushNotifEnabled": true
 }
