@@ -1,0 +1,13 @@
+{{- if eq (output "uname" "-n" | trim) "cachyos" -}}
+#!/bin/bash
+
+# Installs and enables the boot-time Hyprland session for game streaming on cachyos
+# (headless host, no display manager). run_onchange + hash: re-runs when the unit changes.
+# unit: {{ include "dot_local/share/game-streaming/hyprland-session.service.tmpl" | sha256sum }}
+
+set -euo pipefail
+
+sudo install -m 644 "$HOME/.local/share/game-streaming/hyprland-session.service" /etc/systemd/system/hyprland-session.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now hyprland-session.service
+{{ end -}}

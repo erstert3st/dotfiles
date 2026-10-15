@@ -1,0 +1,31 @@
+# Hyprland desktop session started at boot, without a display manager.
+# Sunshine needs a running compositor to capture, also on headless hosts.
+# Installed to /etc/systemd/system by run_onchange_after_enable-hyprland-session.sh.
+[Unit]
+Description=Hyprland session for game streaming
+After=systemd-user-sessions.service getty@tty7.service
+Conflicts=getty@tty7.service
+
+[Service]
+User={{ .chezmoi.username }}
+# PAM login session on a VT: pam_systemd registers it on seat0, so Hyprland gets DRM and input.
+PAMName=login
+TTYPath=/dev/tty7
+TTYReset=yes
+TTYVHangup=yes
+TTYVTDisallocate=yes
+StandardInput=tty-fail
+StandardOutput=journal
+StandardError=journal
+UtmpIdentifier=tty7
+UtmpMode=user
+Environment=XDG_SESSION_TYPE=wayland
+# logind only activates the session (and hands out DRM) while tty7 is the foreground VT.
+# '+' runs chvt as root despite User=.
+ExecStartPre=+/usr/bin/chvt 7
+ExecStart=/usr/bin/uwsm start hyprland.desktop
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,13 @@
+[Unit]
+Description=Headless Hyprland output for Sunshine
+PartOf=graphical-session.target
+After=graphical-session.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/hyprctl output create headless sunshine-virt
+ExecStop=/usr/bin/hyprctl output remove sunshine-virt
+
+[Install]
+WantedBy=graphical-session.target

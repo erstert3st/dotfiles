@@ -40,3 +40,12 @@ tests/**
 .config/systemd/user/brain-dump-pull.service
 .config/systemd/user/brain-dump-pull.timer
 {{ end }}
+
+{{ if ne (output "uname" "-n" | trim) "cachyos" }}
+# game streaming host setup (boot-time Hyprland session, Sunshine) only on the headless cachyos host
+.local/share/game-streaming/hyprland-session.service
+.config/sunshine/sunshine.conf
+.config/systemd/user/sunshine-virt-output.service
+.config/systemd/user/app-dev.lizardbyte.app.Sunshine.service.d
+.config/systemd/user/app-dev.lizardbyte.app.Sunshine.service.d/**
+{{ end }}

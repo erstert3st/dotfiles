@@ -1,0 +1,14 @@
+{{- if eq (output "uname" "-n" | trim) "cachyos" -}}
+#!/bin/bash
+
+# Enables the headless Hyprland output that Sunshine captures on cachyos.
+# Sunshine itself is not enabled: the stream command starts it on demand.
+# run_onchange + hashes: re-runs when one of the units changes.
+# output: {{ include "dot_config/systemd/user/sunshine-virt-output.service" | sha256sum }}
+# dropin: {{ include "dot_config/systemd/user/app-dev.lizardbyte.app.Sunshine.service.d/headless.conf" | sha256sum }}
+
+set -euo pipefail
+
+systemctl --user daemon-reload
+systemctl --user enable sunshine-virt-output.service
+{{ end -}}
