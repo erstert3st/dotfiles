@@ -39,6 +39,8 @@ tests/**
 # brain-dump vault auto-pull only on the machines that hold the vault
 .config/systemd/user/brain-dump-pull.service
 .config/systemd/user/brain-dump-pull.timer
+# Moonlight/Sunshine stream command between the two machines
+.local/bin/stream
 {{ end }}
 
 {{ if ne (output "uname" "-n" | trim) "cachyos" }}

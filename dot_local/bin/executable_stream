@@ -1,0 +1,36 @@
+#!/bin/bash
+# stream <host> [app]: start Sunshine on <host> over ssh, stream it with Moonlight,
+# stop Sunshine again when Moonlight exits. LAN only; the host needs a running
+# Hyprland session (cachyos: hyprland-session.service starts one at boot).
+set -euo pipefail
+
+host="${1:?usage: stream <garuda|cachyos> [app]}"
+app="${2:-Desktop}"
+unit="app-dev.lizardbyte.app.Sunshine.service"
+
+# LAN addresses on purpose: the plain host names resolve to Tailscale.
+case "$host" in
+    garuda) addr=192.168.1.81 ;;
+    cachyos) addr=192.168.1.111 ;;
+    *) echo "stream: unknown host '$host'" >&2; exit 1 ;;
+esac
+
+# Client profile per machine; resolution and fps should match the client monitor.
+case "$(uname -n)" in
+    cachyos) profile=(--1440 --fps 120 --video-codec AV1) ;;
+    garuda) profile=(--1080 --fps 60 --video-codec HEVC) ;;
+    *) echo "stream: no client profile for $(uname -n)" >&2; exit 1 ;;
+esac
+
+ssh "$addr" systemctl --user start "$unit"
+trap 'ssh "$addr" systemctl --user stop "$unit"' EXIT
+
+for _ in $(seq 20); do
+    timeout 1 bash -c ">/dev/tcp/$addr/47989" 2>/dev/null && break
+    sleep 1
+done
+timeout 1 bash -c ">/dev/tcp/$addr/47989" 2>/dev/null \
+    || { echo "stream: Sunshine on $host ($addr) not reachable on TCP 47989" >&2; exit 1; }
+
+moonlight stream "$addr" "$app" "${profile[@]}" \
+    --video-decoder hardware --display-mode fullscreen --capture-system-keys fullscreen
