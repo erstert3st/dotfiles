@@ -188,3 +188,19 @@ herdr() {
         chezmoi apply ~/.claude/skills/herdr/SKILL.md ~/.local/completions/_herdr
     fi
 }
+
+# herdr-inbox außerhalb des Popups: als eigener Tab, als Split rechts neben dem aktuellen
+# Pane oder als eigenes kitty-Fenster. Tab und Split brauchen eine herdr-Session.
+# Ist keine Frage offen, schließt jede Taste die Inbox wieder.
+alias inbox-tab='herdr plugin pane open --plugin leavemyyard.herdr-inbox --entrypoint inbox --placement tab'
+alias inbox-split='herdr plugin pane open --plugin leavemyyard.herdr-inbox --entrypoint inbox --placement split --direction right'
+# Plugin-Ordner ist hash-benannt (siehe herdr-lazy), daher plugin_root zur Laufzeit auflösen.
+inbox-win() {
+    local root
+    root=$(herdr plugin list --json | python3 -c \
+        "import json,sys;print([p['plugin_root'] for p in json.load(sys.stdin)['result']['plugins'] if p['plugin_id']=='leavemyyard.herdr-inbox'][0])") || {
+        echo "inbox-win: Plugin nicht installiert (herdr plugin install LeaveMyYard/herdr-inbox)" >&2
+        return 1
+    }
+    setsid -f kitty --title "herdr inbox" uv run --quiet --frozen --no-dev --project "$root" inbox tui
+}
