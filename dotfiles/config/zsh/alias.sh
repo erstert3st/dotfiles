@@ -180,11 +180,11 @@ s() {
     ssh "$host" "$@"
 }
 
-# herdr update: danach den Agent-Skill neu rendern (dot_claude/skills/herdr/SKILL.md.tmpl
-# gibt 'herdr --skill' aus), sonst nutzt Claude Befehle der alten Version.
+# herdr update: danach Agent-Skill und zsh-Completion neu rendern (die .tmpl-Quellen geben
+# 'herdr --skill' bzw. 'herdr completion zsh' aus), sonst gelten noch die Befehle der alten Version.
 herdr() {
     command herdr "$@" || return
     if [[ ${1-} == update ]]; then
-        chezmoi apply ~/.claude/skills/herdr/SKILL.md
+        chezmoi apply ~/.claude/skills/herdr/SKILL.md ~/.local/completions/_herdr
     fi
 }

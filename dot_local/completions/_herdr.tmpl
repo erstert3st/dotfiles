@@ -1,0 +1,2 @@
+{{- /* Rendert die zsh-Completion aus dem installierten herdr, passend zu dessen Version. Ohne herdr leer: chezmoi legt dann keine Datei an. */ -}}
+{{- if lookPath "herdr" }}{{ output "herdr" "completion" "zsh" }}{{ end -}}
