@@ -36,6 +36,12 @@ function claude-design {
 # Claude in Chrome on demand (claudeInChromeDefaultEnabled is off to keep context small).
 # Plain claude, no headroom: its lossy compression would mangle DOM/console/network output.
 alias claude-browser='claude --chrome'
+# Plugin/skill sandbox: normal ~/.claude setup plus trial plugins and skills from
+# ~/claude-playground, session only. --plugin-dir stays last: --add-dir is variadic and eats a prompt.
+alias claude-playground='claude --add-dir ~/claude-playground --plugin-dir ~/claude-playground/plugins'
+# Frontend session: claude-playground plus Claude in Chrome and the Impeccable design plugin
+# (sparse clone of its plugin/ folder, including its edit/stop hooks).
+alias claude-frontendler='claude --chrome --add-dir ~/claude-playground --plugin-dir ~/claude-playground/plugins --plugin-dir ~/claude-playground/frontend/impeccable/plugin'
 # Homelab session: TrueNAS + Home Assistant MCP (tools pre-approved) plus Claude in Chrome.
 # --chrome stays last: --mcp-config/--allowedTools are variadic and eat a prompt.
 alias claude-truenas="claude --mcp-config ~/.claude/mcp/truenas.json ~/.claude/mcp/ha-mcp.json --allowedTools 'mcp__truenas__*' 'mcp__ha-mcp__*' --chrome"
