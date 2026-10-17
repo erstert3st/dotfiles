@@ -132,6 +132,20 @@ type = "plugin_action"
 command = "nathan-poncet.herdr-fingers.start"
 description = "copy with hints"
 
+# https://github.com/LeaveMyYard/herdr-panorama
+[[keys.command]]
+key = "prefix+space"
+type = "plugin_action"
+command = "leavemyyard.herdr-panorama.open"
+description = "swarm view"
+
+# https://github.com/LeaveMyYard/herdr-inbox
+[[keys.command]]
+key = "prefix+i"
+type = "plugin_action"
+command = "leavemyyard.herdr-inbox.open"
+description = "question inbox"
+
 # Cheatsheet der eigenen + Plugin-Binds, live aus dieser Datei gelesen
 # (~/.config/herdr/cheatsheet.py). Die herdr-Defaults zeigt prefix+?.
 [[keys.command]]
