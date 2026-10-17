@@ -1,7 +1,8 @@
 #!/bin/bash
-# stream <host> [app]: start Sunshine on <host> over ssh, stream it with Moonlight,
-# stop Sunshine again when Moonlight exits. LAN only; the host needs a running
-# Hyprland session (cachyos: hyprland-session.service starts one at boot).
+# stream <host> [app]: start Sunshine on <host> over ssh, stream it with Moonlight.
+# On garuda Sunshine runs only on demand and is stopped again when Moonlight exits;
+# cachyos is an always-on host and keeps it running for other clients. LAN only; the
+# host needs a running Hyprland session (cachyos: hyprland-session.service starts one at boot).
 set -euo pipefail
 
 host="${1:?usage: stream <garuda|cachyos> [app]}"
@@ -23,7 +24,9 @@ case "$(uname -n)" in
 esac
 
 ssh "$addr" systemctl --user start "$unit"
-trap 'ssh "$addr" systemctl --user stop "$unit"' EXIT
+if [[ $host == garuda ]]; then
+    trap 'ssh "$addr" systemctl --user stop "$unit"' EXIT
+fi
 
 for _ in $(seq 20); do
     timeout 1 bash -c ">/dev/tcp/$addr/47989" 2>/dev/null && break
