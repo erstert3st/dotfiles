@@ -33,6 +33,22 @@ tests/**
 .config/ghostty/**
 .config/kitty
 .config/kitty/**
+.config/noctalia
+.config/noctalia/**
+{{ end }}
+
+{{ if ne (output "uname" "-n" | trim) "cachyos" }}
+# Own Lua Hyprland setup, cachyos first. Hyprland prefers hyprland.lua over hyprland.conf and
+# reloads on change, so applying it elsewhere would switch that session immediately.
+.config/hypr/hyprland.lua
+.config/hypr/modules
+.config/hypr/modules/**
+.config/hypr/bin
+.config/hypr/bin/**
+{{ else }}
+# KoolDots user overrides (.conf), not read by the Lua setup
+.config/hypr/UserConfigs
+.config/hypr/UserConfigs/**
 {{ end }}
 
 {{ if not (has (output "uname" "-n" | trim) (list "cachyos" "garuda")) }}

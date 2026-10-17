@@ -1,0 +1,50 @@
+#!/bin/bash
+# wallpaper-reject [--undo]: move the wallpaper shown on the focused monitor out of
+# ~/Pictures/wallpapers into ~/Pictures/wallpapers-rejected and switch to a random one.
+# --undo moves the last rejected wallpaper back and shows it again. Uses noctalia's
+# wallpaper commands; the log keeps "<rejected path>\t<original path>" per line.
+set -euo pipefail
+
+wall_dir="$HOME/Pictures/wallpapers"
+reject_dir="$HOME/Pictures/wallpapers-rejected"
+log="${XDG_STATE_HOME:-$HOME/.local/state}/hypr/wallpaper-rejected.log"
+
+die() {
+    notify-send -a Wallpaper "Wallpaper" "$1" || true
+    echo "wallpaper-reject: $1" >&2
+    exit 1
+}
+
+monitor="$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')"
+[ -n "$monitor" ] || die "Kein fokussierter Monitor gefunden."
+
+case "${1:-}" in
+    "")
+        image="$(noctalia msg wallpaper-get "$monitor")"
+        [ -f "$image" ] || die "Aktuelles Wallpaper nicht gefunden: $image"
+        case "$image" in
+            "$wall_dir"/*) ;;
+            *) die "Liegt nicht unter $wall_dir, nicht verschoben: $image" ;;
+        esac
+        target="$reject_dir/${image#"$wall_dir"/}"
+        [ -e "$target" ] && die "Existiert schon: $target"
+        mkdir -p "$(dirname "$target")" "$(dirname "$log")"
+        mv -- "$image" "$target"
+        printf '%s\t%s\n' "$target" "$image" >>"$log"
+        noctalia msg wallpaper-random "$monitor"
+        notify-send -a Wallpaper "Wallpaper aussortiert" "$(basename "$image") (CTRL ALT SHIFT+Q holt es zurück)" || true
+        ;;
+    --undo)
+        [ -s "$log" ] || die "Nichts rückgängig zu machen."
+        last="$(tail -n 1 "$log")"
+        target="${last%%$'\t'*}"
+        image="${last#*$'\t'}"
+        [ -e "$target" ] || die "Datei nicht mehr am erwarteten Ort: $target"
+        mkdir -p "$(dirname "$image")"
+        mv -- "$target" "$image"
+        sed -i '$ d' "$log"
+        noctalia msg wallpaper-set "$monitor" "$image"
+        notify-send -a Wallpaper "Wallpaper zurückgeholt" "$(basename "$image")" || true
+        ;;
+    *) die "Unbekannte Option: $1 (erlaubt: --undo)" ;;
+esac

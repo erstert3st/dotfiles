@@ -1,0 +1,113 @@
+# Declarative noctalia config, managed by chezmoi. noctalia reads every *.toml here first,
+# then ~/.local/state/noctalia/settings.toml (written by the settings UI) overrides it.
+# Bar layouts are only read from here: a [bar.*] that lives only in settings.toml is ignored.
+# Machine-specific UI state (lockscreen widget positions, current wallpaper) stays in
+# settings.toml and out of this public repo.
+
+[audio]
+enable_overdrive = true
+enable_sounds = true
+
+[bar.default]
+start = [ "launcher", "wallpaper", "workspaces", "active_window" ]
+center = [ "clock" ]
+end = [ "weather", "cpu", "ram", "temp", "media", "tray", "notifications", "clipboard", "network", "bluetooth", "volume", "control-center", "session" ]
+
+[[control_center.shortcuts]]
+type = "wifi"
+
+[[control_center.shortcuts]]
+type = "bluetooth"
+
+[[control_center.shortcuts]]
+type = "caffeine"
+
+[[control_center.shortcuts]]
+type = "notification"
+
+[[control_center.shortcuts]]
+type = "power_profile"
+
+[[control_center.shortcuts]]
+type = "nightlight"
+
+[desktop_widgets]
+enabled = false
+
+[dock]
+enabled = true
+icon_size = 68
+reserve_space = false
+show_dots = true
+smart_auto_hide = true
+
+[idle.behavior.lock]
+action = "lock"
+enabled = true
+timeout = 600.0
+
+[idle.behavior.screen-off]
+action = "screen_off"
+{{- if eq (output "uname" "-n" | trim) "cachyos" }}
+# cachyos: Sunshine captures the headless output; switching it off would break the stream.
+enabled = false
+{{- else }}
+enabled = true
+{{- end }}
+timeout = 720.0
+
+[location]
+auto_locate = true
+
+[nightlight]
+# Replaces hyprsunset (TARGET_TEMP was 4500 K). enabled = false means no schedule, only the
+# manual toggle on SUPER+N (nightlight-force-toggle).
+enabled = false
+temperature_night = 4500
+
+[notification]
+background_opacity = 0.57
+border = false
+layer = "overlay"
+max_visible = 2
+position = "top_center"
+scale = 1.25
+
+[plugins]
+{{- if eq (output "uname" "-n" | trim) "garuda" }}
+# hassio needs its Home Assistant token, which lives in the local plugin data, not here.
+enabled = [ "pozzoo/hassio", "kenn/keybind-cheatsheet" ]
+{{- else }}
+enabled = [ "kenn/keybind-cheatsheet" ]
+{{- end }}
+
+[shell]
+lang = "de"
+# noctalia's own polkit agent; without it pkexec falls back to the text agent.
+polkit_agent = true
+
+[theme]
+mode = "dark"
+source = "wallpaper"
+wallpaper_scheme = "vibrant"
+
+    [theme.templates]
+    builtin_ids = [ "alacritty", "btop", "cava", "foot", "gtk3", "gtk4", "hyprland", "kcolorscheme", "kitty", "qt", "starship", "sway" ]
+    community_ids = [ "spicetify", "discord", "inkscape", "libreoffice", "micro", "obsidian", "vscode", "prismlauncher", "steam", "rofi", "fastfetch", "obs", "bat", "lazygit", "yazi" ]
+
+        # kitty rereads its colors on SIGUSR1; the stamp file only exists to trigger the hook.
+        [theme.templates.user.kitty_reload]
+        index = 100
+        input_path = "$XDG_CONFIG_HOME/noctalia/templates/reload-stamp"
+        output_path = "$XDG_CACHE_HOME/noctalia-theme-stamp"
+        post_hook = "pkill -SIGUSR1 -x kitty || true"
+
+[wallpaper]
+directory = "{{ .chezmoi.homeDir }}/Pictures/wallpapers"
+transition_on_startup = true
+
+    [wallpaper.automation]
+    enabled = true
+    interval_seconds = 1800
+    order = "random"
+    recursive = true

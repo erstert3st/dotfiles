@@ -1,0 +1,19 @@
+-- Monitors and workspace placement per machine.
+{{- if eq (output "uname" "-n" | trim) "cachyos" }}
+
+-- cachyos is headless: the only output is "sunshine-virt", created at runtime by
+-- sunshine-virt-output.service and captured by Sunshine. Never disable or replace it;
+-- the stream changes its mode at runtime with hyprctl eval 'hl.monitor(...)'.
+hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
+{{- else if eq (output "uname" "-n" | trim) "garuda" }}
+
+hl.monitor({ output = "DP-1", mode = "3440x1440@240", position = "0x0", scale = 1 })
+hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })
+
+for ws = 1, 4 do
+    hl.workspace_rule({ workspace = tostring(ws), monitor = "DP-1", layout = "dwindle" })
+end
+{{- else }}
+
+hl.monitor({ output = "", mode = "preferred", position = "auto", scale = 1 })
+{{- end }}
