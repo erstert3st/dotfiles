@@ -10,6 +10,7 @@
 - Fail loudly: handle errors at the boundary, never swallow them; shell scripts use `set -euo pipefail`.
 - Verify with the project's test/lint tooling before declaring done.
 - Never hardcode credentials; validate external input.
+- Dev/preview servers you start bind `0.0.0.0`, not `127.0.0.1`.
 
 # Inkscape
 - When working with Inkscape or `.svg` files, read `~/.claude/designer.inkscape.md` first, unless it is already in your system prompt (`desclaude` appends it).
