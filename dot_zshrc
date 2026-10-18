@@ -52,18 +52,6 @@ alias claude-brain='{ z brain-dump 2>/dev/null || cd ~/Documents/gits/brain-dump
 alias claude-work=claude-brain
 alias claude-swap=claude-brain
 alias brain=claude-brain
-# MITM: relays low/medium priority questions from other agents to me (rule: # Approvals
-# in ~/.claude/CLAUDE.md). Session name MITM: agents reach it with SendMessage to MITM.
-function claude-mitm {
-  [[ -n $HERDR_ENV ]] || { print -u2 "claude-mitm: needs a herdr session"; return 1; }
-  # Already running: jump to it instead of failing with agent_name_taken and an empty tab.
-  if herdr agent get mitm >/dev/null 2>&1; then herdr agent focus mitm >/dev/null; return; fi
-  local pane
-  # Runs in the vault: the inbox lives there, so no permission prompts for it.
-  pane=$(herdr tab create --label MITM --cwd ~/Documents/gits/brain-dump --focus | jq -er '.result.root_pane.pane_id') || return 1
-  herdr agent start mitm --kind claude --pane "$pane" -- -n MITM --model sonnet --append-system-prompt-file ~/.claude/mitm.md "$@" "Check the inbox."
-}
-alias mitm=claude-mitm
 # Old short names, kept as aliases of the claude-* commands.
 alias hclaude=claude-headroom
 alias desclaude=claude-design
