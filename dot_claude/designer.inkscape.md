@@ -10,4 +10,8 @@ Applies when working with Inkscape or `.svg` files.
 - Export a PNG so you know what it looks like, and Read it before saying "done":
   live via `inkscape_live` `rasterize` with payload `{"filename": "<abs path>/preview/<name>.png"}`,
   headless via `inkscape_file` `convert`. Create `preview/` first; the export does not.
-- After each export, give the user a clickable `file://` link to the PNG.
+- Dark artwork: add a temporary dark backdrop rect and export at about 3x size so it stays
+  visible; remove the rect from the delivered file.
+- No dev server or Chrome for visual checks unless the user asks.
+- After each export, give the user a clickable `file://` link to the PNG. `http://localhost:8765/...`
+  is only for navigating Chrome (its `navigate` tool mangles `file://`), never as the user's link.

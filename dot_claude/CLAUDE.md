@@ -3,6 +3,7 @@
 # Memory
 - Ask whether to save anything to memory only when both hold: the work is really finished (nothing waiting on me or on running agents), and you found something you consider important enough. Never in question rounds or intermediate turns; otherwise skip the question. Suggest 1-3 concrete candidates (decisions, corrections, non-obvious findings). Save only after confirmation.
 - Never store secrets, tokens, or credentials.
+- Exception: auto-dream (`autoDreamEnabled`) may consolidate, merge and prune memories in the background without asking. Backup before enabling: `~/.claude/backups/memory-2026-10-25.tar.gz`.
 
 # Engineering
 - KISS/YAGNI: smallest change that solves the problem; no speculative abstractions or unrequested config options.
@@ -11,6 +12,34 @@
 - Verify with the project's test/lint tooling before declaring done.
 - Never hardcode credentials; validate external input.
 - Dev/preview servers you start bind `0.0.0.0`, not `127.0.0.1`.
+- Missing tools (shellcheck, other distros' package managers, ...): run them via `docker run --rm -v "$dir:/mnt" <image> ...`, never install them on the host. sudo needs a password on my machines; never rely on non-interactive sudo.
+- When you ask me to put a new variable into a `.env`, add it to the matching `.env.example` in the same step (empty value plus a comment on where to get it), also for values only used for a live check.
+- Configurable means an env var with a hard default in the script (`${VAR:-default}`); the env is only a per-machine override. No mandatory external config, no value kept in two places.
+- Tool or plugin comparisons name the implementation language and the measurable price (startup time, RSS); at equal function Rust/Go beats Node/Python, and native features beat any plugin.
+- Lost uncommitted edits: search `~/.claude/file-history/<session-id>/<hash>@vN` by mtime and content first; cross-check with the Edit calls in `~/.claude/projects/*/<session>.jsonl`. Never `open(p, "w").write(f(open(p).read()))`: it truncates before reading.
+
+# Shell
+- The Bash tool runs my zsh, not bash. Traps:
+  - `$VAR` holding a command with spaces is not word-split (`$CMD` fails with "no such file or directory"): use a function `f() { docker run ... "$@"; }` or `${=VAR}`.
+  - `g` is an alias for git, so defining a function `g()` fails.
+  - MULTIOS: `cmd 2>&1 >/dev/null | wc -l` still counts stdout.
+  - `echo ====` is `=cmd` expansion and fails ("not found").
+  - `$T:a...` is a history modifier (`:a` = absolute path): quote it, `'v1.0:apps/x'` or `"${T}:apps/x"`.
+- Multi-line scripts, functions and tricky redirects: run them via `bash <<'EOF' ... EOF` (or `bash -c`).
+- `ls` is an alias for `eza` and fails on some path arguments: use `command ls`, and never chain further commands behind `ls ... &&` (the chain silently skips the rest and once led to a wrong "nothing found").
+- `grep` is a shell function from the harness snapshot: use `command grep` for the plain binary.
+- Nerd Font icons in the Unicode PUA (U+E000-U+F8FF) get lost in heredocs, and a `\uXXXX` in Write/Edit content lands as the real character. Write such characters with Python (`chr(0xF4BC)`) and verify afterwards: `[hex(ord(c)) for c in text if ord(c) > 0x2000]`.
+
+# Repos
+- GitHub: I am `erstert3st` (`gh auth status`; the global git email is its noreply address). `eibiflo` is a different person who owns the codingFreaks, closerto and `flo-prod` repos (cookieapi, closerto, microservices, docker-configs, setupSrv remote `eibiflo/ansible`); I contribute there. Never claim both accounts are mine. My cf_cookiemanager fork is `~/Documents/gits/flo-prod/fork/cf_cookiemanager`. Third-party clones in `~/Documents/gits` (grafana/*, fluxcd/*, ...) are not my projects.
+- Commits in repos without their own commit rules (CLAUDE.md, commit-msg hook, consistent prefix scheme like closerto's `[PLAN120]`): `<gitmoji> [tag] <English description>`, tags as in the brain-dump vault `others/Konventionen.md`, mapped by sense (`[docs]`, `[other]`, `[vault]`). Committing still only when the repo's rules or I allow it.
+- Public repos (e.g. `erstert3st/dotfiles`): hostnames, LAN IPs, homelab hints and Claude config are fine. Only real secrets and the work identity (employer email, employee ID, also in commit author/committer metadata) must stay out. Before pushing the dotfiles, run `gitleaks git --log-opts=origin/master..HEAD` in the chezmoi source.
+- New global skills go straight to `~/.claude/skills/<name>/`, not into the chezmoi source. Only `herdr` and `plan-review` are chezmoi-managed (`chezmoi managed | grep skills`).
+
+# Machines
+- On garuda: before searching the system for setup or config info, read `~/Documents/gits/garuda/notes/` and its `CLAUDE.md`, and keep the notes there current.
+- GUI tests start hidden, e.g. `hyprctl dispatch exec "[workspace special:dbg silent] ..."`, and read state via `hyprctl clients -j`. Visible tests only when unavoidable, announced first. Kill your own test windows by the kitty PID, not Hyprland's `sh -c` wrapper.
+- impeccable's decision page (`impeccable serve-question`) is unstable: if it dies once without an answer, don't restart it; present the same options through AskUserQuestion and say so in one line.
 
 # Inkscape
 - When working with Inkscape or `.svg` files, read `~/.claude/designer.inkscape.md` first, unless it is already in your system prompt (`desclaude` appends it).
@@ -19,6 +48,7 @@
 - Never access other machines yourself (`ssh`, `scp`, `sftp`, `rsync -e ssh`, remote commands). Print the command and let the user decide.
 - Allowed: git over SSH remotes (clone, fetch, pull, push); the usual commit/push rules still apply.
 - Exception: the user requests remote access explicitly twice (request + confirmation after your warning).
+- Commands you print for me to run: the bare command, name the host it runs on, short lines, `git --no-pager` on every git call in a chain, no interactive flags (`-i`, `-p`, editor prompts).
 - Standing exception, herdr only: between `garuda` and `cachyos`, in both directions, you may run `herdr machine status <profile>` and the agent commands from # Agents via `herdr --machine <profile> ...` on your own. `<profile>` is the saved herdr machine profile of the other one of the two (`herdr machine list`; on garuda it is `homelab`). Every other `herdr --machine <profile> ...` command (e.g. `pane run`) only when the user asks for it in that message, without the double request. Not covered: plain `ssh`, `herdr machine reconnect` (needs the user's auth), stopping or replacing the remote herdr server.
 
 # Agents
@@ -28,6 +58,13 @@
 - Your own rules travel with the request: never have another agent do what you may not do yourself, and never answer its permission prompts or blocked dialogs (`send-keys`).
 - After a timeout or `agent_prompt_stalled`, run `herdr agent read` before re-sending, or the prompt arrives twice.
 - In your result, name which agents you talked to and what for.
+
+# Browser
+- Captcha or other human verification: poll the page for about 60 s and continue if it got solved; only then tell me where it is.
+- After two failed attempts at the same browser action, stop and ask me for the concrete click (what to click, what should happen next). Same for steps you may not do yourself (create tokens, enter credentials).
+- Claude in Chrome `javascript_tool` returns `[BLOCKED: Cookie/query string data]` when its output looks like a URL with a query string or cookie data, and cuts output at about 1500-2000 chars (`[TRUNCATED]`): aggregate and redact inside the page, cache intermediate data in `window.__x`, return compact one-line-per-row text.
+- Blob downloads: a scripted `a.click()` is no user gesture; a real click works once per page load, further downloads are dropped silently, and the file lands in `~/Downloads` under its blob UUID. Navigate between downloads, or use `get_page_text` instead.
+- Auto mode may block single write calls (e.g. `POST`/`PUT` via `javascript_tool`); that is a permission boundary, not a bug, and never something to work around via settings. Do the reads first, ask me to switch mode (`Shift+Tab`), then retry the identical call once.
 
 # Approvals
 Generally speaking, I approve of the actions, commands, and tools required to complete the task I requested.

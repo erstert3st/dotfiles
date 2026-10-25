@@ -11,4 +11,14 @@
   (`invalid_agent_argument`): put the task in a file and pass a one-line prompt that names it.
   If the agent starts working right away, `agent start` can return `timeout` without keeping
   the name: check with `herdr pane read`, then `herdr agent rename <pane> <name>`.
+- The user's terminal or NAS output: read it yourself with
+  `herdr pane read <pane> --source recent-unwrapped --lines N` instead of asking them to paste it.
+  Ask once per session which pane is which, then keep reading. Read only: never `send-text`,
+  `send-keys` or `pane run` into their panes.
+- Feature or design wishes for herdr: first use what the installed plugins offer (options,
+  hooks such as radar's `render_hook`); new plugins only as second choice or on request.
+- This skill is rendered by chezmoi and does not update itself. If a command from it fails or
+  `herdr --version` is newer, run `chezmoi diff ~/.claude/skills/herdr/SKILL.md`, then (after
+  asking the user) `chezmoi apply ~/.claude/skills/herdr/SKILL.md`. Never `herdr --skill >` into
+  the target; local additions go only into this Local rules section.
 {{ end -}}
