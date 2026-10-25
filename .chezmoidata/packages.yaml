@@ -56,8 +56,6 @@ packages:
     # build & runtimes
     - make
     - autoconf
-    - nodejs
-    - npm
     - python3
     - python3-pip
     # network & system
@@ -74,8 +72,6 @@ packages:
     - imagemagick
     - poppler-utils
     # containers & kubernetes
-    - podman
-    - podman-compose
     - docker
     - docker-buildx
     - kubectl
@@ -87,6 +83,8 @@ packages:
     - lazydocker
 
   desktop:
+    - nodejs  # herdr-radar render hook (dot_config/herdr/plugins/config/hhdebb.herdr-radar)
+    - npm
     - firefox
     - ghostty
     - xarchiver
@@ -234,8 +232,6 @@ packages:
       - ffmpeg
       - imagemagick
       - poppler
-      - podman
-      - podman-compose
       - kubernetes-cli
       - helm
       - k9s
