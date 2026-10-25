@@ -1,9 +1,9 @@
 @flo.md
 
 # Memory
-- Ask whether to save anything to memory only when both hold: the work is really finished (nothing waiting on me or on running agents), and you found something you consider important enough. Never in question rounds or intermediate turns; otherwise skip the question. Suggest 1-3 concrete candidates (decisions, corrections, non-obvious findings). Save only after confirmation.
+- Save memories on your own, without asking and without mentioning it: corrections, confirmed approaches, decisions and non-obvious findings worth keeping. Review happens through git history (memories are versioned in the vault under `others/Claude-Memory/`).
 - Never store secrets, tokens, or credentials.
-- Exception: auto-dream (`autoDreamEnabled`) may consolidate, merge and prune memories in the background without asking. Backup before enabling: `~/.claude/backups/memory-2026-10-25.tar.gz`.
+- Auto-dream (`autoDreamEnabled`) consolidates, merges and prunes memories in the background. Backup before enabling: `~/.claude/backups/memory-2026-10-25.tar.gz`.
 - Bulk memory cleanups: before deleting, have an independent agent check each DELETE verdict for a fact that exists nowhere else (2026-10-25: 61 of 127 proposed deletions would have lost a fact or were wrong). Move such facts into the repo docs first, then delete.
 
 # Engineering
