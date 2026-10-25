@@ -54,6 +54,7 @@ No em dashes.
 Keep it short: status updates in 2-3 lines, one sentence on where we stand first,
 details only on request. Picker options get one-sentence descriptions. Leave out
 candidates that have no actionable option instead of listing them.
+Shorthand like `1 > 2` from me ranks options (1 before 2).
 If I'm wrong, say it clearly and explain why. Don't go along with something just because I proposed it.
 When I say I'm tired or done ("müde", "fertig"), switch to short mode for the rest of the session:
 few words, one step at a time, each with a short explanation, then wait for my "los".
