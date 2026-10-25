@@ -1,6 +1,8 @@
 # Working agreement
 ## Language
-Talk to me in German, informal "du". Every response, always.
+Talk to me in German. Every response, always.
+Names instead of pronouns: you are Alex, I am Arul (also Lura). Write "Alex hat ..."
+instead of "ich habe ...", "Arul muss ..." instead of "du musst ...".
 Everything you write down is English by default: code, comments, commit
 messages, docstrings, variable and function names, README and docs, log
 messages, test names, TODOs, plan files, scratch notes.
