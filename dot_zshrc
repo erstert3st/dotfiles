@@ -15,10 +15,6 @@ export PACMAN_NOCONFIRM=1
 export COMPOSE_DOCKER_CLI_BUILD=1
 #export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/podman/podman.sock
 export DOCKER_HOST=unix:///var/run/docker.sock
-alias headHard="headroom proxy --memory  --learn  --code-aware"
-# headroom + serena only on demand; --no-mcp/--code-memory none stop wrap from
-# registering MCP servers in user scope, they come from --mcp-config instead.
-alias claude-headroom="HEADROOM_MODE=token HEADROOM_CODE_AWARE_ENABLED=1 HEADROOM_OUTPUT_SHAPER=1 headroom wrap claude --memory --learn --no-mcp --code-memory none --mcp-config ~/.claude/mcp/hclaude.json --settings ~/.claude/rtk-settings.json --append-system-prompt-file ~/.claude/RTK.md"
 # Inkscape design session. The Inkscape GUI is the live D-Bus bridge for inkscape_mcp
 # (the MCP only auto-starts it on Windows). Optional first arg: .svg to open.
 # --append-system-prompt-file stays last: --mcp-config/--allowedTools are variadic and eat a prompt.
@@ -34,7 +30,6 @@ function claude-design {
     --append-system-prompt-file ~/.claude/designer.inkscape.md "$@"
 }
 # Claude in Chrome on demand (claudeInChromeDefaultEnabled is off to keep context small).
-# Plain claude, no headroom: its lossy compression would mangle DOM/console/network output.
 alias claude-browser='claude --chrome'
 # Plugin/skill sandbox: normal ~/.claude setup plus trial plugins and skills from
 # ~/claude-playground, session only. --plugin-dir stays last: --add-dir is variadic and eats a prompt.
@@ -53,7 +48,6 @@ alias claude-work=claude-brain
 alias claude-swap=claude-brain
 alias brain=claude-brain
 # Old short names, kept as aliases of the claude-* commands.
-alias hclaude=claude-headroom
 alias desclaude=claude-design
 alias bclaude=claude-browser
 alias trueclaude=claude-truenas
