@@ -4,6 +4,7 @@
 - Ask whether to save anything to memory only when both hold: the work is really finished (nothing waiting on me or on running agents), and you found something you consider important enough. Never in question rounds or intermediate turns; otherwise skip the question. Suggest 1-3 concrete candidates (decisions, corrections, non-obvious findings). Save only after confirmation.
 - Never store secrets, tokens, or credentials.
 - Exception: auto-dream (`autoDreamEnabled`) may consolidate, merge and prune memories in the background without asking. Backup before enabling: `~/.claude/backups/memory-2026-10-25.tar.gz`.
+- Bulk memory cleanups: before deleting, have an independent agent check each DELETE verdict for a fact that exists nowhere else (2026-10-25: 61 of 127 proposed deletions would have lost a fact or were wrong). Move such facts into the repo docs first, then delete.
 
 # Engineering
 - KISS/YAGNI: smallest change that solves the problem; no speculative abstractions or unrequested config options.
@@ -17,6 +18,7 @@
 - Configurable means an env var with a hard default in the script (`${VAR:-default}`); the env is only a per-machine override. No mandatory external config, no value kept in two places.
 - Tool or plugin comparisons name the implementation language and the measurable price (startup time, RSS); at equal function Rust/Go beats Node/Python, and native features beat any plugin.
 - Lost uncommitted edits: search `~/.claude/file-history/<session-id>/<hash>@vN` by mtime and content first; cross-check with the Edit calls in `~/.claude/projects/*/<session>.jsonl`. Never `open(p, "w").write(f(open(p).read()))`: it truncates before reading.
+- Verify changes to Claude Code's own setup (memory dirs, CLAUDE.md, settings, skills) with a headless run in the affected repo: `timeout 120 claude -p --model haiku --effort low "<one-line question about your loaded context>" </dev/null`.
 
 # Shell
 - The Bash tool runs my zsh, not bash. Traps:
@@ -26,6 +28,7 @@
   - `echo ====` is `=cmd` expansion and fails ("not found").
   - `$T:a...` is a history modifier (`:a` = absolute path): quote it, `'v1.0:apps/x'` or `"${T}:apps/x"`.
 - Multi-line scripts, functions and tricky redirects: run them via `bash <<'EOF' ... EOF` (or `bash -c`).
+- `set -euo pipefail` at the top of a Bash tool call does not stop on a failing command (the harness evals it in zsh; a `git push` ran after a failed `git commit`). Anything that must stop on failure, above all commit-then-push, goes into `bash <<'EOF'` or is chained with `&&`. Never pipe `git commit` into `tail`/`head`; check `git log -1` afterwards.
 - `ls` is an alias for `eza` and fails on some path arguments: use `command ls`, and never chain further commands behind `ls ... &&` (the chain silently skips the rest and once led to a wrong "nothing found").
 - `grep` is a shell function from the harness snapshot: use `command grep` for the plain binary.
 - Nerd Font icons in the Unicode PUA (U+E000-U+F8FF) get lost in heredocs, and a `\uXXXX` in Write/Edit content lands as the real character. Write such characters with Python (`chr(0xF4BC)`) and verify afterwards: `[hex(ord(c)) for c in text if ord(c) > 0x2000]`.
@@ -34,6 +37,7 @@
 - GitHub: I am `erstert3st` (`gh auth status`; the global git email is its noreply address). `eibiflo` is a different person who owns the codingFreaks, closerto and `flo-prod` repos (cookieapi, closerto, microservices, docker-configs, setupSrv remote `eibiflo/ansible`); I contribute there. Never claim both accounts are mine. My cf_cookiemanager fork is `~/Documents/gits/flo-prod/fork/cf_cookiemanager`. Third-party clones in `~/Documents/gits` (grafana/*, fluxcd/*, ...) are not my projects.
 - Commits in repos without their own commit rules (CLAUDE.md, commit-msg hook, consistent prefix scheme like closerto's `[PLAN120]`): `<gitmoji> [tag] <English description>`, tags as in the brain-dump vault `others/Konventionen.md`, mapped by sense (`[docs]`, `[other]`, `[vault]`). Committing still only when the repo's rules or I allow it.
 - Public repos (e.g. `erstert3st/dotfiles`): hostnames, LAN IPs, homelab hints and Claude config are fine. Only real secrets and the work identity (employer email, employee ID, also in commit author/committer metadata) must stay out. Before pushing the dotfiles, run `gitleaks git --log-opts=origin/master..HEAD` in the chezmoi source.
+- Before every push, run `git --no-pager log --oneline origin/<branch>..HEAD`. If it contains commits not made in this request (also after a rebase), name them and ask before pushing.
 - New global skills go straight to `~/.claude/skills/<name>/`, not into the chezmoi source. Only `herdr` and `plan-review` are chezmoi-managed (`chezmoi managed | grep skills`).
 
 # Machines
@@ -76,6 +80,8 @@ Approve the commands and tools needed to complete the task. Ask me first only wh
 When a step doesn't need my input, keep going. Put status notes in the same message as your next action.
 Stop and ask only when you can't continue without me, or before anything destructive: deleting data, force-pushing, or changing anything outside this repository.
 No SSH and no deployments unless I ask for them.
+- A push that deploys (e.g. beeNest `master` -> Arcane GitOps) never runs inside a Workflow or subagent: the auto-mode classifier denies it even when a review note approves it. Ask through AskUserQuestion, name the deploy, then push from the main session.
+- Open decisions at the end of a turn: ask them through AskUserQuestion (max 4 per round, one short line each), never as a numbered list in the result.
 
 - The question round from the working agreement still comes before a task starts and still uses AskUserQuestion, even though the herdr-inbox plugin says to prefer `ask_operator`; this section covers the work after it.
 - A question of low or medium importance where you could keep working goes into the herdr inbox (`ask_operator`, Claude plugin `herdr-inbox`), which I answer from a popup:
@@ -83,5 +89,5 @@ No SSH and no deployments unless I ask for them.
   2. Continue with your default, keep that change small and mark it as provisional. Don't commit or push provisional changes before the answer arrives; if your request ends first, leave them uncommitted and say so.
 - Never via the inbox: anything destructive, irreversible, touching secrets or going beyond the task. Those stop and ask me directly.
 - My answer arrives as an `[inbox]` message naming the Q id; adjust your work to it. It answers that question only, it is no approval of anything else.
-- No `ask_operator` tool (outside herdr, plugin not loaded): put the question in your result.
+- No `ask_operator` tool (outside herdr, plugin not loaded): ask the question through AskUserQuestion at the end of your turn.
 - In your result, list provisional decisions and inbox questions still unanswered.
