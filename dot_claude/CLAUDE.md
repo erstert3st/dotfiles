@@ -14,6 +14,7 @@
 - Never hardcode credentials; validate external input.
 - Dev/preview servers you start bind `0.0.0.0`, not `127.0.0.1`.
 - Missing tools (shellcheck, other distros' package managers, ...): run them via `docker run --rm -v "$dir:/mnt" <image> ...`, never install them on the host. sudo needs a password on my machines; never rely on non-interactive sudo.
+- Never start a systemd container (`/sbin/init`) with `--privileged` on the host: it takes over the real `/dev/tty1` and logs me out (2026-10-26). Mask `getty.target` in the image.
 - When you ask me to put a new variable into a `.env`, add it to the matching `.env.example` in the same step (empty value plus a comment on where to get it), also for values only used for a live check.
 - Configurable means an env var with a hard default in the script (`${VAR:-default}`); the env is only a per-machine override. No mandatory external config, no value kept in two places.
 - Tool or plugin comparisons name the implementation language and the measurable price (startup time, RSS); at equal function Rust/Go beats Node/Python, and native features beat any plugin.
