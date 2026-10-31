@@ -37,8 +37,8 @@ tests/**
 .config/noctalia/**
 {{ end }}
 
-{{ if ne (output "uname" "-n" | trim) "cachyos" }}
-# Own Lua Hyprland setup, cachyos first. Hyprland prefers hyprland.lua over hyprland.conf and
+{{ if not (has (output "uname" "-n" | trim) (list "cachyos" "garuda")) }}
+# Own Lua Hyprland setup on cachyos and garuda. Hyprland 0.57 dropped hyprland.conf support and
 # reloads on change, so applying it elsewhere would switch that session immediately.
 .config/hypr/hyprland.lua
 .config/hypr/modules
@@ -49,6 +49,8 @@ tests/**
 # KoolDots user overrides (.conf), not read by the Lua setup
 .config/hypr/UserConfigs
 .config/hypr/UserConfigs/**
+.config/hypr/UserScripts
+.config/hypr/UserScripts/**
 {{ end }}
 
 {{ if not (has (output "uname" "-n" | trim) (list "cachyos" "garuda")) }}
